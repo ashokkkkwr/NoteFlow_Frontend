@@ -1,9 +1,49 @@
 {
-  "files": [],
+  "compilerOptions": {
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "module": "esnext",
+    "target": "esnext",
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./src/",
+    "composite": true,
+    "types": ["vite/client"],
+    "paths": {
+      "@ui/*": ["ui/*"],
+      "@assets/*": ["assets/*"],
+      "@regex/*": ["regex/*"],
+      "@api/*": ["api/*"],
+      "@type/*": ["types/*"],
+      "@utils/*": ["utils/*"],
+      "@config/*": ["config/*"],
+      "@data/*": ["data/*"],
+      "@models/*": ["models/*"],
+      "@functions/*": ["functions/*"],
+      "@contexts/*": ["contexts/*"],
+      "@hooks/*": ["hooks/*"],
+      "@interface/*": ["interface/*"]
+    }
+  },
+  
+  "exclude": ["node_modules"],
+  "compileOnSave": true,
+  "include": ["src"],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
     {
       "path": "./tsconfig.node.json"
     }
