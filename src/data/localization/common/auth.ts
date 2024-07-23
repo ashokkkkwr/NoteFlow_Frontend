@@ -1,1 +1,4 @@
-import {LabelTypes} from "@type/"
+import {LabelTypes} from "@type/global.types"
+export const authLabel:LabelTypes={
+    
+}
