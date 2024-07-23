@@ -1,4 +1,4 @@
-import Navbar from '@ui/organism/Navbar'
+import Navbar from '@ui/common/organism/Navbar'
 import { Outlet } from 'react-router-dom'
 
 const LandingPageTemplate= ()=>{
