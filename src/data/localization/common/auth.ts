@@ -12,6 +12,9 @@ export const authLabel: LabelTypes = {
     en: 'First Name',
     ne: 'पहिलो नाम',
   },
+  middleName:{
+    en:'Middle Name'
+  },
   lastName: {
     en: 'Last Name',
     ne: 'थर',
@@ -28,8 +31,42 @@ export const authLabel: LabelTypes = {
     en: 'Password',
     ne: 'पासवर्ड',
   },
+  role:{
+    en:'role',
+    ne:''
+  },
+  uploadFiles:{
+    en:'file',
+    ne:''
+  },
+  phoneNumber:{
+    en:'Phone Number'
+  },
+  enterYourEmail:{
+    en:'Enter Your email',
+    ne:''
+  },
+  enterYourPassword:{
+    en:'Enter Your password',
+    ne:''
+  },
   enterYourFirstName:{
     en:'Enter Your Firstname',
     ne:''
+  },
+  enterYourMiddleName:{
+    en:'Enter Your Middle name',
+    ne:''
+  },
+  enterYourLastName:{
+    en:'Enter Your Middle name',
+    ne:''
+  },
+  enterYourRole:{
+    en:'Enter Your Role',
+    ne:''
+  },
+  enterYourPhoneNumber:{
+    en:'Enter Your Phone Number'
   }
 }

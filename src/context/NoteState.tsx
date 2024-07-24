@@ -23,5 +23,6 @@ const NoteState = (props:any) =>{
             {props.children}
         </noteContext.Provider>
     )
+    
 }
 export default NoteState

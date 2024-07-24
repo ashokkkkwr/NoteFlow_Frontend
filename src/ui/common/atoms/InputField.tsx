@@ -6,8 +6,10 @@ interface IInput {
   placeholder?: string
   autocomplete?: 'on' | 'off'
   disabled?: boolean
+  onChange?: any
+  
 }
-const InputField: React.FC<IInput> = ({ name, type, placeholder, autocomplete = 'off', disabled }) => {
+const InputField: React.FC<IInput> = ({ name, type, placeholder, autocomplete = 'off', onChange, disabled}) => {
   const [showPassword, setShowPassword] = useState(false)
   const togglePassword = () => {
     setShowPassword(!showPassword)
@@ -16,10 +18,11 @@ const InputField: React.FC<IInput> = ({ name, type, placeholder, autocomplete = 
     <div>
       <input
         type={showPassword ? 'text' : type}
-        id={name}
+        name={name}
         placeholder={placeholder}
         disabled={disabled}
         autoComplete={autocomplete}
+        onChange={onChange}
       />
       {type === 'password' && (
         <button type='button' onClick={togglePassword}>
