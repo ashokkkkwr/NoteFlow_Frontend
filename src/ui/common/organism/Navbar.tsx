@@ -1,9 +1,18 @@
 import React from 'react'
-
-export default function Navbar() {
+import {Link} from 'react-router-dom'
+import useLang from '@hooks/useLang'
+import Button from '../atoms/Button'
+import { navbarLabel } from '@data/localization/common/landingPage/navbar'
+  const Navbar = () =>{
+    const {lang} = useLang()
+  
   return (
     <div>
-      NavBar
+    <Link to ='/auth/user'>
+    <Button type='button' buttonText={navbarLabel.signup[lang]} />
+    </Link>
+
     </div>
   )
 }
+export default Navbar

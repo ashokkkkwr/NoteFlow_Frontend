@@ -34,7 +34,7 @@
       "@data/*": ["data/*"],
       "@models/*": ["models/*"],
       "@functions/*": ["functions/*"],
-      "@contexts/*": ["contexts/*"],
+      "@context/*": ["context/*"],
       "@hooks/*": ["hooks/*"],
       "@interface/*": ["interface/*"]
     }
