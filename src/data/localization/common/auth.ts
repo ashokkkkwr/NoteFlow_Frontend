@@ -8,6 +8,10 @@ export const authLabel: LabelTypes = {
     en: 'User Signup',
     ne: 'प्रयोगकर्ता लगइन',
   },
+  userLogin:{
+    en:'User Signup',
+    ne:''
+  },
   firstName: {
     en: 'First Name',
     ne: 'पहिलो नाम',

@@ -3,6 +3,7 @@ import LandingPageTemplate from '@ui/landingPage/templates/LandingPage.templete'
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import NoteState from 'context/NoteState'
 import Signup from '@ui/user/pages/Signup'
+import Login from '@ui/user/pages/Login'
 import AuthTemplete from '@ui/user/templates/AuthTemplete'
 const router = createBrowserRouter([
   //landing page
@@ -14,7 +15,8 @@ const router = createBrowserRouter([
     path:'/auth',
     element:<AuthTemplete />,
     children:[
-      {path:'/auth/user',element:<Signup />}
+      {path:'signup',element:<Signup />},
+      {path:'user/login',element:<Login />}
     ]
   }
  ])
