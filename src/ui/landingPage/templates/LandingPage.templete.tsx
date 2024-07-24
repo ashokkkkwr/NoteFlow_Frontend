@@ -6,6 +6,7 @@ const LandingPageTemplate= ()=>{
         <>
         <Navbar />
         <Outlet />
+        
         </>
     )
 }
