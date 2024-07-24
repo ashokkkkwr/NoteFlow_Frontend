@@ -8,9 +8,14 @@ import { navbarLabel } from '@data/localization/common/landingPage/navbar'
   
   return (
     <div>
-    <Link to ='/auth/user'>
+    <Link to ='/signup'>
     <Button type='button' buttonText={navbarLabel.signup[lang]} />
     </Link>
+
+    <Link to ='/auth/user/login'>
+    <Button type='button' buttonText={navbarLabel.login[lang]} />
+    </Link>
+
 
     </div>
   )
