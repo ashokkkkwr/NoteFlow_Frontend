@@ -46,7 +46,18 @@ const Login = () => {
        
       });
       console.log('Response:', response.data);
-    } catch (error) {
+    const accessToken=response?.data?.data?.tokens?.accessToken
+      if (accessToken) {
+        // Store the token in session storage
+        sessionStorage.setItem('accessToken', accessToken);
+        console.log('Token stored in session storage:', accessToken);
+       goBack()
+    }
+      }
+      
+
+      
+     catch (error) {
      if(axios.isAxiosError(error)){
       setErrorMessage(error.response?.data.message)
      }
