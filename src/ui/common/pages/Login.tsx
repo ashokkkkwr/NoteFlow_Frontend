@@ -36,8 +36,7 @@ const Login = () => {
     const data = new FormData();
     data.append('email', formData.email);
     data.append('password', formData.password)
-    console.log(formData.email)
-    console.log(formData)
+
     try {
       const response = await axiosInstance.post('/auth', data, {
         headers: {
@@ -45,12 +44,11 @@ const Login = () => {
         },
        
       });
-      console.log('Response:', response.data);
+     
     const accessToken=response?.data?.data?.tokens?.accessToken
       if (accessToken) {
         // Store the token in session storage
         sessionStorage.setItem('accessToken', accessToken);
-        console.log('Token stored in session storage:', accessToken);
        goBack()
     }
       }
