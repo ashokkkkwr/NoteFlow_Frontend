@@ -8,7 +8,7 @@ interface Note {
   content: string;
   img: string;
   noteMedia: Media[];
-  profileImage: Media1[];
+ 
   user: {
     id: string;
     email: string;
