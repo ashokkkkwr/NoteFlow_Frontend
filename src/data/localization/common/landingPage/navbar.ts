@@ -7,6 +7,10 @@ export const navbarLabel:LabelTypes={
     signup:{
         en:'Signup',
         ne: 'साइन अप'
+    },
+    friendRequest:{
+        en:'Friend Request',
+        ne:'मित्र अनुरोध'
     }
     
 }

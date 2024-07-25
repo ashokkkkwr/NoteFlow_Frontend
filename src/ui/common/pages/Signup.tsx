@@ -68,10 +68,10 @@ const Signup: React.FC = () => {
     data.append('role', formData.role);
     data.append('type', 'PROFILE');
 
-    console.log(formData);
+  
     if (formData.files) {
       for (let i = 0; i < formData.files.length; i++) {
-        console.log('files');
+     
         data.append('files', formData.files[i]);
       }
     }
@@ -81,7 +81,7 @@ const Signup: React.FC = () => {
           'content-type': 'multipart/form-data',
         },
       });
-      console.log('Response:', response.data);
+      
     } catch (error) {
       console.log('Error:', error);
     }
