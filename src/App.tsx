@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     path:'/auth',
     element:<AuthTemplete />,
     children:[
-      {path:'signup',element:<Signup />},
+      {path:'user/signup',element:<Signup />},
       {path:'user/login',element:<Login />}
     ]
   }

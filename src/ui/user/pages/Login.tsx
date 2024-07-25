@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { navbarLabel } from '@data/localization/common/landingPage/navbar';
 import { useState } from 'react';
 import axiosInstance from 'services/instance';
+import axios from 'axios';
 import React from 'react';
 
 const Login = () => {
@@ -20,8 +21,9 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const [errorMessage,setErrorMessage]=useState('')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e:any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -29,20 +31,36 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     const data = new FormData();
     data.append('email', formData.email);
-    data.append('password', formData.password);
+    data.append('password', formData.password)
+    console.log(formData.email)
+    console.log(formData)
     try {
-      const response = await axiosInstance.post('/auth/login', data, {
+      const response = await axiosInstance.post('/auth', data, {
         headers: {
-          'content-type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
+       
       });
       console.log('Response:', response.data);
-    } catch (error) {
-      console.log('Error:', error);
+    const accessToken=response?.data?.data?.tokens?.accessToken
+      if (accessToken) {
+        // Store the token in session storage
+        sessionStorage.setItem('accessToken', accessToken);
+        console.log('Token stored in session storage:', accessToken);
+       goBack()
+    }
+      }
+      
+
+      
+     catch (error) {
+     if(axios.isAxiosError(error)){
+      setErrorMessage(error.response?.data.message)
+     }
     }
   };
 
@@ -69,6 +87,7 @@ const Login = () => {
             onChange={handleChange}
           />
         </div>
+        {errorMessage}
         <Button type={'submit'} buttonText={navbarLabel.login[lang]} />
       </form>
     </>

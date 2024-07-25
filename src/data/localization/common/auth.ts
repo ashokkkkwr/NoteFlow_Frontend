@@ -10,14 +10,15 @@ export const authLabel: LabelTypes = {
   },
   userLogin:{
     en:'User Signup',
-    ne:''
+    ne:'प्रयोगकर्ता साइनअप'
   },
   firstName: {
     en: 'First Name',
     ne: 'पहिलो नाम',
   },
   middleName:{
-    en:'Middle Name'
+    en:'Middle Name',
+    ne:'बीचको नाम'
   },
   lastName: {
     en: 'Last Name',
@@ -37,40 +38,42 @@ export const authLabel: LabelTypes = {
   },
   role:{
     en:'role',
-    ne:''
+    ne:'भूमिका'
   },
   uploadFiles:{
     en:'file',
-    ne:''
+    ne:'फाइल'
   },
   phoneNumber:{
-    en:'Phone Number'
+    en:'Phone Number',
+    ne:'फोन नम्बर'
   },
   enterYourEmail:{
     en:'Enter Your email',
-    ne:''
+    ne:'आफ्नो इमेल प्रविष्ट गर्नुहोस्'
   },
   enterYourPassword:{
     en:'Enter Your password',
-    ne:''
+    ne:'आफ्नो पासवर्ड प्रविष्ट गर्नुहोस्'
   },
   enterYourFirstName:{
     en:'Enter Your Firstname',
-    ne:''
+    ne:'आफ्नो पहिलो नाम प्रविष्ट गर्नुहोस्'
   },
   enterYourMiddleName:{
     en:'Enter Your Middle name',
-    ne:''
+    ne:'आफ्नो मध्य नाम प्रविष्ट गर्नुहोस्'
   },
   enterYourLastName:{
-    en:'Enter Your Middle name',
-    ne:''
+    en:'Enter Your Last name',
+    ne:'तपाईंको अन्तिम नाम प्रविष्ट गर्नुहोस्'
   },
   enterYourRole:{
     en:'Enter Your Role',
-    ne:''
+    ne:'आफ्नो भूमिका प्रविष्ट गर्नुहोस्'
   },
   enterYourPhoneNumber:{
-    en:'Enter Your Phone Number'
+    en:'Enter Your Phone Number',
+    ne:'आफ्नो फोन नम्बर प्रविष्ट गर्नुहोस्'
   }
 }
