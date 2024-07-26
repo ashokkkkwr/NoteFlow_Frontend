@@ -6,6 +6,8 @@ import Signup from '@ui/common/pages/Signup'
 import Login from '@ui/common/pages/Login'
 import AuthTemplete from '@ui/common/templates/AuthTemplete'
 import FriendRequest from '@ui/common/pages/FriendRequest'
+import AddFriends from '@ui/common/pages/AddFriends'
+import ViewFriends from '@ui/common/pages/ViewFriends'
 const router = createBrowserRouter([
   //landing page
   {
@@ -18,7 +20,9 @@ const router = createBrowserRouter([
     children:[
       {path:'user/signup',element:<Signup />},
       {path:'user/login',element:<Login />},
-      {path:'user/friend-request',element:<FriendRequest />}
+      {path:'user/friend-request',element:<FriendRequest />},
+      {path:'user/add-friends',element:<AddFriends />},
+      {path:'user/view-friends',element:< ViewFriends />}
     ]
   }
  ])

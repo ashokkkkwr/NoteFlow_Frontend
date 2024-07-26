@@ -81,7 +81,7 @@ const Signup: React.FC = () => {
           'content-type': 'multipart/form-data',
         },
       });
-      
+      goBack()
     } catch (error) {
       console.log('Error:', error);
     }
@@ -129,5 +129,4 @@ const Signup: React.FC = () => {
     </div>
   );
 };
-
 export default Signup;
