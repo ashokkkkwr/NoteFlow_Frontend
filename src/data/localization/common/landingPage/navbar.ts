@@ -11,6 +11,14 @@ export const navbarLabel:LabelTypes={
     friendRequest:{
         en:'Friend Request',
         ne:'मित्र अनुरोध'
+    },
+    addFriend:{
+        en:'Add Friend',
+        ne:'साथी जोड्नुहोस्'
+    },
+    viewFriends:{
+        en:'View Friends',
+        ne:'साथीहरू हेर्नुहोस्'
     }
     
 }

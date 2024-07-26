@@ -7,7 +7,7 @@ const LanguageToggle = ()=>{
 
     }
     return(
-        <div className='border-2 border-gray-400 rounded-full flex items-center justify-center  w-10 h-8 overflow-hidden' onClick={switchLanguage}>
+        <div  onClick={switchLanguage}>
             {lang==='en'?(<span>
                 en
             </span>):(

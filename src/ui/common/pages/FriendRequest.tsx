@@ -37,6 +37,8 @@ export default function FriendRequest() {
         try{
             const response = await axiosInstance.patch(`/friend/accept-request/${id}`)
                 console.log(response.data, "Request Accepted")
+                setRequest(prevRequests => prevRequests.filter(request => request.id !== id));
+
             }catch(error){
                 console.log(error)
             }

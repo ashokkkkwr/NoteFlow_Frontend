@@ -20,6 +20,13 @@ import LanguageToggle from '../molecules/LanguageToggle'
     <Link to ='/auth/user/friend-request'>
     <Button type='button' buttonText={navbarLabel.friendRequest[lang]} />
     </Link>
+    <Link to ='/auth/user/add-friends'>
+    <Button type='button' buttonText={navbarLabel.addFriend[lang]} />
+    </Link>
+    <Link to ='/auth/user/view-friends'>
+    <Button type='button' buttonText={navbarLabel.viewFriends[lang]} />
+    </Link>
+
 
 <LanguageToggle />
     </div>
