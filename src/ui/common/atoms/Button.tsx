@@ -6,7 +6,8 @@ interface IButton{
 }
 const Button: React.FC<IButton>=({type,icon,buttonText,onClick})=>{
     return(
-        <button type={type} onClick={onClick}>
+        
+        <button className="bg-blue-500 text-white py-2 px-4 rounded " type={type} onClick={onClick}>
             {icon}
         <span>{buttonText}</span>
         </button>
