@@ -19,6 +19,12 @@ export const navbarLabel:LabelTypes={
     viewFriends:{
         en:'View Friends',
         ne:'साथीहरू हेर्नुहोस्'
+    },
+    home:{
+        en:'Home'
+    },
+    profile:{
+        en:'Profile'
     }
     
 }
