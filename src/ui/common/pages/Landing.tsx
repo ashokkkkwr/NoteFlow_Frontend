@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react"
 import noteContext from "context/NoteContext"
-import Posts from "../molecules/Posts"
+import Posts from "../organism/Posts"
+import LeftSidebar from "../organism/LeftSidebar"
 const Landing =()=>{
     const a = useContext(noteContext)
     useEffect(()=>{
@@ -10,7 +11,8 @@ const Landing =()=>{
        
         <div>
             {/* <div>Home Page welcomes {a.state.name}</div> */}
-
+            
+        <LeftSidebar />
             <Posts />
 
         </div>

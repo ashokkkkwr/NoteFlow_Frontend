@@ -1,4 +1,3 @@
-import Landing from '@ui/common/organism/Landing'
 import LandingPageTemplate from '@ui/common/templates/LandingPage.templete'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import NoteState from 'context/NoteState'
@@ -8,6 +7,7 @@ import AuthTemplete from '@ui/common/templates/AuthTemplete'
 import FriendRequest from '@ui/common/pages/FriendRequest'
 import AddFriends from '@ui/common/pages/AddFriends'
 import ViewFriends from '@ui/common/pages/ViewFriends'
+import Landing from '@ui/common/pages/Landing'
 const router = createBrowserRouter([
   //landing page
   {
