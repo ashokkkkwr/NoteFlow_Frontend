@@ -7,7 +7,7 @@ const LanguageToggle = ()=>{
 
     }
     return(
-        <div  onClick={switchLanguage}>
+        <div className="bg-blue-500 text-white py-2 px-4 rounded  " onClick={switchLanguage}>
             {lang==='en'?(<span>
                 en
             </span>):(

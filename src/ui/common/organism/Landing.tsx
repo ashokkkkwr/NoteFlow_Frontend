@@ -9,7 +9,7 @@ const Landing =()=>{
     return(
        
         <div>
-            <div>Home Page welcomes {a.state.name}</div>
+            {/* <div>Home Page welcomes {a.state.name}</div> */}
 
             <Posts />
 

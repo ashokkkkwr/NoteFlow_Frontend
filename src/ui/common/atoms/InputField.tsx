@@ -15,9 +15,12 @@ const InputField: React.FC<IInput> = ({ name, type, placeholder, autocomplete = 
   const togglePassword = () => {
     setShowPassword(!showPassword)
   }
+
   return (
     <div>
       <input
+          className="placeholder-gray-500"
+
         type={showPassword ? 'text' : type}
         name={name}
         placeholder={placeholder}

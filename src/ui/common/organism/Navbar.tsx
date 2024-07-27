@@ -4,11 +4,13 @@ import useLang from '@hooks/useLang'
 import Button from '../atoms/Button'
 import { navbarLabel } from '@data/localization/common/landingPage/navbar'
 import LanguageToggle from '../molecules/LanguageToggle'
+import Logo from '../molecules/Logo'
   const Navbar = () =>{
     const {lang} = useLang()
   
   return (
-    <div>
+    <div className='flex gap-4'>
+    < Logo />
     <Link to ='/auth/user/signup'>
     <Button type='button' buttonText={navbarLabel.signup[lang]} />
     </Link>

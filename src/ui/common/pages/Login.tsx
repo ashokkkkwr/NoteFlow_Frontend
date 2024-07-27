@@ -64,9 +64,7 @@ const Login = () => {
 
   return (
     <>
-    <div className='bg-black w-full h-full p-20'>
-    This is test
-    </div>
+ 
       <Button type={'button'} buttonText={authLabel.goBack[lang]} onClick={goBack} />
       <h1>{authLabel.userLogin[lang]}</h1>
       <form onSubmit={handleSubmit} encType='multipart/form-data'>
