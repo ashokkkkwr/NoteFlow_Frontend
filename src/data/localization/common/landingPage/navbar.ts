@@ -25,6 +25,10 @@ export const navbarLabel:LabelTypes={
     },
     profile:{
         en:'Profile'
+    },
+    setting:{
+        en:'Settings',
+        ne:''
     }
     
 }

@@ -1,11 +1,13 @@
-import Navbar from '@ui/common/organism/Navbar'
 import { Outlet } from 'react-router-dom'
 
 const LandingPageTemplate= ()=>{
     return(
         <>
-        <Navbar />
+       <div className='bg-gray-200'>
+
+      
         <Outlet />
+        </div>
         
         </>
     )
