@@ -7,7 +7,7 @@ import { navbarLabel } from '@data/localization/common/landingPage/navbar'
 export default function Nav() {
       const {lang} = useLang()
   return (
-    <div>
+    <div className="  bg-white ">
     <div>
             <Link to ='/auth/user/signup'>
     <Button type='button' buttonText={navbarLabel.signup[lang]} />

@@ -8,12 +8,13 @@ import Nav from '../molecules/Nav'
   
   
   return (
-    <div className='flex gap-4'>
-    < Logo />
+    <div className='flex   bg-white p-4 ml-1 justify-end'>
+    {/* < Logo /> */}
 
 
-<LanguageToggle />
+
 < Nav />
+<LanguageToggle />
     </div>
   )
 }
