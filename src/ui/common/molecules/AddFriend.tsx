@@ -49,10 +49,8 @@ export default function AddFriend() {
   }, [])
   return (
 
-    <div>
-       <div className=''>
-  <p className=' text-red-500 text-lg'>People you may know</p>
-  </div>  
+    <div >
+      
 
       {
         users.map(user => (

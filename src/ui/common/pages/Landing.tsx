@@ -4,6 +4,7 @@ import Posts from "../organism/Posts"
 import LeftSidebar from "../organism/LeftSidebar"
 import Navbar from '@ui/common/organism/Navbar'
 import RightSidebar from "../organism/RightSidebar"
+import RightSidebarDown from "../organism/RightSidebarDown"
 
 const Landing = () => {
     const a = useContext(noteContext)
@@ -26,11 +27,10 @@ const Landing = () => {
                         <div >
                         <Posts />
                         </div>
-                        <div >
-                            <div className="bg-white mt-10 w-80 h-96">
+                        <div className="fixed right-0">
                             <RightSidebar />
-                            </div>
-                            <p>buttom</p>
+                            
+                            <RightSidebarDown />
                         </div>
                     </div>
                 </div>

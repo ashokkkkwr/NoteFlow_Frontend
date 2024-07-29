@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Roboto', 'Inter', 'sans-serif'], // Added both Roboto and Inter fonts
+        poppins: ['Poppins', 'sans-serif'],
       },
     },
   },
