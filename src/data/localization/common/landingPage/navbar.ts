@@ -29,6 +29,14 @@ export const navbarLabel:LabelTypes={
     setting:{
         en:'Settings',
         ne:''
+    },
+    view:{
+ en:'View',
+        ne:''
+    },
+    friends:{
+ en:'Friends',
+        ne:''
     }
     
 }

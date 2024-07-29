@@ -12,16 +12,22 @@ const Landing = () => {
     }, [])
     return (
         <>
-            <div className="flex">
-                {/* <div>Home Page welcomes {a.state.name}</div> */}
+
+            <div className="flex ">
+
+                {/* {a.state.name} */}
+                <div className="">
 
                 <LeftSidebar />
+                </div>
                 <div className="flex-grow">
                     <Navbar />
-                    <div className="flex bg-white justify-between">
+                    <div className="flex  justify-between">
+                        <div >
                         <Posts />
-                        <div className="bg-white ">
-                            <div className="">
+                        </div>
+                        <div >
+                            <div className="bg-white mt-10 w-80 h-96">
                             <RightSidebar />
                             </div>
                             <p>buttom</p>

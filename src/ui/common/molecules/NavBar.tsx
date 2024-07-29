@@ -10,7 +10,7 @@ export default function NavBar() {
 
   return (
     <div className=''>
-      <div className='mt-14 ml-8'>
+      <div className='mt-20 ml-8'>
         <Link to='/'>
           <div className="flex items-center">
             <FaHome className="text-2xl" />
@@ -18,7 +18,7 @@ export default function NavBar() {
           </div>
         </Link>
       </div>
-      <div className='mt-8 ml-8'>
+      <div className='mt-10 ml-8'>
         <Link to='/auth/user/profile'>
           <div className="flex items-center">
             <GiPlagueDoctorProfile className="text-2xl" />
@@ -26,15 +26,21 @@ export default function NavBar() {
           </div>
         </Link>
       </div>
-      <div className='mt-8 ml-8'>
-        <Link to='/auth/user/friendRequests'>
+      <div className='mt-10 ml-8'>
+
+
+
+
+        <Link to='/auth/user/friend-request'>
           <div className="flex items-center">
             <FaUserFriends className="text-2xl" />
-            <p className="mt-1 ml-2 text-lg"> {navbarLabel.friendRequest[lang]}</p>
+            <p className="mt-1 ml-2 text-lg">{navbarLabel.friendRequest[lang]}</p>
           </div>
         </Link>
       </div>
-      <div className='mt-8 ml-8'>
+
+
+      <div className='mt-10 ml-8'>
         <Link to='/auth/user/settings'>
           <div className="flex items-center">
             <IoSettings className="text-2xl" />

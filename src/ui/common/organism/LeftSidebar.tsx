@@ -1,20 +1,21 @@
 import React from 'react'
 import Logo from '../molecules/Logo'
 import NavBar from '../molecules/NavBar'
+import NavBarDown from '../molecules/NavBarDown'
 
 export default function LeftSidebar() {
   return (
     
-      <div>
-      <div className="w-80 h-96 bg-white p-4 ">
+      <div className='sticky top-0 z-10'>
+      <div className="w-96 h-[50vh] bg-white p-4">
 
         <Logo />
        
         < NavBar />
-        </div>
-      <div className="mt-1 w-80 h-96 bg-white p-4 ">
-        left
-        </div>
+      </div>
+      <div className="mt-[2px] px w-96 h-[50vh] bg-white p-4">
+      <NavBarDown />
+      </div>
         
         </div>
        
