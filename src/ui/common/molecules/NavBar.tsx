@@ -1,59 +1,53 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import Button from '../atoms/Button'
+import { Link } from 'react-router-dom';
 import { FaHome, FaUserFriends } from "react-icons/fa";
 import { GiPlagueDoctorProfile } from "react-icons/gi";
 import { IoSettings } from "react-icons/io5";
+import { navbarLabel } from '@data/localization/common/landingPage/navbar';
+import useLang from '@hooks/useLang';
 
-
-import { navbarLabel } from '@data/localization/common/landingPage/navbar'
-import useLang from '@hooks/useLang'
 export default function NavBar() {
-  const { lang } = useLang()
+  const { lang } = useLang();
 
   return (
     <div className=''>
-      <div>
+      <div className='mt-20 ml-8'>
         <Link to='/'>
           <div className="flex items-center">
-            <FaHome />
-            <p className="mt-1 ml-1"> {navbarLabel.home[lang]} </p>
+            <FaHome className="text-2xl" />
+            <p className="mt-1 ml-2 text-lg"> {navbarLabel.home[lang]} </p>
           </div>
-
         </Link>
       </div>
-      <div>
+      <div className='mt-10 ml-8'>
         <Link to='/auth/user/profile'>
           <div className="flex items-center">
-            <GiPlagueDoctorProfile />
-
-            <p className="mt-1 ml-1"> {navbarLabel.profile[lang]}</p>
+            <GiPlagueDoctorProfile className="text-2xl" />
+            <p className="mt-1 ml-2 text-lg"> {navbarLabel.profile[lang]}</p>
           </div>
         </Link>
-
-
       </div>
-      <div>
-        <Link to='/auth/user/friendRequests'>
-          <div className="flex items-center">
-            <FaUserFriends />
+      <div className='mt-10 ml-8'>
 
-            <p className="mt-0 ml-1"> {navbarLabel.friendRequest[lang]}</p>
+
+
+
+        <Link to='/auth/user/friend-request'>
+          <div className="flex items-center">
+            <FaUserFriends className="text-2xl" />
+            <p className="mt-1 ml-2 text-lg">{navbarLabel.friendRequest[lang]}</p>
           </div>
         </Link>
-
-
       </div>
-      <div>
-        <Link to='/auth/user/friendRequests'>
+
+
+      <div className='mt-10 ml-8'>
+        <Link to='/auth/user/settings'>
           <div className="flex items-center">
-            <IoSettings />
-            <p className="mt-0 ml-1"> {navbarLabel.setting[lang]}</p>
+            <IoSettings className="text-2xl" />
+            <p className="mt-1 ml-2 text-lg"> {navbarLabel.setting[lang]}</p>
           </div>
         </Link>
-
-
       </div>
     </div>
-  )
+  );
 }

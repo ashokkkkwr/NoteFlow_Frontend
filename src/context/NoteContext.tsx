@@ -16,5 +16,4 @@ const initialNoteContext: NoteContextType = {
     update: () => {}
 };
 const noteContext = createContext<NoteContextType>(initialNoteContext);
-
 export default noteContext;

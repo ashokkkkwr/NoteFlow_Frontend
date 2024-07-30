@@ -6,7 +6,7 @@ export default function Logo() {
     const {lang} = useLang()
   return (
 <>
-    <div className='flex items-center space-x-2'>
+    <div className='flex items-center space-x-2 mt-5 ml-5'>
   <span className="text-black text-4xl font-bold">
     {logoLabel.post[lang]}
   </span>

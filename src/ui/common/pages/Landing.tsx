@@ -4,6 +4,7 @@ import Posts from "../organism/Posts"
 import LeftSidebar from "../organism/LeftSidebar"
 import Navbar from '@ui/common/organism/Navbar'
 import RightSidebar from "../organism/RightSidebar"
+import RightSidebarDown from "../organism/RightSidebarDown"
 
 const Landing = () => {
     const a = useContext(noteContext)
@@ -12,19 +13,24 @@ const Landing = () => {
     }, [])
     return (
         <>
-            <div className="flex">
-                {/* <div>Home Page welcomes {a.state.name}</div> */}
+
+            <div className="flex ">
+
+                {/* {a.state.name} */}
+                <div className="">
 
                 <LeftSidebar />
+                </div>
                 <div className="flex-grow">
                     <Navbar />
-                    <div className="flex bg-white justify-between">
+                    <div className="flex  justify-between">
+                        <div >
                         <Posts />
-                        <div className="bg-white ">
-                            <div className="">
+                        </div>
+                        <div className="fixed right-0">
                             <RightSidebar />
-                            </div>
-                            <p>buttom</p>
+                            
+                            <RightSidebarDown />
                         </div>
                     </div>
                 </div>

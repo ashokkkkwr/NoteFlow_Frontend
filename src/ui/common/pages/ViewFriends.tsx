@@ -26,7 +26,7 @@ export default function ViewFriends() {
         try {
             const response = await axiosInstance.get('/friend/friends')
 
-            console.log(response.data.data, 'response')
+            console.log(response.data.data, 'Friendss')
 
             setUsers(response.data.data)
 
@@ -44,7 +44,7 @@ export default function ViewFriends() {
 
         <div>
 
-
+            
             {users.map(friends => (
                 <li key={friends.id}>
                     <p>{friends.id}</p>
@@ -67,6 +67,7 @@ export default function ViewFriends() {
                     </div>
                 </li>
             ))}
+
         </div>
     )
 }
