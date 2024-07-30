@@ -10,6 +10,7 @@
 @layer base {
   body {
     @apply font-sans;
+    background-color: #d1d5db; /* Equivalent to Tailwind's bg-gray-300 */
   }
 }
 

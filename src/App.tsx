@@ -8,6 +8,7 @@ import FriendRequest from '@ui/common/pages/FriendRequest'
 import AddFriends from '@ui/common/pages/AddFriends'
 import ViewFriends from '@ui/common/pages/ViewFriends'
 import Landing from '@ui/common/pages/Landing'
+import Profile from '@ui/common/pages/Profile'
 const router = createBrowserRouter([
   //landing page
   {
@@ -22,6 +23,8 @@ const router = createBrowserRouter([
       { path: 'user/login', element: <Login /> },
       { path: 'user/friend-request', element: <FriendRequest /> },
       { path: 'user/add-friends', element: <AddFriends /> },
+      { path: 'user/profile', element: <Profile />},
+
       { path: 'user/view-friends', element: < ViewFriends /> }
     ]
   }

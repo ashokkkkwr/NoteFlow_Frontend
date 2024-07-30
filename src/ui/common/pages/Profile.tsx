@@ -5,8 +5,9 @@ import LeftSidebar from "../organism/LeftSidebar"
 import Navbar from '@ui/common/organism/Navbar'
 import RightSidebar from "../organism/RightSidebar"
 import RightSidebarDown from "../organism/RightSidebarDown"
+import Profiles from "../organism/Profiles"
 
-const Landing = () => {
+const Profile = () => {
     const a = useContext(noteContext)
     useEffect(() => {
         a.update()
@@ -25,7 +26,7 @@ const Landing = () => {
                     <Navbar />
                     <div className="flex  justify-between">
                         <div >
-                        <Posts />
+                        <Profiles />
                         </div>
                         <div className="fixed right-0">
                             <RightSidebar />
@@ -42,6 +43,6 @@ const Landing = () => {
         </>
     )
 }
-export default Landing
+export default Profile
 
 
