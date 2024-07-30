@@ -59,7 +59,7 @@ export default function ViewFriend() {
         </div>
       ))}
       <button className="ml-6 mt-10 w-56 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300">
-        See All
+        View All
       </button>
     </div>
   );

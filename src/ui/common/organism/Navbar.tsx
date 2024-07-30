@@ -8,7 +8,7 @@ import Nav from '../molecules/Nav'
   
   
   return (
-    <div className='flex   bg-white p-4 ml-px justify-end sticky top-0 z-10'>
+    <div className='flex   bg-white p-4 ml-[1px] justify-end sticky top-0 z-10 rounded-lg shadow-md'>
  
 
 

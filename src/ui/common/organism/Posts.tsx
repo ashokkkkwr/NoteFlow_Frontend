@@ -60,7 +60,7 @@ export default function Posts() {
 
   return (
     <div>
-      <div className="ml-20 mt-10  bg-grey">
+      <div className="ml-36 mt-10  bg-grey">
         {error && <p>{error}</p>}
         <ul>
           {notes.map(note => (
