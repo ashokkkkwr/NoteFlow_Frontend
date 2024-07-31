@@ -108,7 +108,7 @@ export default function Nav() {
     </Link>
               </li>
               <li className="p-2 hover:bg-gray-200 cursor-pointer">
-                <Link to="/logout">Logout</Link>
+                <Link to="/auth/user/logout">Logout</Link>
               </li>
             </ul>
           </div>
