@@ -61,25 +61,25 @@ export default function AddPost() {
         <div>
 
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <div className='mt-12'>
+                <div className='mt-6'>
                     <div className='ml-3'>
                         <Label name={'title'} label={postLabel.title[lang]} required={true} />
                     </div>
                     <InputField name={'title'} type={'title'} placeholder={postLabel.enterTitle[lang]} onChange={handleChange} />
                 </div>
                 <div>
-                <div className='ml-3 mt-6'>
+                <div className='ml-3 mt-2'>
                     <Label name={'content'} label={postLabel.content[lang]} required={true} />
                     </div>
                     <InputField name={'content'} type={'content'} placeholder={postLabel.enterContent[lang]} onChange={handleChange} />
                 </div>
                 <div>
-                <div className='ml-3 mt-6'>
+                <div className='ml-3 mt-2'>
                     <Label name={'files'} label={authLabel.uploadFiles[lang]} required={true} />
                     </div>
                     <InputField name={'files'} type={'file'} multiple onChange={handleFileChange} />
                 </div>
-                <div className='mt-7'>
+                <div className='mt-3'>
                 <Button type={'submit'} buttonText={postLabel.share[lang]} />
                 </div>
             </form>

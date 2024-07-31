@@ -8,6 +8,7 @@ interface User {
     first_name: string;
     last_name: string;
     profileImage: Media[];
+    phone_number:string;
   };
 }
 
@@ -23,7 +24,7 @@ export default function AddFriend() {
     try {
       const response = await axiosInstance.get('/friend/view-user');
       console.log(response.data.data, 'response all friends');
-      setUsers(response.data.data);
+      setUsers(response.data.data.slice(0, 3)); // Fetch only 3 data
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +46,7 @@ export default function AddFriend() {
   }, []);
 
   return (
-    <div className='mt-10'>
+    <div className='mt-5'>
       {users.map(user => (
         <div key={user.id} className='mt-1 flex items-center justify-between p-4 border-b border-gray-200'>
           <div className='flex items-center'>
@@ -56,23 +57,26 @@ export default function AddFriend() {
                 className='w-12 h-12 rounded-full object-cover'
               />
             )}
-            <div className='ml-1'>
+            <div className='ml-3'>
               <p className='text-lg'>{user.details.first_name} {user.details.last_name}</p>
+              <p className='text-sm text-red-500'>+{user.details.phone_number}</p>
+            </div>
+            <div className='ml-1'>
+             
             </div>
           </div>
           <div className='ml-32'>
-          <button
-  onClick={() => addFriend(user.id)}
-  className='inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
->
-  <IoIosPersonAdd className='text-xl mr-2' /> {/* Margin-right for spacing between icon and text */}
-  Add
-</button>
-
+            <button
+              onClick={() => addFriend(user.id)}
+              className='inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
+            >
+              <IoIosPersonAdd className='text-xl mr-2' /> {/* Margin-right for spacing between icon and text */}
+              Add
+            </button>
           </div>
         </div>
       ))}
-       <button className="ml-16 mt-4 w-56 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300">
+      <button className="ml-16 mt-4 w-56 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300">
         See All
       </button>
     </div>
