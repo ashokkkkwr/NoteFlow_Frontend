@@ -79,7 +79,7 @@ export default function AddPost() {
                     </div>
                     <InputField name={'files'} type={'file'} multiple onChange={handleFileChange} />
                 </div>
-                <div className='mt-3'>
+                <div className='mt-9 ml-0'>
                 <Button type={'submit'} buttonText={postLabel.share[lang]} />
                 </div>
             </form>
