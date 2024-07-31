@@ -76,7 +76,7 @@ export default function ViewFriend() {
       <Link to={`/auth/user/viewAllFriends`}>
       
      
-      <button className="ml-9 mt-10 w-56 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300">
+      <button className="ml-6 mt-10 w-48 h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-base hover:bg-red-500 hover:text-white transition-colors duration-300">
         View All
       </button>
       </Link>

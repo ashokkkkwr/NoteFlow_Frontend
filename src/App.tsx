@@ -12,7 +12,7 @@ import Landing from '@ui/common/pages/Landing';
 import Profile from '@ui/common/pages/Profile';
 import UserDetails from '@ui/common/pages/UserDetail';
 import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute component
-import ViewAllFriends from '@ui/common/pages/ViewAllFriends';
+import ViewAllFriends from '@ui/common/pages/ViewAllFriend';
 import Settings from '@ui/common/pages/Settings';
 
 const router = createBrowserRouter([
