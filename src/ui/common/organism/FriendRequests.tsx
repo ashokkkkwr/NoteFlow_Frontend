@@ -1,77 +1,85 @@
-import React, { useEffect, useState } from 'react'
-import axiosInstance from 'services/instance'
+import React, { useEffect, useState } from 'react';
+import axiosInstance from 'services/instance';
 
 interface Friends {
-    id: string,
-    createdAt: any,
+    id: string;
+    createdAt: any;
     sender: {
         details: {
-            first_name: string,
-            last_name: string,
-            profileImage: Media[]
-
-        }
-    }
-
+            first_name: string;
+            last_name: string;
+            profileImage: Media[];
+        };
+    };
 }
+
 interface Media {
     id: string;
     path: string;
 }
+
 export default function FriendRequests() {
-    
-    const [request, setRequest] = useState<Friends[]>([])
+    const [request, setRequest] = useState<Friends[]>([]);
+
     const friendRequest = async () => {
-
         try {
-            const response = await axiosInstance.get('/friend')
-
-
-            setRequest(response.data.data)
-            console.log(response.data.data, "set Request")
+            const response = await axiosInstance.get('/friend');
+            setRequest(response.data.data);
+            console.log(response.data.data, "set Request");
         } catch (error) {
-
+            console.error(error);
         }
-    }
-    const acceptRequest = async (id:string)=>{
-        try{
-            const response = await axiosInstance.patch(`/friend/accept-request/${id}`)
-                console.log(response.data, "Request Accepted")
-                setRequest(prevRequests => prevRequests.filter(request => request.id !== id));
+    };
 
-            }catch(error){
-                console.log(error)
-            }
-    }
+    const acceptRequest = async (id: string) => {
+        try {
+            const response = await axiosInstance.patch(`/friend/accept-request/${id}`);
+            console.log(response.data, "Request Accepted");
+            setRequest(prevRequests => prevRequests.filter(request => request.id !== id));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
-        friendRequest()
-    }, [])
+        friendRequest();
+    }, []);
+
     return (
-        <div className='p-10 bg-white' >
-
-            {request.map(friends => (
-                <li key={friends.id}>
-                
-                    <p>{friends.sender.details.first_name}</p>
-                    <p>{friends.sender.details.last_name}</p>
-                    {friends.sender.details.last_name}
-                    <div>
-                        {
-                            friends.sender.details.profileImage.map(media => (
-                                <div key={media.id}>
-                                    <p>profilePic Id={media.id}</p>
-                                    <p>{media.path} path</p>
-                                    <img src={`${media.path}`} alt={`Profile ${media.id}`} />
-
-                                </div>
-                            ))
-                        }
+        <div className='p-4 bg-white m-5 w-[120vh] max-w-screen-xl'>
+            <div className='flex flex-wrap gap-32'>
+                {request.map(friends => (
+                    <div key={friends.id} className='flex flex-col items-center bg-gray-100 p-4 h- rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4'>
+                        <div className='flex-shrink-0'>
+                            {friends.sender.details.profileImage.map(media => (
+                                <img
+                                    key={media.id}
+                                    src={`${media.path}`}
+                                    alt={`Profile ${media.id}`}
+                                    className='w-64 h-64 object-cover rounded-md '
+                                />
+                            ))}
+                        </div>
+                        <div className='flex flex-col items-center mt-4'>
+                            <p className='text-xl font-semibold'>{friends.sender.details.first_name}</p>
+                            <p className='text-xl'>{friends.sender.details.last_name}</p>
+                        </div>
+                        <div className='flex mt-4 gap-3'>
+                            <button
+                                onClick={() => acceptRequest(friends.id)}
+                                className=' mt-4 w-32 h-12 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300'
+                            >
+                                Accept
+                            </button>
+                            <button
+                                className="bg-red-500 text-white mt-4 w-32 h-12 border-2 border-red-500  py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
+                            >
+                                Reject
+                            </button>
+                        </div>
                     </div>
-                    <button onClick={()=>acceptRequest(friends.id)}>Accept Request</button>
-                </li>
-            ))}
-
-
+                ))}
+            </div>
         </div>
-    )
+    );
 }

@@ -29,7 +29,11 @@ const FriendRequest = () => {
                         <div >
                         <FriendRequests />
                         </div>
-                      
+                        <div className="fixed right-0">
+                            <RightSidebar />
+                            
+                            <RightSidebarDown />
+                        </div>
                     </div>
                 </div>
               

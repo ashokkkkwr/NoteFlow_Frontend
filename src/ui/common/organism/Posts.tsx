@@ -68,7 +68,7 @@ export default function Posts() {
               <div className="flex items-center mb-4">
                 {note.user.details.profileImage.map(media => (
                   <div key={media.id}>
-                    <img src={`${media.path}`} alt={`Profile ${media.id}`} className="w-12 h-12 rounded-full object-cover" />
+                    <img src={`${media.path}`} alt={`Profile ${media.id}`} className="w-12 h-12 rounded-full object-contain" />
                   </div>
                 ))}
                 <div className="flex ml-3">

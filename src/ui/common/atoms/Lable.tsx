@@ -7,7 +7,7 @@ interface ILabel {
 }
 const Label:React.FC<ILabel>= ({name,label,required})=>{
     return(
-        <label htmlFor={name}>
+        <label className="text-lg" htmlFor={name}>
             {label}
             
         </label>

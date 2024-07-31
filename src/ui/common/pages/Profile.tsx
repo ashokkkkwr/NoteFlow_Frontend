@@ -25,7 +25,7 @@ const Profile = () => {
                 <div className="flex-grow">
                     <Navbar />
                     <div className="flex  justify-between">
-                        <div >
+                        <div className="ml-[vh]">
                         <Profiles />
                         </div>
                         <div className="fixed right-0">

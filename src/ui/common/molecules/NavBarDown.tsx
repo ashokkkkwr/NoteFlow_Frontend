@@ -9,7 +9,7 @@ export default function NavBarDown() {
   return (
     <>
    
-    <p>
+    
     <div className='flex items-center space-x-2 mt-5 ml-6'>
   <span className="text-black text-2xl font-semibold">
     {navbarLabel.view[lang]}
@@ -18,7 +18,7 @@ export default function NavBarDown() {
     {navbarLabel.friends[lang]}
   </span>
   </div>
-        </p>
+     
 <ViewFriend />
         </>
   )

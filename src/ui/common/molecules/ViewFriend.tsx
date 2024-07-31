@@ -8,6 +8,7 @@ interface User {
     first_name: string;
     last_name: string;
     profileImage: Media[];
+    phone_number:string
   };
   email: string;
 }
@@ -35,9 +36,9 @@ export default function ViewFriend() {
   }, []);
 
   return (
-    <div>
+    <div className='mt-16'>
       {users.slice(0, 3).map((friends) => (
-        <div key={friends.id} className="mt-12 ml-6">
+        <div key={friends.id} className="mt-7 ml-6 border-b border-gray-200 pb-5" >
           <div className="flex">
             <div>
               {friends.details.profileImage.map((media) => (
@@ -55,6 +56,7 @@ export default function ViewFriend() {
               <p className="mr-1 text-lg">{friends.details.first_name}</p>
               <p className="text-lg">{friends.details.last_name}</p>
             </div>
+            {/* <p>{friends.details.phone_number}</p> */}
           </div>
         </div>
       ))}
