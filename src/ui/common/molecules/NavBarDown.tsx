@@ -11,12 +11,8 @@ export default function NavBarDown() {
    
     
     <div className='flex items-center space-x-2 mt-5 ml-6'>
-  <span className="text-black text-2xl font-semibold">
-    {navbarLabel.view[lang]}
-  </span>
-  <span className='text-black text-2xl font-semibold'>
-    {navbarLabel.friends[lang]}
-  </span>
+    <p className='ml- font-poppins text-red-700 text-base'>Check your pals</p>
+
   </div>
      
 <ViewFriend />

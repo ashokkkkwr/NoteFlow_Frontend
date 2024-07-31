@@ -37,6 +37,14 @@ export default function ViewFriends() {
         }
 
     }
+    const viewUsersDetails=async(id:string)=>{
+        try{
+            const response = await axiosInstance.get(`/user/${id}`);
+            console.log(response)
+        }catch(error){
+            console.log(error)
+        }
+    }
     useEffect(() => {
         viewUsers()
     }, [])
@@ -47,7 +55,8 @@ export default function ViewFriends() {
             
             {users.map(friends => (
                 <li key={friends.id}>
-                    <p>{friends.id}</p>
+
+                    <p onClick={()=>viewUsersDetails(friends.id)}>{friends.id}</p>
                     <p>{friends.email}</p>
 
                     <p>{friends.details.first_name}</p>

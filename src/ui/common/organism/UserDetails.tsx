@@ -1,19 +1,20 @@
-import useLang from '@hooks/useLang';
-import React, { useEffect, useState } from 'react'
-import { FaChevronDown, FaEdit } from 'react-icons/fa'; // Import FaEdit
+// UserDetails.tsx
+import React, { useEffect, useState } from 'react';
+import { FaEdit } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
 import axiosInstance from 'services/instance';
 
 interface User {
-  id: string,
-  createdAt: any,
+  id: string;
+  createdAt: any;
   details: {
-    first_name: string,
-    last_name: string,
-    phone_number: string,
-    profileImage: Media[]
-  },
-  email: string,
-  role: string
+    first_name: string;
+    last_name: string;
+    profileImage: Media[];
+    phone_number: string;
+  };
+  email: string;
+  role:string;
 }
 
 interface Media {
@@ -21,27 +22,29 @@ interface Media {
   path: string;
 }
 
-export default function Profiles() {
-  const [user, setUser] = useState<User | null>(null)
-
-  const viewUser = async () => {
-    try {
-      const response = await axiosInstance.get('/user/byToken')
-      console.log(response.data.data, 'yoyo')
-      setUser(response.data.data)
-    } catch (error) {
-      console.log(error, 'yo chai error')
-    }
-  }
+export default function UserDetails() {
+  const { id } = useParams<{ id: string }>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    viewUser()
-  }, [])
+    const fetchUserDetails = async () => {
+      try {
+        console.log(id,"user ko id")
+        const response = await axiosInstance.get(`/user/one/${id}`);
+        console.log(response)
+        setUser(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  const { lang } = useLang()
+    fetchUserDetails();
+  }, [id]);
+
+  if (!user) return <div>Loading...</div>;
 
   return (
-    <div className=' mt-2 ml-2 pl-[29vh] pr-[39vh] pb-[13vh] pt-[6vh] bg-white cursor-pointer shadow-lg rounded-lg'>
+    <div className=' mt-[10px] ml-[10px] pl-[30vh] pr-[37vh] pb-[142px] pt-[6vh] bg-white cursor-pointer shadow-lg rounded-lg'>
       <div>
         {user?.details.profileImage.map(media => (
           <div key={media.id} className='ml-10'>
@@ -76,16 +79,13 @@ export default function Profiles() {
               <p className='ml-7 text-lg'>{user?.role}</p>
             </div>
 
-            {/* Update Button */}
+           
             <div className='flex items-center mt-8 ml-10'>
-  <button className='flex items-center text-red-500 hover:text-red-700'>
-    <FaEdit className='mr-2' />
-    <span>Update</span>
-  </button>
+
 </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

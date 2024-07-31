@@ -46,17 +46,17 @@ export default function FriendRequests() {
     }, []);
 
     return (
-        <div className='p-4 bg-white m-5 w-[120vh] max-w-screen-xl'>
-            <div className='flex flex-wrap gap-32'>
+        <div className='p-4 bg-white m-3 w-[113vh] max-w-screen-xl'>
+            <div className='flex flex-wrap gap-28'>
                 {request.map(friends => (
-                    <div key={friends.id} className='flex flex-col items-center bg-gray-100 p-4 h- rounded-lg shadow-md w-full md:w-1/3 lg:w-1/4'>
+                    <div key={friends.id} className='flex flex-col items-center bg-gray-200 p-4 h- rounded-lg shadow-md w-1 md:w-1/3 lg:w-1/4'>
                         <div className='flex-shrink-0'>
                             {friends.sender.details.profileImage.map(media => (
                                 <img
                                     key={media.id}
                                     src={`${media.path}`}
                                     alt={`Profile ${media.id}`}
-                                    className='w-64 h-64 object-cover rounded-md '
+                                    className='w-96 h-52 object-cover rounded-md '
                                 />
                             ))}
                         </div>
@@ -64,17 +64,17 @@ export default function FriendRequests() {
                             <p className='text-xl font-semibold'>{friends.sender.details.first_name}</p>
                             <p className='text-xl'>{friends.sender.details.last_name}</p>
                         </div>
-                        <div className='flex mt-4 gap-3'>
+                        <div className='flex mt- gap-3'>
                             <button
                                 onClick={() => acceptRequest(friends.id)}
-                                className=' mt-4 w-32 h-12 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300'
+                                className=' mt-4 w-[100px] h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300'
                             >
-                                Accept
+                                <p className='p-0 m-0 text-sm'>Accept</p>
                             </button>
                             <button
-                                className="bg-red-500 text-white mt-4 w-32 h-12 border-2 border-red-500  py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
+                                className="bg-red-500 text-white mt-4 w-[100px] h-10 border-2 border-red-500  py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
                             >
-                                Reject
+                                <p className='p-0 m-0 text-sm'>Reject</p>
                             </button>
                         </div>
                     </div>
