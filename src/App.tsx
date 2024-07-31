@@ -14,6 +14,8 @@ import UserDetails from '@ui/common/pages/UserDetail';
 import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute component
 import ViewAllFriends from '@ui/common/pages/ViewAllFriend';
 import Settings from '@ui/common/pages/Settings';
+import ViewAllUser from '@ui/common/pages/ViewAllUser';
+import Logout from '@ui/common/molecules/Logout';
 
 const router = createBrowserRouter([
   // Landing page
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <AddFriends />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'user/logout',
+        element: (
+          <ProtectedRoute>
+            <Logout />
           </ProtectedRoute>
         ),
       },
@@ -81,6 +91,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Settings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'user/ViewAllUser',
+        element: (
+          <ProtectedRoute>
+            <ViewAllUser />
           </ProtectedRoute>
         ),
       },
