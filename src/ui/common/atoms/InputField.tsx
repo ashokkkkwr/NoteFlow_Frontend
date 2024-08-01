@@ -9,6 +9,7 @@ interface IInput {
   disabled?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   multiple?: boolean;
+  value?:any
 }
 
 const InputField: React.FC<IInput> = ({ 
@@ -18,6 +19,7 @@ const InputField: React.FC<IInput> = ({
   autocomplete = 'off', 
   onChange, 
   disabled, 
+  value,
   multiple 
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,6 +44,7 @@ const InputField: React.FC<IInput> = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         multiple={multiple}
+        value={value}
       />
       {type === 'password' && (
         <button 

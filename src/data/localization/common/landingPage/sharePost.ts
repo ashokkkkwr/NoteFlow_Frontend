@@ -27,7 +27,11 @@ export const postLabel: LabelTypes = {
   share:{
     en:'Share',
     ne:''
-  }
+  },
+  comment:{
+    en:'Commet',
+    ne:'',
+  },
 
  
 }
