@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from 'services/instance';
-import Label from '../atoms/Lable';
 import InputField from '../atoms/InputField';
-import { authLabel } from '@data/localization/common/auth';
-import useLang from '@hooks/useLang';
-import { postLabel } from '@data/localization/common/landingPage/sharePost';
 import Button from '../atoms/Button';
+import useLang from '@hooks/useLang';
 
 interface Comment {
   id: string;
   comment: string;
-  replies: Comment[]; // Recursive type for nested comments
+  replies: Comment[];
 }
 
 interface Note {
@@ -36,40 +33,80 @@ interface Media {
   path: string;
 }
 
+const CommentComponent: React.FC<{
+  noteId: string;
+  comment: Comment;
+  handleReplySubmit: (e: React.FormEvent<HTMLFormElement>, noteId: string, commentId: string) => void;
+  handleReplyChange: (noteId: string, commentId: string, value: string) => void;
+  visibleReplyForm: { [key: string]: string };
+  replyForm: { [key: string]: { [key: string]: string } };
+  toggleReplyFormVisibility: (noteId: string, commentId: string) => void;
+}> = ({
+  noteId,
+  comment,
+  handleReplySubmit,
+  handleReplyChange,
+  visibleReplyForm,
+  replyForm,
+  toggleReplyFormVisibility,
+}) => (
+  <div key={comment.id} className="ml-4">
+    <div>{comment.comment}</div>
+    <button onClick={() => toggleReplyFormVisibility(noteId, comment.id)}>
+      {visibleReplyForm[noteId] === comment.id ? 'Hide Reply' : 'Reply'}
+    </button>
+    {visibleReplyForm[noteId] === comment.id && (
+      <form onSubmit={(e) => handleReplySubmit(e, noteId, comment.id)}>
+        <InputField
+          name="comment"
+          type="text"
+          placeholder="Add a reply"
+          onChange={(e) => handleReplyChange(noteId, comment.id, e.target.value)}
+          value={replyForm[noteId]?.[comment.id] || ''}
+        />
+        <Button type="submit" buttonText="Submit" />
+      </form>
+    )}
+    {comment.replies?.map((reply) => (
+      <CommentComponent
+        key={reply.id}
+        noteId={noteId}
+        comment={reply}
+        handleReplySubmit={handleReplySubmit}
+        handleReplyChange={handleReplyChange}
+        visibleReplyForm={visibleReplyForm}
+        replyForm={replyForm}
+        toggleReplyFormVisibility={toggleReplyFormVisibility}
+      />
+    ))}
+  </div>
+);
+
 export default function Posts() {
   const { lang } = useLang();
   const [notes, setNotes] = useState<Note[]>([]);
   const [comments, setComments] = useState<Record<string, Comment[]>>({});
   const [topLevelCommentForm, setTopLevelCommentForm] = useState<{ [key: string]: string }>({});
   const [replyForm, setReplyForm] = useState<{ [key: string]: { [key: string]: string } }>({});
+  const [visibleCommentForm, setVisibleCommentForm] = useState<string | null>(null);
+  const [visibleReplyForm, setVisibleReplyForm] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState('');
 
-  // Handle input change for top-level comments
   const handleTopLevelCommentChange = (noteId: string, value: string) => {
-    setTopLevelCommentForm(prev => ({
-      ...prev,
-      [noteId]: value,
-    }));
+    setTopLevelCommentForm((prev) => ({ ...prev, [noteId]: value }));
   };
 
-  // Handle input change for replies
   const handleReplyChange = (noteId: string, commentId: string, value: string) => {
-    setReplyForm(prev => ({
+    setReplyForm((prev) => ({
       ...prev,
-      [noteId]: {
-        ...prev[noteId],
-        [commentId]: value,
-      },
+      [noteId]: { ...prev[noteId], [commentId]: value },
     }));
   };
 
-  // Fetch notes from the server
   const fetchNotes = async () => {
     try {
       const response = await axiosInstance.get('/notes/all', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
       });
       setNotes(response.data.data);
     } catch (error) {
@@ -77,53 +114,41 @@ export default function Posts() {
     }
   };
 
-  // Fetch comments for a specific note
   const fetchCommentsForNote = async (noteId: string) => {
     try {
+
       const response = await axiosInstance.get(`/comment/${noteId}`);
-      setComments(prevComments => ({
-        ...prevComments,
-        [noteId]: response.data.data,
-      }));
+      console.log(response,'commentsss')
+      setComments((prevComments) => ({ ...prevComments, [noteId]: response.data.data }));
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Submit top-level comment
   const handleTopLevelCommentSubmit = async (e: React.FormEvent<HTMLFormElement>, noteId: string) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(`/comment/${noteId}`, {
+      await axiosInstance.post(`/comment/${noteId}`, {
         comment: topLevelCommentForm[noteId] || '',
-        parentId: '', 
+        parentId: '',
       });
-      console.log(response);
-      setTopLevelCommentForm(prev => ({
-        ...prev,
-        [noteId]: '',
-      }));
+      setTopLevelCommentForm((prev) => ({ ...prev, [noteId]: '' }));
       fetchCommentsForNote(noteId);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Submit reply to a comment
   const handleReplySubmit = async (e: React.FormEvent<HTMLFormElement>, noteId: string, commentId: string) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(`/comment/${noteId}`, {
+      await axiosInstance.post(`/comment/${noteId}`, {
         comment: replyForm[noteId][commentId] || '',
         parentId: commentId,
       });
-      console.log(response);
-      setReplyForm(prev => ({
+      setReplyForm((prev) => ({
         ...prev,
-        [noteId]: {
-          ...prev[noteId],
-          [commentId]: '',
-        },
+        [noteId]: { ...prev[noteId], [commentId]: '' },
       }));
       fetchCommentsForNote(noteId);
     } catch (error) {
@@ -136,86 +161,85 @@ export default function Posts() {
   }, []);
 
   useEffect(() => {
-    notes.forEach(note => {
+    notes.forEach((note) => {
       fetchCommentsForNote(note.id);
     });
   }, [notes]);
 
+  const toggleCommentFormVisibility = (noteId: string) => {
+    setVisibleCommentForm(visibleCommentForm === noteId ? null : noteId);
+  };
+
+  const toggleReplyFormVisibility = (noteId: string, commentId: string) => {
+    setVisibleReplyForm((prev) => ({
+      ...prev,
+      [noteId]: prev[noteId] === commentId ? '' : commentId,
+    }));
+  };
+
   return (
-    <div>
-      <div className="ml-36 mt-10 bg-grey">
-        {error && <p>{error}</p>}
-        <ul>
-          {notes.map(note => (
-            <div key={note.id} className="mb-20 h-auto w-auto border bg-white shadow-xl rounded-lg p-4">
-              <div className="flex items-center mb-4">
-                {note.user.details.profileImage.map(media => (
-                  <div key={media.id}>
-                    <img src={media.path} alt={`Profile ${media.id}`} className="w-12 h-12 rounded-full object-contain" />
-                  </div>
-                ))}
-                <div className="flex ml-3">
-                  <p className="mr-1">{note.user.details.first_name}</p>
-                  <p>{note.user.details.last_name}</p>
+    <div className="ml-36 mt-10 bg-grey">
+      {error && <p>{error}</p>}
+      <ul>
+        {notes.map((note) => (
+          <div key={note.id} className="mb-20 h-auto w-auto border bg-white shadow-xl rounded-lg p-4">
+            <div className="flex items-center mb-4">
+              {note.user.details.profileImage.map((media) => (
+                <div key={media.id}>
+                  <img src={media.path} alt={`Profile ${media.id}`} className="w-12 h-12 rounded-full object-contain" />
                 </div>
-              </div>
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold">{note.title}</h3>
-                <p>{note.content}</p>
-              </div>
-              <div>
-                {note.noteMedia.map(media => (
-                  <div key={media.id} className="mb-4">
-                    <img src={media.path} alt={`Media ${media.id}`} className="w-[85vh] h-[65vh]" />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <form onSubmit={(e) => handleTopLevelCommentSubmit(e, note.id)}>
-                  <div>
-                    <Label name={'comment'} label={postLabel.comment[lang]} />
-                    <InputField
-                      name={'comment'}
-                      type={'text'}
-                      placeholder={authLabel.enterYourEmail[lang]}
-                      onChange={(e) => handleTopLevelCommentChange(note.id, e.target.value)}
-                      value={topLevelCommentForm[note.id] || ''}
-                    />
-                    {error}
-                    <Button type={'submit'} buttonText={"submit"} />
-                  </div>
-                </form>
-              </div>
-              <div>
-                {comments[note.id]?.map(comment => (
-                  <div key={comment.id}>
-                    <div>{comment.comment}</div>
-                    {comment.replies.map(reply => (
-                      <div key={reply.id} className='ml-10'>
-                        {reply.comment}
-                      </div>
-                    ))}
-                    <form onSubmit={(e) => handleReplySubmit(e, note.id, comment.id)}>
-                      <div>
-                        <Label name={'comment'} label={postLabel.comment[lang]} />
-                        <InputField
-                          name={'comment'}
-                          type={'text'}
-                          placeholder={authLabel.enterYourEmail[lang]}
-                          onChange={(e) => handleReplyChange(note.id, comment.id, e.target.value)}
-                          value={replyForm[note.id]?.[comment.id] || ''}
-                        />
-                        {error}
-                        <Button type={'submit'} buttonText={"submit"} />
-                      </div>
-                    </form>
-                  </div>
-                ))}
+              ))}
+              <div className="flex ml-3">
+                <p className="mr-1">{note.user.details.first_name}</p>
+                <p>{note.user.details.last_name}</p>
               </div>
             </div>
-          ))}
-        </ul>
-      </div>
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold">{note.title}</h3>
+              <p>{note.content}</p>
+            </div>
+            <div>
+              {note.noteMedia.map((media) => (
+                <div key={media.id} className="mb-4">
+                  <img src={media.path} alt={`Media ${media.id}`} className="w-[85vh] h-[65vh]" />
+                </div>
+              ))}
+            </div>
+            <div>
+              <button onClick={() => toggleCommentFormVisibility(note.id)}>
+                {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'}
+              </button>
+              {visibleCommentForm === note.id && (
+                <form onSubmit={(e) => handleTopLevelCommentSubmit(e, note.id)}>
+                  <InputField
+                    name="comment"
+                    type="text"
+                    placeholder="Add a comment"
+                    onChange={(e) => handleTopLevelCommentChange(note.id, e.target.value)}
+                    value={topLevelCommentForm[note.id] || ''}
+                  />
+                  {error}
+                  <Button type="submit" buttonText="Submit" />
+                </form>
+              )}
+            </div>
+            <div>
+              {comments[note.id]?.map((comment) => (
+                <CommentComponent
+                  key={comment.id}
+                  noteId={note.id}
+                  comment={{ ...comment, replies: comment.replies || [] }}
+                  handleReplySubmit={handleReplySubmit}
+                  handleReplyChange={handleReplyChange}
+                  visibleReplyForm={visibleReplyForm}
+                  replyForm={replyForm}
+                  toggleReplyFormVisibility={toggleReplyFormVisibility}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </ul>
     </div>
   );
 }
