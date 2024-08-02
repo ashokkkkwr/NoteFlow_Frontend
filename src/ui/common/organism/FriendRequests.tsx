@@ -41,6 +41,16 @@ export default function FriendRequests() {
         }
     };
 
+    const rejectRequest = async (id: string) => {
+        try {
+            const response = await axiosInstance.delete(`/friend/${id}`);
+            console.log(response.data, "Request deleted");
+            setRequest(prevRequests => prevRequests.filter(request => request.id !== id));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         friendRequest();
     }, []);
@@ -72,6 +82,7 @@ export default function FriendRequests() {
                                 <p className='p-0 m-0 text-sm'>Accept</p>
                             </button>
                             <button
+                                onClick={() => rejectRequest(friends.id)}
                                 className="bg-red-500 text-white mt-4 w-[100px] h-10 border-2 border-red-500  py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
                             >
                                 <p className='p-0 m-0 text-sm'>Reject</p>
