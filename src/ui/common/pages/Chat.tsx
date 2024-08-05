@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { io } from 'socket.io-client'
 import axiosInstance from 'services/instance'
 
@@ -23,7 +23,6 @@ const Chat: React.FC = () => {
       try {
         const response = await axiosInstance.get('/chat')
         setMessages(response.data.data)
-        console.log(response.data.data)
       } catch (error) {
         console.log(`Error fetching messages: ${error}`)
       }
@@ -40,22 +39,15 @@ const Chat: React.FC = () => {
     }
   }, [])
 
-  const sendMessage = async () => {
+  const sendMessage = useCallback(async () => {
     if (message.trim() && receiverId) {
       const newMessage: Message = { receiverId, content: message }
       socket.emit('sendMessage', newMessage)
       setMessages((prevMessages) => [...prevMessages, newMessage])
 
-      try {
-        const response = await axiosInstance.post('/chat', { receiverId, content: message })
-        console.log(response)
-      } catch (error) {
-        console.log('Error sending message:', error)
-      }
-
       setMessage('')
     }
-  }
+  }, [message, receiverId])
 
   return (
     <div>
