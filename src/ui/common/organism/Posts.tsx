@@ -3,6 +3,9 @@ import axiosInstance from 'services/instance';
 import InputField from '../atoms/InputField';
 import Button from '../atoms/Button';
 import useLang from '@hooks/useLang';
+import { RiCornerRightDownFill } from "react-icons/ri";
+import { IoClose } from "react-icons/io5";
+
 
 interface Comment {
   id: string;
@@ -50,13 +53,16 @@ const CommentComponent: React.FC<{
   replyForm,
   toggleReplyFormVisibility,
 }) => (
-  <div key={comment.id} className="ml-4">
-    <div>{comment.comment}</div>
+  <div key={comment.id} className="ml-10">
+    <div>
+
+    <p className='font-poppins font-bold flex'>{comment.comment}<RiCornerRightDownFill /></p></div>
     <button onClick={() => toggleReplyFormVisibility(noteId, comment.id)}>
-      {visibleReplyForm[noteId] === comment.id ? 'Hide Reply' : 'Reply'}
+      <p>{visibleReplyForm[noteId] === comment.id ? <IoClose /> : 'Reply'}</p>
     </button>
     {visibleReplyForm[noteId] === comment.id && (
       <form onSubmit={(e) => handleReplySubmit(e, noteId, comment.id)}>
+        <div className='flex'>
         <InputField
           name="comment"
           type="text"
@@ -65,6 +71,7 @@ const CommentComponent: React.FC<{
           value={replyForm[noteId]?.[comment.id] || ''}
         />
         <Button type="submit" buttonText="Submit" />
+        </div>
       </form>
     )}
     {comment.replies?.map((reply) => (

@@ -63,7 +63,7 @@ export default function Nav() {
   return (
     <div className="bg-white flex justify-between items-center p-4">
       <div className='flex'>
-        <Link to='/auth/user/messages'>
+        <Link to='/auth/user/message'>
           <div className="p-3 bg-gray-200 rounded-full">
             <MdMessage />
           </div>
