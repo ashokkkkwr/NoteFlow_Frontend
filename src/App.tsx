@@ -16,6 +16,7 @@ import ViewAllFriends from '@ui/common/pages/ViewAllFriend';
 import Settings from '@ui/common/pages/Settings';
 import ViewAllUser from '@ui/common/pages/ViewAllUser';
 import Logout from '@ui/common/molecules/Logout';
+import Chat from '@ui/common/pages/Chat';
 
 const router = createBrowserRouter([
   // Landing page
@@ -99,6 +100,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ViewAllUser />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'user/message',
+        element: (
+          <ProtectedRoute>
+            <Chat />
           </ProtectedRoute>
         ),
       },

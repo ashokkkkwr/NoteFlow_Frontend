@@ -7,8 +7,6 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <LanguageState>
-    <React.StrictMode>
       <App />
-    </React.StrictMode>
   </LanguageState>
 )
