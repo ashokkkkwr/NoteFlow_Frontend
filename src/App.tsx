@@ -17,6 +17,7 @@ import Settings from '@ui/common/pages/Settings';
 import ViewAllUser from '@ui/common/pages/ViewAllUser';
 import Logout from '@ui/common/molecules/Logout';
 import Chat from '@ui/common/pages/Chat';
+import ChatOrganism from '@ui/common/organism/Chat.organsim';
 
 const router = createBrowserRouter([
   // Landing page
@@ -107,7 +108,7 @@ const router = createBrowserRouter([
         path: 'user/message',
         element: (
           <ProtectedRoute>
-            <Chat />
+            <ChatOrganism />
           </ProtectedRoute>
         ),
       },
