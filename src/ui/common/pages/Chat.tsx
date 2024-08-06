@@ -70,14 +70,17 @@ const Chat: React.FC = () => {
         <button onClick={sendMessage}>Send</button>
       </div>
       <ul>
-        {messages.map((msg, index) => (
-          <li key={index}>
-            <strong>{msg.receiverId}:</strong> {msg.content}
-          </li>
-        ))}
+        {messages
+          // .filter((msg) => msg.receiverId === receiverId)
+          .map((msg, index) => (
+            <li key={index}>
+              <strong>{msg.receiverId}:</strong> {msg.content}
+            </li>
+          ))}
       </ul>
     </div>
   )
+  
 }
 
 export default Chat
