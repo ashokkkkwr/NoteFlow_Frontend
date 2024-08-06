@@ -11,13 +11,14 @@ import ViewFriends from '@ui/common/pages/ViewFriends';
 import Landing from '@ui/common/pages/Landing';
 import Profile from '@ui/common/pages/Profile';
 import UserDetails from '@ui/common/pages/UserDetail';
-import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute component
+import ProtectedRoute from './ProtectedRoute'; 
 import ViewAllFriends from '@ui/common/pages/ViewAllFriend';
 import Settings from '@ui/common/pages/Settings';
 import ViewAllUser from '@ui/common/pages/ViewAllUser';
 import Logout from '@ui/common/molecules/Logout';
 import Chat from '@ui/common/pages/Chat';
 import ChatOrganism from '@ui/common/organism/Chat.organsim';
+import Notification from '@ui/common/organism/Notification';
 
 const router = createBrowserRouter([
   // Landing page
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <AddFriends />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'user/notification',
+        element: (
+          <ProtectedRoute>
+            <Notification />
           </ProtectedRoute>
         ),
       },

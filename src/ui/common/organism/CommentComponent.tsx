@@ -56,5 +56,4 @@ const CommentComponent: React.FC<{
       ))}
     </div>
   );
-
   export default CommentComponent;
