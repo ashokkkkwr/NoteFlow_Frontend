@@ -27,13 +27,11 @@ const Chat: React.FC = () => {
         console.log(`Error fetching messages: ${error}`)
       }
     }
-
     fetchMessages()
 
     socket.on('receiveMessage', (message: Message) => {
       setMessages((prevMessages) => [...prevMessages, message])
     })
-
     return () => {
       socket.off('receiveMessage')
     }
