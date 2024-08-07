@@ -27,6 +27,8 @@ interface Notification{
   senderId:string;
   content:string;
   senderProfileImage?:string
+  senderFirstName?:string
+
 }
 const socket=io('http://localhost:5000',{
   auth:{
@@ -70,6 +72,7 @@ export default function Nav() {
    /**useEffect to notification dropdown */
   useEffect(() => {
     const notiHandleClickOutside = (event: MouseEvent) => {
+  /**determine whether a click event occurred outside a specified dropdown element */
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setNotiDropDownOpen(false)
       }
@@ -151,6 +154,7 @@ export default function Nav() {
                       alt="Sender"
                       className='w-10 h-10 object-cover rounded-full mr-3' />
                     <p>{notification.content}</p>
+                    <p>{notification.senderFirstName}</p>
                 </div>
               ))
             }

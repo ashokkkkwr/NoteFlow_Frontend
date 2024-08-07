@@ -18,7 +18,6 @@ import ViewAllUser from '@ui/common/pages/ViewAllUser';
 import Logout from '@ui/common/molecules/Logout';
 import Chat from '@ui/common/pages/Chat';
 import ChatOrganism from '@ui/common/organism/Chat.organsim';
-import Notification from '@ui/common/organism/Notification';
 
 const router = createBrowserRouter([
   // Landing page
@@ -46,14 +45,6 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <AddFriends />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'user/notification',
-        element: (
-          <ProtectedRoute>
-            <Notification />
           </ProtectedRoute>
         ),
       },
