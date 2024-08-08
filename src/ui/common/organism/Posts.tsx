@@ -111,7 +111,7 @@ export default function Posts() {
 
   useEffect(() => {
     fetchNotes();
-  }, [notes]);
+  }, []);
 
   useEffect(() => {
     notes.forEach((note) => {

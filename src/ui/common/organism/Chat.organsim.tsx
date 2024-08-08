@@ -78,18 +78,24 @@ export default function ChatOrganism() {
         if (token) {
             const decoded: any = jwtDecode(token);
             setLoggedInUserId(decoded.id);
-            console.log(loggedInUserId);
         }
         viewUsers();
         settingCurrentUser();
-        socket.on('receiveMessage', (chat: Chat) => {
+
+    }, []);
+
+
+    useEffect(() => {
+        socket.on('message', (chat: Chat) => {
             console.log(chat, "received chat");
             setChats((prevChats) => [...prevChats, chat]);
         });
+    
         return () => {
-            socket.off('receiveMessage');
+            socket.off('message');
         };
-    }, []);
+    }, []); // Make sure this dependency array is correct
+    
 
     useEffect(() => {
         if (chatEndRef.current) {
@@ -128,27 +134,19 @@ export default function ChatOrganism() {
         setSelectedUser(user);
         setChats(response.data.data);
         setReceiverId(userId);
-        console.log(userId,'receiverId')
+        console.log(userId, 'receiverId');
+
+        // Emit joinRoom event
+        socket.emit('joinRoom', { receiverId: userId });
     };
+
 
     const handleMessageSend = useCallback(async () => {
         if (message.trim() && receiverId) {
             console.log(loggedInUser);
             const newChat: any = {
                 receiverId,
-                content: message,
-                sender: {
-                    details: {
-                        profileImage: loggedInUser?.details?.profileImage,
-                        firstName: loggedInUser?.details?.first_name,
-                    },
-                },
-                receiver: {
-                    details: {
-                        profileImage: selectedUser?.details.profileImage,
-                        firstName: selectedUser?.details?.first_name,
-                    },
-                },
+                content: message,  
             };
             socket.emit('sendMessage', newChat);
             console.log(newChat, "yo chai new chat..");
@@ -214,7 +212,7 @@ export default function ChatOrganism() {
                                             }`}
                                     >
                                         <div className="flex items-center">
-                                            {chat.sender.details.profileImage.map((image) => (
+                                            {chat.sender?.details?.profileImage?.map((image) => (
                                                 <img
                                                     key={image.id}
                                                     src={image.path}
@@ -228,6 +226,7 @@ export default function ChatOrganism() {
                                         </div>
                                     </div>
                                 ))}
+
                                 <div ref={chatEndRef} />  {/* This is the element to scroll into view */}
                             </div>
                         </div>
