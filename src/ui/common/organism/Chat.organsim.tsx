@@ -20,7 +20,7 @@ interface User {
 
 interface Chat {
     id?: string;
-    receiverId?: string;
+    receiver_id?: string;
     sender_id?: string;
     content?: string;
     sender: {
@@ -83,20 +83,15 @@ export default function ChatOrganism() {
         settingCurrentUser();
 
     }, []);
-
-
     useEffect(() => {
         socket.on('message', (chat: Chat) => {
             console.log(chat, "received chat");
             setChats((prevChats) => [...prevChats, chat]);
         });
-    
         return () => {
             socket.off('message');
         };
-    }, []); // Make sure this dependency array is correct
-    
-
+    }, []);
     useEffect(() => {
         if (chatEndRef.current) {
             chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -130,14 +125,17 @@ export default function ChatOrganism() {
     };
 
     const handleUserClick = async (user: User, userId: string) => {
+        if (receiverId) {
+            socket.emit('leaveRoom', { receiverId });
+        }
+        socket.emit('joinRoom', { receiverId: userId });
         const response = await axiosInstance.get(`/chat/${userId}`);
         setSelectedUser(user);
         setChats(response.data.data);
         setReceiverId(userId);
         console.log(userId, 'receiverId');
 
-        // Emit joinRoom event
-        socket.emit('joinRoom', { receiverId: userId });
+ 
     };
 
 
@@ -146,11 +144,10 @@ export default function ChatOrganism() {
             console.log(loggedInUser);
             const newChat: any = {
                 receiverId,
-                content: message,  
+                content: message,
             };
             socket.emit('sendMessage', newChat);
             console.log(newChat, "yo chai new chat..");
-            setChats((prevChats) => [...prevChats, newChat]);
             setMessage('');
         } else {
             console.log("not found");
@@ -206,7 +203,7 @@ export default function ChatOrganism() {
                                 {chats.map((chat) => (
                                     <div
                                         key={chat.id}
-                                        className={`p-3 rounded-lg max-w-xs ${chat.sender_id === loggedInUserId || chat.receiverId === receiverId
+                                        className={`p-3 rounded-lg max-w-xs ${chat.sender_id === loggedInUserId || chat.receiver_id === receiverId
                                             ? 'bg-blue-200 self-end'
                                             : 'bg-gray-100 self-start'
                                             }`}
