@@ -4,6 +4,7 @@ import { GiPlagueDoctorProfile } from "react-icons/gi";
 import { IoSettings } from "react-icons/io5";
 import { navbarLabel } from '@data/localization/common/landingPage/navbar';
 import useLang from '@hooks/useLang';
+import { FaUserEdit } from "react-icons/fa";
 
 export default function NavBar() {
   const { lang } = useLang();
@@ -24,7 +25,7 @@ export default function NavBar() {
       <div className={`mt-10 ml-8 ${isActive('/auth/user/profile') ? 'border-l-4 border-red-500' : ''}`}>
         <Link to='/auth/user/profile'>
           <div className="flex items-center">
-            <GiPlagueDoctorProfile className="text-2xl" />
+            <FaUserEdit className="text-2xl" />
             <p className="mt-1 ml-2 text-lg"> {navbarLabel.profile[lang]}</p>
           </div>
         </Link>

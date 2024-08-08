@@ -128,6 +128,7 @@ export default function ChatOrganism() {
         setSelectedUser(user);
         setChats(response.data.data);
         setReceiverId(userId);
+        console.log(userId,'receiverId')
     };
 
     const handleMessageSend = useCallback(async () => {
@@ -161,7 +162,6 @@ export default function ChatOrganism() {
     const addEmoji = (emoji: any) => {
         setMessage(message + emoji.native);
     };
-
     return (
         <div className="flex h-screen">
             {/* Left Sidebar: User List */}
@@ -171,27 +171,26 @@ export default function ChatOrganism() {
                     <p className='text-sm text-red-150'>Loading users...</p>
                 )}
                 <div className='mt-14'>
-                {users.map(user => (
-                    <div
-                        key={user.id}
-                        onClick={() => handleUserClick(user, user.id)}
-                        className={`flex items-center p-6 cursor-pointer rounded-md border-b border-grey-500 ${
-                            selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'
-                        }`}
-                    >
-                        {user.details.profileImage[0] && (
-                            <img
-                                src={`${user.details.profileImage[0].path}`}
-                                alt={`Profile ${user.id}`}
-                                className="w-10 h-10 object-cover rounded-full mr-3"
-                            />
-                        )}
-                        <div>
-                            <p className="font-semibold font-poppins">{user.details.first_name} {user.details.last_name}</p>
-                            <p className="text-sm text-red-600 font-poppins">{user.email}</p>
+                    {users.map(user => (
+                        <div
+                            key={user.id}
+                            onClick={() => handleUserClick(user, user.id)}
+                            className={`flex items-center p-6 cursor-pointer rounded-md border-b border-grey-500 ${selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'
+                                }`}
+                        >
+                            {user.details.profileImage[0] && (
+                                <img
+                                    src={`${user.details.profileImage[0].path}`}
+                                    alt={`Profile ${user.id}`}
+                                    className="w-10 h-10 object-cover rounded-full mr-3"
+                                />
+                            )}
+                            <div>
+                                <p className="font-semibold font-poppins">{user.details.first_name} {user.details.last_name}</p>
+                                <p className="text-sm text-red-600 font-poppins">{user.email}</p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
                 </div>
             </div>
             {/* Right Section: Messages */}
@@ -200,10 +199,10 @@ export default function ChatOrganism() {
                     {selectedUser ? (
                         <div>
                             <div className="sticky top-0 bg-white z-10 border-b border-grey-300 flex  justify-center">
-                                <IoChatboxEllipsesOutline className='mt-5 mr-3 text-3xl '/>
+                                <IoChatboxEllipsesOutline className='mt-5 mr-3 text-3xl ' />
 
                                 <h2 className="text-lg font-bold mb-10 mt-5 font-mono">Chatting with {selectedUser?.details.first_name}</h2>
-                            </div>                            
+                            </div>
                             {/* Message display area */}
                             <div className="space-y-4 flex flex-col">
                                 {chats.map((chat) => (
