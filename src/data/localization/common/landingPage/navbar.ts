@@ -9,7 +9,7 @@ export const navbarLabel:LabelTypes={
         ne: 'साइन अप'
     },
     friendRequest:{
-        en:'Friend Request',
+        en:'Invitations',
         ne:'मित्र अनुरोध'
     },
     addFriend:{

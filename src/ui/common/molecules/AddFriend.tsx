@@ -58,18 +58,14 @@ export default function AddFriend() {
                 className='w-12 h-12 rounded-full object-cover'
               />
             )}
-            <div className='ml-3'>
-            <Link to={`/auth/user/${user.id}`} className=''>
-              <p className='text-lg'>{user.details.first_name} {user.details.last_name}</p>
-              <p className='text-sm text-red-500'>+{user.details.phone_number}</p>
+            <div className='ml-3 w-48'> {/* Set a fixed width */}
+              <Link to={`/auth/user/${user.id}`} className=''>
+                <p className='text-lg truncate'>{user.details.first_name} {user.details.last_name}</p> {/* Truncate text if too long */}
+                <p className='text-sm text-red-500 truncate'>+{user.details.phone_number}</p> {/* Truncate text if too long */}
               </Link>
             </div>
-            <div className='ml-1'>
-             
-            </div>
           </div>
-          <div className='ml-32'>
-        
+          <div className='ml-28'>
             <button
               onClick={() => addFriend(user.id)}
               className='inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
@@ -77,14 +73,13 @@ export default function AddFriend() {
               <IoIosPersonAdd className='text-xl mr-2' /> {/* Margin-right for spacing between icon and text */}
               Add
             </button>
-           
           </div>
         </div>
       ))}
       <Link to={`/auth/user/viewAllUser`}>
-      <button className="ml-6 mt-6 w-48 h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-base hover:bg-red-500 hover:text-white transition-colors duration-300">
-      See All
-      </button>
+        <button className="ml-6 mt-6 w-48 h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-base hover:bg-red-500 hover:text-white transition-colors duration-300">
+          See All
+        </button>
       </Link>
     </div>
   );

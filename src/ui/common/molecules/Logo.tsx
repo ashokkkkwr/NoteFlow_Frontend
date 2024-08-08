@@ -7,10 +7,10 @@ export default function Logo() {
   return (
 <>
     <div className='flex items-center space-x-2 mt-5 ml-5'>
-  <span className="text-black text-4xl font-bold">
+  <span className="text-black text-3xl font-poppins font-bold">
     {logoLabel.post[lang]}
   </span>
-  <span className='text-red-500 text-4xl font-bold'>
+  <span className='text-red-500 text-3xl font-poppins font-bold'>
     {logoLabel.flow[lang]}
   </span>
   </div>

@@ -117,7 +117,7 @@ export default function Posts() {
     notes.forEach((note) => {
       fetchCommentsForNote(note.id);
     });
-  }, [notes]);
+  }, []);
 
   const toggleCommentFormVisibility = (noteId: string) => {
     setVisibleCommentForm(visibleCommentForm === noteId ? null : noteId);
