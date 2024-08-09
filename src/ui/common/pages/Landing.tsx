@@ -1,5 +1,4 @@
-import { useContext, useEffect } from "react"
-import noteContext from "context/NoteContext"
+import {  useEffect, useState } from "react"
 import Posts from "../organism/Posts"
 import LeftSidebar from "../organism/LeftSidebar"
 import Navbar from '@ui/common/organism/Navbar'
@@ -7,10 +6,16 @@ import RightSidebar from "../organism/RightSidebar"
 import RightSidebarDown from "../organism/RightSidebarDown"
 
 const Landing = () => {
-    const a = useContext(noteContext)
+    // const a = useContext(noteContext)
+    const [refreshPosts, setRefreshPosts] = useState(0);
+
     useEffect(() => {
-        a.update()
+        // a.update()
     }, [])
+
+    const handlePostAdded = () => {
+        setRefreshPosts((prev) => prev + 1);
+    };
     return (
         <>
 
@@ -25,13 +30,13 @@ const Landing = () => {
                     <Navbar />
                     <div className="flex  justify-between">
                         <div >
-                        <Posts />
+                        <Posts refreshPosts={refreshPosts} />
                         </div>
                         <div className="fixed right-0">
                             <RightSidebar />
                             
-                            <RightSidebarDown />
-                        </div>
+                            <RightSidebarDown onPostAdded={handlePostAdded} />
+                            </div>
                     </div>
                 </div>
               

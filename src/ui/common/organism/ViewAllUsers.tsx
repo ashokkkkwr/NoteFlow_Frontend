@@ -26,7 +26,7 @@ export default function ViewAllFriends() {
     try {
       const response = await axiosInstance.get('/friend/view-user');
       console.log(response.data.data, 'response all friends');
-      setUsers(response.data.data.slice(0, 3)); // Fetch only 3 data
+      setUsers(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -68,6 +68,7 @@ export default function ViewAllFriends() {
               <p className='text-xl font-semibold'>{friends.details.first_name}</p>
               <p className='text-xl'>{friends.details.last_name}</p>
             </div>
+            <div className='flex'>
             <Link to={`/auth/user/${friends.id}`} className='flex'>
 
               <button
@@ -78,9 +79,19 @@ export default function ViewAllFriends() {
 
                   <p className='p-0 ml-2 text-sm'>View</p>
                 </div>
+                
               </button>
             </Link>
-
+            <div className=''>
+            <button
+              onClick={() => addFriend(friends.id)}
+              className='ml-2 mt-4 inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
+            >
+              <IoIosPersonAdd className='text-xl mr-2' /> {/* Margin-right for spacing between icon and text */}
+              Add
+            </button>
+          </div>
+          </div>
             <div className='flex mt- gap-3'>
 
             </div>
