@@ -34,7 +34,15 @@ export default function ViewAllFriends() {
     }
   };
 
-
+  const deleteUser = async (id: string) => {
+    try {
+        const response = await axiosInstance.delete(`/friend/unfriend/${id}`);
+        console.log(response.data, "Request deleted");
+        setUsers(prevRequests => prevRequests.filter(request => request.id !== id));
+    } catch (error) {
+        console.error(error);
+    }
+};
 
   useEffect(() => {
     viewUsers();
@@ -74,6 +82,14 @@ export default function ViewAllFriends() {
                 </div>
               </button>
             </Link>
+            <div>
+            <button
+                                onClick={() => deleteUser(friends.id)}
+                                className="bg-red-500 text-white mt-4 w-[100px] h-10 border-2 border-red-500  py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
+                            >
+                                <p className='p-0 m-0 text-sm'>Reject</p>
+                            </button>
+            </div>
 
             <div className='flex mt- gap-3'>
 

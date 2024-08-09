@@ -31,12 +31,14 @@ export interface Note {
   };
   comments: Comment[];
 }
-
+interface PostsProps {
+  refreshPosts: number; 
+}
 interface Media {
   id: string;
   path: string;
 }
-export default function Posts() {
+export default function Posts({refreshPosts}:PostsProps) {
   const { lang } = useLang();
   const [notes, setNotes] = useState<Note[]>([]);
   const [comments, setComments] = useState<Record<string, Comment[]>>({});
@@ -111,7 +113,7 @@ export default function Posts() {
 
   useEffect(() => {
     fetchNotes();
-  }, []);
+  }, [refreshPosts]);
 
   useEffect(() => {
     notes.forEach((note) => {
@@ -131,14 +133,14 @@ export default function Posts() {
   };
 
   return (
-    <div className="ml-36 mt-10 bg-grey">
+    <div className="ml-36 mt-10 bg-grey max-w-3xl">
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
           <div key={note.id} className="mb-20 h-auto w-auto border bg-white shadow-xl rounded-lg p-4">
             <div className="flex items-center mb-4">
               {note.user.details.profileImage.map((media) => (
-                <div key={media.id}>
+                <div key={media.id}className=''>
                   <img src={media.path} alt={`Profile ${media.id}`} className="w-12 h-12 rounded-full object-contain" />
                 </div>
               ))}
@@ -154,7 +156,7 @@ export default function Posts() {
             <div>
               {note.noteMedia.map((media) => (
                 <div key={media.id} className="mb-4">
-                  <img src={media.path} alt={`Media ${media.id}`} className="w-[85vh] h-[65vh]" />
+                  <img src={media.path} alt={`Media ${media.id}`} className="w-[85vh] h-[65vh] object-contain" />
                 </div>
               ))}
             </div>

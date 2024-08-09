@@ -12,7 +12,10 @@ interface FormData {
     content: string,
     files: FileList | null;
 }
-export default function AddPost() {
+interface AddPostProps {
+    onPostAdded: () => void;
+}
+const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
     const { lang } = useLang();
     // Initialize state with type FormData
     const [formData, setFormData] = useState<FormData>({
@@ -53,6 +56,9 @@ export default function AddPost() {
                     'content-type': 'multipart/form-data',
                 },
             });
+            if (onPostAdded) {
+                onPostAdded();  // Trigger the refresh
+            }
         } catch (error) {
             console.log('Error:', error);
         }
@@ -86,3 +92,5 @@ export default function AddPost() {
         </div>
     )
 }
+export default AddPost;
+
