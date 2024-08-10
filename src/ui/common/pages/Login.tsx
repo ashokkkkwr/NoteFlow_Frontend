@@ -59,6 +59,8 @@ const Login = () => {
         // Store the token in session storage
         sessionStorage.setItem('accessToken', accessToken);
         goBack();
+        window.location.reload();
+
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

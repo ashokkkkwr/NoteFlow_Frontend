@@ -22,9 +22,9 @@ interface Media {
 }
 
 const UserState: React.FC<UserStateProps> = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState<User | null>(null)
+    const [contextCurrentUser, setContextCurrentUser] = useState<User | null>(null)
     return (
-        <userContext.Provider value={{ currentUser, setCurrentUser }}>
+        <userContext.Provider value={{ contextCurrentUser, setContextCurrentUser }}>
             {children}
         </userContext.Provider>
     );
