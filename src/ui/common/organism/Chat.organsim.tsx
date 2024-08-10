@@ -1,20 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useSocket } from '@context/SocketContext';
 import axiosInstance from 'services/instance';
 import { jwtDecode } from 'jwt-decode';
-import { io } from 'socket.io-client';
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
-import { TiMessageTyping } from "react-icons/ti";
-import { BsChatSquareTextFill } from "react-icons/bs";
-import Logo from '@ui/common/molecules/Logo'
 import { IoIosPersonAdd } from "react-icons/io";
 import { IoPersonAddSharp } from "react-icons/io5";
-import chatsvg from '../../../assets/chat.svg'
+import chatsvg from '../../../assets/chat.svg';
+import Logo from '@ui/common/molecules/Logo'
 
 interface User {
     id: string;
     createdAt: any;
+    active_status: boolean;
     details: {
         first_name: string;
         last_name: string;
@@ -30,7 +29,6 @@ interface Chat {
     sender_id?: string;
     content?: string;
     createdAt: any;
-
     sender: {
         details: {
             first_name: string;
@@ -50,17 +48,11 @@ interface Media {
     path: string;
 }
 
-const socket = io('http://localhost:5000', {
-    auth: {
-        token: sessionStorage.getItem('accessToken')
-    }
-});
-
 export default function ChatOrganism() {
+    const socket = useSocket();
     const [users, setUsers] = useState<User[]>([]);
     const [addUsers, setAddUsers] = useState<User[]>([]);
-    const [typing, setTyping] = useState(Boolean);
-
+    const [typing, setTyping] = useState(false);
     const [chats, setChats] = useState<Chat[]>([]);
     const [receiverId, setReceiverId] = useState<string>('');
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -92,18 +84,31 @@ export default function ChatOrganism() {
         }
         viewUsers();
         settingCurrentUser();
-        viewUser()
+        viewUser();
+    }, []);
 
-    }, []);
     useEffect(() => {
-        socket.on('message', (chat: Chat) => {
-            console.log(chat, "received chat");
-            setChats((prevChats) => [...prevChats, chat]);
-        });
-        return () => {
-            socket.off('message');
-        };
-    }, []);
+        if (socket) {
+            socket.on('message', (chat: Chat) => {
+                console.log(chat, "received chat");
+                setChats((prevChats) => [...prevChats, chat]);
+            });
+
+            socket.on('typing', ({ userId }) => {
+                if (userId !== loggedInUserId && receiverId) {
+                    console.log('Typing...');
+                    setTyping(true);
+                    setTimeout(() => setTyping(false), 2000);
+                }
+            });
+
+            return () => {
+                socket.off('message');
+                socket.off('typing');
+            };
+        }
+    }, [socket, loggedInUserId, receiverId]);
+
     useEffect(() => {
         if (chatEndRef.current) {
             chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -116,6 +121,25 @@ export default function ChatOrganism() {
             handleUserClick(firstUser, firstUser.id);
         }
     }, [users]);
+
+    useEffect(() => {
+        // Handle status change
+        if (socket) {
+          socket.on('statusChange', ({ userId, active }) => {
+            setUsers(prevUsers =>
+              prevUsers.map(user =>
+        //the line effectively updates the active_status of a user object only if its id matches the specified userId; otherwise, it returns the user object as is.
+
+                user.id === userId ? { ...user, active_status: active } : user
+              )
+            );
+          });
+    
+          return () => {
+            socket.off('statusChange');
+          };
+        }
+      }, [socket]);
 
     const viewUsers = async () => {
         try {
@@ -137,21 +161,20 @@ export default function ChatOrganism() {
     };
 
     const handleUserClick = async (user: User, userId: string) => {
-        if (receiverId) {
-            socket.emit('leaveRoom', { receiverId });
+        if (socket) {
+            if (receiverId) {
+                socket.emit('leaveRoom', { receiverId });
+            }
+            socket.emit('joinRoom', { receiverId: userId });
         }
-        socket.emit('joinRoom', { receiverId: userId });
+
         const response = await axiosInstance.get(`/chat/${userId}`);
-
-
         setSelectedUser(user);
         setChats(response.data.data);
-        console.log(response.data.data)
         setReceiverId(userId);
         console.log(userId, 'receiverId');
-
-        // Emit joinRoom event
     };
+
     const viewUser = async () => {
         try {
             const response = await axiosInstance.get('/friend/view-user');
@@ -161,6 +184,7 @@ export default function ChatOrganism() {
             console.log(error);
         }
     };
+
     const addFriend = async (id: string) => {
         try {
             console.log(id, 'user id');
@@ -171,8 +195,9 @@ export default function ChatOrganism() {
             console.log(error);
         }
     };
+
     const handleMessageSend = useCallback(async () => {
-        if (message.trim() && receiverId) {
+        if (message.trim() && receiverId && socket) {
             console.log(loggedInUser);
             const newChat: any = {
                 receiverId,
@@ -182,73 +207,56 @@ export default function ChatOrganism() {
             console.log(newChat, "yo chai new chat..");
             setMessage('');
         } else {
-            console.log("not found");
+            console.log("Message or receiverId not found");
         }
-    }, [message, receiverId]);
+    }, [message, receiverId, socket]);
 
     const addEmoji = (emoji: any) => {
         setMessage(message + emoji.native);
     };
-    useEffect(() => {
-        socket.on('typing', ({ userId }) => {
-            if (userId !== loggedInUserId && receiverId) {
-                console.log('ya puge')
-                setTyping(true);
-                setTimeout(() => setTyping(false), 2000);
-            }
-        });
-
-        return () => {
-            socket.off('typing');
-        };
-    }, [loggedInUserId, receiverId]);
 
     return (
         <div className="flex h-screen">
             {/* Left Sidebar: User List */}
             <div className="w-[45vh] bg-gray-100 border-r border-gray-300 p-5 overflow-y-auto">
-                <h2 className="text-2xl font-bold  mt-6 ml-16 "><Logo /></h2>
-                {/* <div className='ml-14 mt-16 flex border border-red-200 rounded-lg bg-red-50  p-0 w-52 items-center justify-center '>
-                    <BsChatSquareTextFill className='mr-1 text-lg text-red-400 ' />
-                    <p className='text-sm'>Start Chatting</p>
-                    
-                </div> */}
+                <h2 className="text-2xl font-bold mt-6 ml-16"><Logo /></h2>
+                {/* User list */}
                 <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
+                {users.map(user => (
+  <div
+    key={user.id}
+    onClick={() => handleUserClick(user, user.id)}
+    className={`flex items-center p-6 cursor-pointer rounded-md border-b border-grey-500 ${selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'}`}
+  >
+    {user.details.profileImage[0] && (
+      <img
+        src={`${user.details.profileImage[0].path}`}
+        alt={`Profile ${user.id}`}
+        className="w-10 h-10 object-cover rounded-full mr-3"
+      />
+    )}
+    <div>
+      <p className="font-semibold">{user.details.first_name} {user.details.last_name}</p>
+      <p className="text-sm text-red-600">+{user.details.phone_number}</p>
+    </div>
+    {user.active_status && (
+      <span className="ml-2 text-green-500 text-xs">Online</span>
+    )}
+  </div>
+))}
 
-                    {users.map(user => (
-
-
-                        <div
-                            key={user.id}
-                            onClick={() => handleUserClick(user, user.id)}
-                            className={`flex items-center p-6 cursor-pointer rounded-md border-b border-grey-500 ${selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'
-                                }`}
-                        >
-                            {user.details.profileImage[0] && (
-                                <img
-                                    src={`${user.details.profileImage[0].path}`}
-                                    alt={`Profile ${user.id}`}
-                                    className="w-10 h-10 object-cover rounded-full mr-3"
-                                />
-                            )}
-                            <div>
-                                <p className="font-semibold font-">{user.details.first_name} {user.details.last_name}</p>
-                                <p className="text-sm text-red-600 ">+{user.details.phone_number}</p>
-                            </div>
-                        </div>
-                    ))}
                 </div>
 
-                <div className='ml-14 mt-24 flex border border-red-200 rounded-lg bg-red-50 p-0 w-52 items-center justify-center '>
-                    <IoPersonAddSharp className='mr-1 text-lg text-red-400 ' />
-                    <p className='text-sm'>Add them to start a chat </p>               </div>
+                <div className='ml-14 mt-24 flex border border-red-200 rounded-lg bg-red-50 p-0 w-52 items-center justify-center'>
+                    <IoPersonAddSharp className='mr-1 text-lg text-red-400' />
+                    <p className='text-sm'>Add them to start a chat</p>
+                </div>
                 <div className='border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
                     {addUsers.map(user => (
                         <div
                             key={user.id}
                             onClick={() => handleUserClick(user, user.id)}
-                            className={`flex items-center justify-between p-6 cursor-pointer rounded-md border-b border-grey-500 ${selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'
-                                }`}
+                            className={`flex items-center justify-between p-6 cursor-pointer rounded-md border-b border-grey-500 ${selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'}`}
                         >
                             <div className="flex items-center">
                                 {user.details.profileImage[0] && (
@@ -275,29 +283,22 @@ export default function ChatOrganism() {
                         </div>
                     ))}
                 </div>
-
             </div>
             {/* Right Section: Messages */}
             <div className="flex-1 bg-white p-4 flex flex-col">
                 <div className="flex-1 overflow-y-auto">
                     {selectedUser ? (
                         <div>
-                            <div className="sticky top-0 bg-white z-10 border-b border-grey-300 flex  justify-center">
-                                <IoChatboxEllipsesOutline className='mt-5 mr-3 text-3xl ' />
-
-                                <h2 className="text-lg font-bold mb-10 mt-5 ">Chatting with {selectedUser?.details.first_name} </h2>
+                            <div className="sticky top-0 bg-white z-10 border-b border-grey-300 flex justify-center">
+                                <IoChatboxEllipsesOutline className='mt-5 mr-3 text-3xl' />
+                                <h2 className="text-lg font-bold mb-10 mt-5">Chatting with {selectedUser?.details.first_name}</h2>
                             </div>
-                            {/* Message display area */}
                             <div className="space-y-4 flex flex-col">
                                 {chats.map((chat) => (
                                     <div
                                         key={chat.id}
-                                        className={`p-3 rounded-lg max-w-xs ${chat.sender_id === loggedInUserId || chat.receiver_id === receiverId
-                                            ? 'bg-red-300 self-end mr-5'
-                                            : 'bg-green-50 self-start'
-                                            }`}
+                                        className={`p-3 rounded-lg max-w-xs ${chat.sender_id === loggedInUserId || chat.receiver_id === receiverId ? 'bg-red-300 self-end mr-5' : 'bg-green-50 self-start'}`}
                                     >
-                                        <p></p>
                                         <div className="flex items-center">
                                             {chat.sender?.details?.profileImage?.map((image) => (
                                                 <img
@@ -309,42 +310,39 @@ export default function ChatOrganism() {
                                             ))}
                                             <p className="overflow-hidden text-ellipsis break-words">
                                                 {chat.content}
-                                                {/* {typing} */}
                                             </p>
-
                                         </div>
                                     </div>
                                 ))}
                                 {typing && (
-                                    <div className="p-3 rounded-lg max-w-xs  self-start">
+                                    <div className="p-3 rounded-lg max-w-xs self-start">
                                         <p><img src={chatsvg} alt="" className='w-10 h-10'/></p>
                                     </div>
                                 )}
-
-                                <div ref={chatEndRef} />  {/* This is the element to scroll into view */}
+                                <div ref={chatEndRef} />
                             </div>
                         </div>
                     ) : (
                         <div className="flex items-center justify-center h-full text-gray-500">
-                            <p>Add  users to start chatting</p>
+                            <p>Add users to start chatting</p>
                         </div>
                     )}
                 </div>
-                {/* Message input area */}
                 <div className="border-t border-gray-300 p-3 flex items-center relative">
                     <input
                         type="text"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        onKeyDown={() => socket.emit('typing', { receiverId })}
-                        // onKeyDown={()=>console.log("typing")}
+                        onKeyDown={() => socket?.emit('typing', { receiverId })}
                         placeholder="Type a message..."
                         className="flex-1 p-2 mt-5 border rounded-lg focus:outline-none focus:border-red-500"
                     />
                     <button
                         onClick={handleMessageSend}
                         className="ml-2 mt-5 bg-red-500 text-white p-2 rounded-lg pl-5 pr-5 hover:bg-red-600"
-                    >Send</button>
+                    >
+                        Send
+                    </button>
                     <div ref={emojiPickerRef}>
                         <button
                             onClick={() => setShowEmojiPicker(!showEmojiPicker)}

@@ -17,12 +17,12 @@ interface User {
     path: string;
   }
 interface UserContextType{
-    currentUser:User | null;
-    setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
+    contextCurrentUser:User | null;
+    setContextCurrentUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 const initialUserContext:UserContextType={
-    currentUser:null,
-    setCurrentUser:()=>{}
+    contextCurrentUser:null,
+    setContextCurrentUser:()=>{}
 }
 const userContext=createContext<UserContextType>(initialUserContext)
 export default userContext

@@ -20,6 +20,7 @@ import ChatOrganism from '@ui/common/organism/Chat.organsim';
 import userContext from '@context/User/UserContext';
 import axiosInstance from 'services/instance';
 import { io } from 'socket.io-client';
+import { SocketProvider } from '@context/SocketContext';
 
 
 
@@ -151,27 +152,25 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const { currentUser, setCurrentUser } = useContext(userContext); // Move useContext inside the component
-  const viewUser = async () => {
+  const { contextCurrentUser, setContextCurrentUser } = useContext(userContext); // Move useContext inside the component
+  const userActive = async () => {
     try {
-      const response = await axiosInstance.get('/user/byToken')
-      console.log(response.data.data, 'yoyo')
-       setCurrentUser(response.data.data)
-
-       socket.emit('sendMessage',)
+      socket.emit('active')
        
     } catch (error) {
       console.log(error, 'yo chai error')
     }
   }
+
   useEffect(()=>{
-    viewUser()
+    userActive()
   },[])
-  
   return (
+    <SocketProvider>
     <NoteState>
       <RouterProvider router={router} />
     </NoteState>
+    </SocketProvider>
   );
 }
 
