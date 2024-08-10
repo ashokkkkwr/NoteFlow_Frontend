@@ -2,6 +2,7 @@ import { authLabel } from '@data/localization/common/auth';
 import useLang from '@hooks/useLang';
 import Button from '@ui/common/atoms/Button';
 import InputField from '@ui/common/atoms/InputField';
+import { MdDangerous } from "react-icons/md";
 
 import { Link, useNavigate } from 'react-router-dom';
 import { navbarLabel } from '@data/localization/common/landingPage/navbar';
@@ -105,7 +106,11 @@ const Login = () => {
             </div>
 
             <p className='mt-6 ml-20 font-poppins text-sm text-red-500'>Having Trouble Sign in?</p>
-            {errorMessage}
+            <div className='flex'>
+            <MdDangerous className=''/>
+
+            <p className='mt-6 ml-20 font-poppins text-sm text-red-500'>{errorMessage}</p>
+            </div>
             <div>
               <button
                 className='bg-red-400 w-[43vh] h-14 rounded-xl ml-16 mt-10 hover:bg-red-500'

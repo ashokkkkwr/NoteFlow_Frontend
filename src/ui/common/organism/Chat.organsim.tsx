@@ -10,7 +10,7 @@ import { BsChatSquareTextFill } from "react-icons/bs";
 import Logo from '@ui/common/molecules/Logo'
 import { IoIosPersonAdd } from "react-icons/io";
 import { IoPersonAddSharp } from "react-icons/io5";
-
+import chatsvg from '../../../assets/chat.svg'
 
 interface User {
     id: string;
@@ -59,6 +59,7 @@ const socket = io('http://localhost:5000', {
 export default function ChatOrganism() {
     const [users, setUsers] = useState<User[]>([]);
     const [addUsers, setAddUsers] = useState<User[]>([]);
+    const [typing, setTyping] = useState(Boolean);
 
     const [chats, setChats] = useState<Chat[]>([]);
     const [receiverId, setReceiverId] = useState<string>('');
@@ -188,22 +189,35 @@ export default function ChatOrganism() {
     const addEmoji = (emoji: any) => {
         setMessage(message + emoji.native);
     };
+    useEffect(() => {
+        socket.on('typing', ({ userId }) => {
+            if (userId !== loggedInUserId && receiverId) {
+                console.log('ya puge')
+                setTyping(true);
+                setTimeout(() => setTyping(false), 2000);
+            }
+        });
+
+        return () => {
+            socket.off('typing');
+        };
+    }, [loggedInUserId, receiverId]);
 
     return (
         <div className="flex h-screen">
             {/* Left Sidebar: User List */}
             <div className="w-[45vh] bg-gray-100 border-r border-gray-300 p-5 overflow-y-auto">
                 <h2 className="text-2xl font-bold  mt-6 ml-16 "><Logo /></h2>
-                <div className='ml-14 mt-16 flex border border-green-200 rounded-lg bg-green-50 p-0 w-52 items-center justify-center '>
-                    <BsChatSquareTextFill className='mr-1 text-lg text-green-400 ' />
-                    <p className='text-sm'>Start Chatting....</p>
+                {/* <div className='ml-14 mt-16 flex border border-red-200 rounded-lg bg-red-50  p-0 w-52 items-center justify-center '>
+                    <BsChatSquareTextFill className='mr-1 text-lg text-red-400 ' />
+                    <p className='text-sm'>Start Chatting</p>
                     
-                </div>
-                <div className=' border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
-                    
+                </div> */}
+                <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
+
                     {users.map(user => (
 
-                        
+
                         <div
                             key={user.id}
                             onClick={() => handleUserClick(user, user.id)}
@@ -225,8 +239,8 @@ export default function ChatOrganism() {
                     ))}
                 </div>
 
-                <div className='ml-14 mt-24 flex border border-green-200 rounded-lg bg-green-50 p-0 w-52 items-center justify-center '>
-                    <IoPersonAddSharp className='mr-1 text-lg text-green-400 ' />
+                <div className='ml-14 mt-24 flex border border-red-200 rounded-lg bg-red-50 p-0 w-52 items-center justify-center '>
+                    <IoPersonAddSharp className='mr-1 text-lg text-red-400 ' />
                     <p className='text-sm'>Add them to start a chat </p>               </div>
                 <div className='border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
                     {addUsers.map(user => (
@@ -295,10 +309,17 @@ export default function ChatOrganism() {
                                             ))}
                                             <p className="overflow-hidden text-ellipsis break-words">
                                                 {chat.content}
+                                                {/* {typing} */}
                                             </p>
+
                                         </div>
                                     </div>
                                 ))}
+                                {typing && (
+                                    <div className="p-3 rounded-lg max-w-xs  self-start">
+                                        <p><img src={chatsvg} alt="" className='w-10 h-10'/></p>
+                                    </div>
+                                )}
 
                                 <div ref={chatEndRef} />  {/* This is the element to scroll into view */}
                             </div>
@@ -315,6 +336,8 @@ export default function ChatOrganism() {
                         type="text"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={() => socket.emit('typing', { receiverId })}
+                        // onKeyDown={()=>console.log("typing")}
                         placeholder="Type a message..."
                         className="flex-1 p-2 mt-5 border rounded-lg focus:outline-none focus:border-red-500"
                     />

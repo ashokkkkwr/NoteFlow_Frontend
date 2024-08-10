@@ -4,6 +4,7 @@ import { authLabel } from '@data/localization/common/auth';
 import useLang from '@hooks/useLang';
 import axiosInstance from 'services/instance';
 import { navbarLabel } from '@data/localization/common/landingPage/navbar';
+import axios from 'axios';
 
 // Define a type for formData
 interface FormData {
@@ -18,6 +19,8 @@ interface FormData {
 }
 
 const Signup: React.FC = () => {
+
+          const [errorMessage,setErrorMessage]=useState('')
   const { lang } = useLang();
   const navigate = useNavigate();
   const goLogin=()=>{
@@ -80,8 +83,9 @@ const Signup: React.FC = () => {
       });
       goLogin();
     } catch (error) {
-      console.log('Error:', error);
-    }
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(error.response?.data.message);
+      }    }
   };
 
   return (
@@ -166,6 +170,8 @@ const Signup: React.FC = () => {
               onChange={handleFileChange}
             />
           </div>
+          <p className='mt-6 ml-20 font-poppins text-sm text-red-500'> {errorMessage}</p>
+         
           <button
             className='bg-red-400 w-[43vh] h-14 rounded-xl ml-8 mt-10 hover:bg-red-500'
             type={'submit'}
