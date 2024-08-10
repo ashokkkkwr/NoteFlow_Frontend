@@ -9,10 +9,6 @@ const Landing = () => {
     // const a = useContext(noteContext)
     const [refreshPosts, setRefreshPosts] = useState(0);
 
-    useEffect(() => {
-        // a.update()
-    }, [])
-
     const handlePostAdded = () => {
         setRefreshPosts((prev) => prev + 1);
     };

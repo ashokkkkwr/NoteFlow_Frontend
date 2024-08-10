@@ -78,7 +78,7 @@ const Chat: React.FC = () => {
       </ul>
     </div>
   )
-  
+
 }
 
 export default Chat

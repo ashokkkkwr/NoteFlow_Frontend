@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import NoteState from 'context/NoteState';
 import LandingPageTemplate from '@ui/common/templates/LandingPage.templete';
@@ -11,19 +11,53 @@ import ViewFriends from '@ui/common/pages/ViewFriends';
 import Landing from '@ui/common/pages/Landing';
 import Profile from '@ui/common/pages/Profile';
 import UserDetails from '@ui/common/pages/UserDetail';
-import ProtectedRoute from './ProtectedRoute'; 
+import ProtectedRoute from './ProtectedRoute';
 import ViewAllFriends from '@ui/common/pages/ViewAllFriend';
 import Settings from '@ui/common/pages/Settings';
 import ViewAllUser from '@ui/common/pages/ViewAllUser';
 import Logout from '@ui/common/molecules/Logout';
-import Chat from '@ui/common/pages/Chat';
 import ChatOrganism from '@ui/common/organism/Chat.organsim';
+import userContext from '@context/User/UserContext';
+import axiosInstance from 'services/instance';
+import { io } from 'socket.io-client';
+
+
+
+const socket = io('http://localhost:5000', {
+  auth: {
+    token: sessionStorage.getItem('accessToken'),
+  },
+})
+
+interface User {
+  id: string,
+  createdAt: any,
+  details: {
+    first_name: string,
+    last_name: string,
+    phone_number: string,
+    profileImage: Media[]
+  },
+  email: string,
+  role: string
+}
+
+interface Media {
+  id: string;
+  path: string;
+}
+
+
 
 const router = createBrowserRouter([
   // Landing page
   {
     path: '/',
-    element: ( <ProtectedRoute><LandingPageTemplate /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <LandingPageTemplate />
+      </ProtectedRoute>
+    ),
     children: [{ index: true, element: <Landing /> }],
   },
   {
@@ -117,6 +151,23 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { currentUser, setCurrentUser } = useContext(userContext); // Move useContext inside the component
+  const viewUser = async () => {
+    try {
+      const response = await axiosInstance.get('/user/byToken')
+      console.log(response.data.data, 'yoyo')
+       setCurrentUser(response.data.data)
+
+       socket.emit('sendMessage',)
+       
+    } catch (error) {
+      console.log(error, 'yo chai error')
+    }
+  }
+  useEffect(()=>{
+    viewUser()
+  },[])
+  
   return (
     <NoteState>
       <RouterProvider router={router} />

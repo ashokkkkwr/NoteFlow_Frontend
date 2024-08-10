@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40" viewBox="0 0 120 40">
+    <defs>
+      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#FF5F6D;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#FFC371;stop-opacity:1" />
+      </linearGradient>
+    </defs>
+    <circle cx="20" cy="20" r="10" fill="url(#gradient)">
+      <animate attributeName="cy" from="20" to="20"
+               begin="0s" dur="1.2s"
+               values="20;15;20" calcMode="linear"
+               repeatCount="indefinite" />
+      <animate attributeName="r" from="10" to="10"
+               begin="0s" dur="1.2s"
+               values="10;12;10" calcMode="linear"
+               repeatCount="indefinite" />
+    </circle>
+    <circle cx="60" cy="20" r="10" fill="url(#gradient)">
+      <animate attributeName="cy" from="20" to="20"
+               begin="0.4s" dur="1.2s"
+               values="20;15;20" calcMode="linear"
+               repeatCount="indefinite" />
+      <animate attributeName="r" from="10" to="10"
+               begin="0.4s" dur="1.2s"
+               values="10;12;10" calcMode="linear"
+               repeatCount="indefinite" />
+    </circle>
+    <circle cx="100" cy="20" r="10" fill="url(#gradient)">
+      <animate attributeName="cy" from="20" to="20"
+               begin="0.8s" dur="1.2s"
+               values="20;15;20" calcMode="linear"
+               repeatCount="indefinite" />
+      <animate attributeName="r" from="10" to="10"
+               begin="0.8s" dur="1.2s"
+               values="10;12;10" calcMode="linear"
+               repeatCount="indefinite" />
+    </circle>
+  </svg>
+  

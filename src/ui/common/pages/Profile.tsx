@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import noteContext from "context/NoteContext"
 import Posts from "../organism/Posts"
 import LeftSidebar from "../organism/LeftSidebar"
@@ -8,10 +8,13 @@ import RightSidebarDown from "../organism/RightSidebarDown"
 import Profiles from "../organism/Profiles"
 
 const Profile = () => {
-    const a = useContext(noteContext)
-    useEffect(() => {
-        a.update()
-    }, [])
+    
+    
+    const [refreshPosts, setRefreshPosts] = useState(0);
+
+    const handlePostAdded = () => {
+        setRefreshPosts((prev) => prev + 1);
+    };
     return (
         <>
 
@@ -19,7 +22,6 @@ const Profile = () => {
 
                 {/* {a.state.name} */}
                 <div className="">
-
                 <LeftSidebar />
                 </div>
                 <div className="flex-grow">
@@ -31,7 +33,7 @@ const Profile = () => {
                         <div className="fixed right-0">
                             <RightSidebar />
                             
-                            <RightSidebarDown />
+                            <RightSidebarDown onPostAdded={handlePostAdded} />
                         </div>
                     </div>
                 </div>
