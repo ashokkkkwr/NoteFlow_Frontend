@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from 'services/instance';
-
+import { useSocket } from '@context/SocketContext';
 interface Friends {
     id: string;
     createdAt: any;
+    receiver_id: string
+    sender_id: string
     sender: {
         details: {
             first_name: string;
@@ -11,6 +13,12 @@ interface Friends {
             profileImage: Media[];
         };
     };
+    receiver: {
+        id: string
+        details: {
+
+        }
+    }
 }
 
 interface Media {
@@ -19,6 +27,7 @@ interface Media {
 }
 
 export default function FriendRequests() {
+    const socket = useSocket();
     const [request, setRequest] = useState<Friends[]>([]);
 
     const friendRequest = async () => {
@@ -31,30 +40,33 @@ export default function FriendRequests() {
         }
     };
 
-    const acceptRequest = async (id: string) => {
+    const acceptRequest = async (id: string, senderId: string) => {
         try {
+            console.log('ya pugo')
+            console.log(senderId, "sender ko id")
             const response = await axiosInstance.patch(`/friend/accept-request/${id}`);
             console.log(response.data, "Request Accepted");
             setRequest(prevRequests => prevRequests.filter(request => request.id !== id));
+            if (socket) {
+                socket.emit('accepted', { id, senderId })
+            }
         } catch (error) {
             console.error(error);
         }
     };
-
     const rejectRequest = async (id: string) => {
         try {
             const response = await axiosInstance.delete(`/friend/${id}`);
             console.log(response.data, "Request deleted");
             setRequest(prevRequests => prevRequests.filter(request => request.id !== id));
+
         } catch (error) {
             console.error(error);
         }
     };
-
     useEffect(() => {
         friendRequest();
     }, []);
-
     return (
         <div className='p-4 bg-white m-3 w-[113vh] max-w-screen-xl'>
             <div className='flex flex-wrap gap-28'>
@@ -76,8 +88,13 @@ export default function FriendRequests() {
                         </div>
                         <div className='flex mt- gap-3'>
                             <button
-                                onClick={() => acceptRequest(friends.id)}
-                                className=' mt-4 w-[100px] h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300'
+                                onClick={() => {
+                                    if (friends.receiver_id) {
+                                        acceptRequest(friends.id, friends.sender_id);
+                                    } else {
+                                        console.error('Receiver or receiver ID is undefined');
+                                    }
+                                }} className=' mt-4 w-[100px] h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300'
                             >
                                 <p className='p-0 m-0 text-sm'>Accept</p>
                             </button>
