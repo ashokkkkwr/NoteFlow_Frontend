@@ -29,6 +29,7 @@ interface Chat {
     sender_id?: string;
     content?: string;
     createdAt: any;
+    read: boolean;
     sender: {
         details: {
             first_name: string;
@@ -102,9 +103,19 @@ export default function ChatOrganism() {
                 }
             });
 
+            // Listen for read receipt updates
+            socket.on('messagesRead', ({ messageIds }: { messageIds: string[] }) => {
+                setChats((prevChats) =>
+                    prevChats.map((chat) =>
+                        messageIds.includes(chat.id!) ? { ...chat, read: true } : chat
+                    )
+                );
+            });
+
             return () => {
                 socket.off('message');
                 socket.off('typing');
+                socket.off('messagesRead')
             };
         }
     }, [socket, loggedInUserId, receiverId]);
@@ -125,21 +136,21 @@ export default function ChatOrganism() {
     useEffect(() => {
         // Handle status change
         if (socket) {
-          socket.on('statusChange', ({ userId, active }) => {
-            setUsers(prevUsers =>
-              prevUsers.map(user =>
-        //the line effectively updates the active_status of a user object only if its id matches the specified userId; otherwise, it returns the user object as is.
+            socket.on('statusChange', ({ userId, active }) => {
+                setUsers(prevUsers =>
+                    prevUsers.map(user =>
+                        //the line effectively updates the active_status of a user object only if its id matches the specified userId; otherwise, it returns the user object as is.
 
-                user.id === userId ? { ...user, active_status: active } : user
-              )
-            );
-          });
-    
-          return () => {
-            socket.off('statusChange');
-          };
+                        user.id === userId ? { ...user, active_status: active } : user
+                    )
+                );
+            });
+
+            return () => {
+                socket.off('statusChange');
+            };
         }
-      }, [socket]);
+    }, [socket]);
 
     const viewUsers = async () => {
         try {
@@ -170,9 +181,28 @@ export default function ChatOrganism() {
 
         const response = await axiosInstance.get(`/chat/${userId}`);
         setSelectedUser(user);
+        console.log(response.data.data, "messgages")
         setChats(response.data.data);
         setReceiverId(userId);
         console.log(userId, 'receiverId');
+
+        // Assuming `response.data.data` is an array of chat objects
+        const unreadMessageIds = response.data.data
+            .filter((chats: Chat) => !chats.read)
+            .map((chats: Chat) => chats.id);
+
+        console.log(unreadMessageIds)
+        if (unreadMessageIds.length > 0) {
+            markMessagesAsRead(unreadMessageIds);
+
+        }
+
+    };
+    const markMessagesAsRead = (messageIds: string[]) => {
+        if (socket) {
+            socket.emit('markMessagesAsRead', { messageIds });
+
+        }
     };
 
     const viewUser = async () => {
@@ -222,30 +252,36 @@ export default function ChatOrganism() {
                 <h2 className="text-2xl font-bold mt-6 ml-16"><Logo /></h2>
                 {/* User list */}
                 <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
-                {users.map(user => (
-  <div
-    key={user.id}
-    onClick={() => handleUserClick(user, user.id)}
-    className={`flex items-center p-6 cursor-pointer rounded-md border-b border-grey-500 ${selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'}`}
-  >
-    {user.details.profileImage[0] && (
-      <img
-        src={`${user.details.profileImage[0].path}`}
-        alt={`Profile ${user.id}`}
-        className="w-10 h-10 object-cover rounded-full mr-3"
-      />
-    )}
-    <div>
-      <p className="font-semibold">{user.details.first_name} {user.details.last_name}</p>
-      <p className="text-sm text-red-600">+{user.details.phone_number}</p>
-    </div>
-    {user.active_status && (
-      <span className="ml-2 text-green-500 text-xs">Online</span>
-    )}
-  </div>
-))}
-
+                    {users.map(user => {
+                        const unreadCount = chats.filter(chat => chat.sender_id === user.id && !chat.read).length;
+                        return (
+                            <div
+                                key={user.id}
+                                onClick={() => handleUserClick(user, user.id)}
+                                className={`flex items-center p-6 cursor-pointer rounded-md border-b border-grey-500 ${selectedUser?.id === user.id ? 'bg-red-100' : 'hover:bg-gray-200'}`}
+                            >
+                                {user.details.profileImage[0] && (
+                                    <img
+                                        src={`${user.details.profileImage[0].path}`}
+                                        alt={`Profile ${user.id}`}
+                                        className="w-10 h-10 object-cover rounded-full mr-3"
+                                    />
+                                )}
+                                <div className="flex-1">
+                                    <p className="font-semibold">{user.details.first_name} {user.details.last_name}</p>
+                                    <p className="text-sm text-red-600">+{user.details.phone_number}</p>
+                                </div>
+                                {unreadCount > 0 && (
+                                    <span className="bg-red-500 text-white rounded-full text-xs px-2 py-1">{unreadCount}</span>
+                                )}
+                                {user.active_status && (
+                                    <span className="ml-2 text-green-500 text-xs">Online</span>
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
+
 
                 <div className='ml-14 mt-24 flex border border-red-200 rounded-lg bg-red-50 p-0 w-52 items-center justify-center'>
                     <IoPersonAddSharp className='mr-1 text-lg text-red-400' />
@@ -310,13 +346,20 @@ export default function ChatOrganism() {
                                             ))}
                                             <p className="overflow-hidden text-ellipsis break-words">
                                                 {chat.content}
+                                                {chat.read === true ? <p>
+                                                    read
+                                                </p> : <p>
+                                                    unread</p>}
+                                            </p>
+                                            <p>
+
                                             </p>
                                         </div>
                                     </div>
                                 ))}
                                 {typing && (
                                     <div className="p-3 rounded-lg max-w-xs self-start">
-                                        <p><img src={chatsvg} alt="" className='w-10 h-10'/></p>
+                                        <p><img src={chatsvg} alt="" className='w-10 h-10' /></p>
                                     </div>
                                 )}
                                 <div ref={chatEndRef} />

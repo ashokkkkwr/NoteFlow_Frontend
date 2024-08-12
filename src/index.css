@@ -18,3 +18,27 @@
 :root {
   --font-sans: 'Poppins', sans-serif;
 }
+
+/* Global styles */
+@layer utilities {
+  input:-webkit-autofill {
+    @apply bg-white shadow-none border-b-2;
+  }
+
+  input:-webkit-autofill:hover {
+    @apply bg-white shadow-none border-b-2;
+  }
+
+  input:-webkit-autofill:focus {
+    @apply bg-white shadow-none border-b-4;
+  }
+
+  input:-webkit-autofill:active {
+    @apply bg-white shadow-none border-b-4;
+  }
+
+  input:-webkit-autofill::first-line {
+    @apply text-inherit;
+  }
+}
+
