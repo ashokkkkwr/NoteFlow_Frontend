@@ -94,7 +94,6 @@ export default function ChatOrganism() {
                 console.log(chat, "received chat");
                 setChats((prevChats) => [...prevChats, chat]);
             });
-
             socket.on('typing', ({ userId }) => {
                 if (userId !== loggedInUserId && receiverId) {
                     console.log('Typing...');
@@ -102,7 +101,6 @@ export default function ChatOrganism() {
                     setTimeout(() => setTyping(false), 2000);
                 }
             });
-
             // Listen for read receipt updates
             socket.on('messagesRead', ({ messageIds }: { messageIds: string[] }) => {
                 setChats((prevChats) =>
@@ -111,6 +109,7 @@ export default function ChatOrganism() {
                     )
                 );
             });
+            
 
             return () => {
                 socket.off('message');
@@ -170,6 +169,20 @@ export default function ChatOrganism() {
             console.log(error);
         }
     };
+    const handleMessageSend = useCallback(async () => {
+        if (message.trim() && receiverId && socket) {
+            console.log(loggedInUser);
+            const newChat: any = {
+                receiverId,
+                content: message,
+            };
+            socket.emit('sendMessage', newChat);
+            console.log(newChat, "yo chai new chat..");
+            setMessage('');
+        } else {
+            console.log("Message or receiverId not found");
+        }
+    }, [message, receiverId, socket]);
 
     const handleUserClick = async (user: User, userId: string) => {
         if (socket) {
@@ -226,20 +239,7 @@ export default function ChatOrganism() {
         }
     };
 
-    const handleMessageSend = useCallback(async () => {
-        if (message.trim() && receiverId && socket) {
-            console.log(loggedInUser);
-            const newChat: any = {
-                receiverId,
-                content: message,
-            };
-            socket.emit('sendMessage', newChat);
-            console.log(newChat, "yo chai new chat..");
-            setMessage('');
-        } else {
-            console.log("Message or receiverId not found");
-        }
-    }, [message, receiverId, socket]);
+
 
     const addEmoji = (emoji: any) => {
         setMessage(message + emoji.native);
@@ -346,10 +346,7 @@ export default function ChatOrganism() {
                                             ))}
                                             <p className="overflow-hidden text-ellipsis break-words">
                                                 {chat.content}
-                                                {chat.read === true ? <p>
-                                                    read
-                                                </p> : <p>
-                                                    unread</p>}
+
                                             </p>
                                             <p>
 

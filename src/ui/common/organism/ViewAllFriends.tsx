@@ -87,7 +87,7 @@ export default function ViewAllFriends() {
                                 onClick={() => deleteUser(friends.id)}
                                 className="bg-red-500 text-white mt-4 w-[100px] h-10 border-2 border-red-500  py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
                             >
-                                <p className='p-0 m-0 text-sm'>Reject</p>
+                                <p className='p-0 m-0 text-sm'>UnFriend</p>
                             </button>
             </div>
 
