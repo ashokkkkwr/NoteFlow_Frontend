@@ -14,7 +14,7 @@ import { GoDash } from "react-icons/go";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"; // Import eye icons
-
+import Image from '../../../assets/rotate.jpg'
 const Login = () => {
   const { lang } = useLang();
   const navigate = useNavigate();
@@ -71,7 +71,12 @@ const Login = () => {
 
   return (
     <>
-      <div className='flex items-center justify-center h-screen bg-gradient-to-r from-red-50 to-red-100'>
+    <div className='flex 'style={{ backgroundColor: '#ECB2CA' }}  >
+      <div>
+      <img src={Image} alt="" className='h-screen w-1000vh'/>
+
+      </div>
+      <div className='flex items-center justify-center h-screen 'style={{ backgroundColor: '#ECB2CA' }}>
         <div className='bg-white w-[58vh] h-[85vh] rounded-3xl shadow-2xl'>
           <p className='text-3xl font-bold font-poppins mt-14 ml-44'>User Login</p>
           <p className='ml-32 mt-5 w-[29vh] text-center font-poppins text-lg'>
@@ -80,7 +85,7 @@ const Login = () => {
           <form onSubmit={handleSubmit} encType='multipart/form-data'>
             <div className='mt-16 ml-16'>
               <input
-                className='h-14 w-[43vh] border rounded-xl pl-5'
+                className='h-14 w-[43vh] border-b-2 pl-5 focus:outline-none '
                 name={'email'}
                 type={'email'}
                 placeholder={authLabel.enterYourEmail[lang]}
@@ -89,12 +94,13 @@ const Login = () => {
             </div>
             <div className='mt-5 ml-16 flex'>
               <input
-                className='h-14 w-[43vh] border rounded-xl pr-10 pl-5'
+                className='h-14 w-[43vh] border-b-2  pr-10 pl-5 focus:outline-none'
                 name={'password'}
                 type={showPassword ? 'text' : 'password'}
                 placeholder={authLabel.enterYourPassword[lang]}
                 onChange={handleChange}
               />
+              
               <div className='mt-3 ml-1'>
                 <button
                   type='button'
@@ -109,9 +115,11 @@ const Login = () => {
 
             <p className='mt-6 ml-20 font-poppins text-sm text-red-500'>Having Trouble Sign in?</p>
             <div className='flex'>
-            <MdDangerous className=''/>
 
-            <p className='mt-6 ml-20 font-poppins text-sm text-red-500'>{errorMessage}</p>
+            <p className='mt-6 ml-20 font-poppins text-sm text-red-500'>{errorMessage &&(
+                         <p className='flex'> <MdDangerous className='mt-1'/>{errorMessage}</p>
+
+            )}</p>
             </div>
             <div>
               <button
@@ -151,6 +159,9 @@ const Login = () => {
             </div>
           </form>
         </div>
+      </div>
+      <div className='h-screen bg-black'>
+      </div>
       </div>
     </>
   );

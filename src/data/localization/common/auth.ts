@@ -5,11 +5,11 @@ export const authLabel: LabelTypes = {
     ne: 'पछाडि जानुहोस्',
   },
   userSignup: {
-    en: 'User Signup',
+    en: ' Signup',
     ne: 'प्रयोगकर्ता लगइन',
   },
   userLogin:{
-    en:'User Signup',
+    en:'User Login',
     ne:'प्रयोगकर्ता साइनअप'
   },
   firstName: {

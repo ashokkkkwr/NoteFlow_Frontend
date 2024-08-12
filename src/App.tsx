@@ -21,7 +21,7 @@ import userContext from '@context/User/UserContext';
 import axiosInstance from 'services/instance';
 import { io } from 'socket.io-client';
 import { SocketProvider } from '@context/SocketContext';
-
+import './index.css'
 
 
 const socket = io('http://localhost:5000', {
