@@ -16,9 +16,6 @@ export default function LeftSidebar() {
       <div className="mt-[10px] px w-[40vh] h-[447px] bg-white p-4 rounded-lg shadow-lg">
       <NavBarDown />
       </div>
-        
         </div>
-       
-    
   )
 }
