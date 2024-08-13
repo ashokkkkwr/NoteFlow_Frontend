@@ -31,10 +31,11 @@ interface Notification {
   senderProfileImage?: string;
   senderFirstName?: string;
 }
+interface Props{
+  testId:string | null
+}
 
-
-
-export default function Nav() {
+export default function Nav({testId}:Props) {
 
   const socket = useSocket();
 
@@ -74,8 +75,6 @@ export default function Nav() {
     }
   }, [socket]);
 
-
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -114,6 +113,7 @@ export default function Nav() {
           </div>
           {notiDropDownOpen && (
             <div className="absolute right-24 top-[9vh] w-96 h-96 bg-white rounded-md shadow-2xl z-10 p-10 flex flex-col">
+                <p>{testId}</p>
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
                   <div key={index} className="flex items-center mb-4">
@@ -129,11 +129,13 @@ export default function Nav() {
                       <p className="text-xs text-gray-600">
                         {notification.content}
                       </p>
+                    
                     </div>
                   </div>
                 ))
               ) : (
                 <p>No notifications</p>
+                
               )}
             </div>
           )}

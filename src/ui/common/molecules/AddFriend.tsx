@@ -13,17 +13,19 @@ interface User {
     phone_number: string;
   };
 }
+interface RightSideBarProps{
+  setTestId: (id: string | null) => void;
+}
 
 interface Media {
   id: string;
   path: string;
 }
 
-export default function AddFriend() {
+const AddFriend:React.FC<RightSideBarProps>=({setTestId})=> {
   const [users, setUsers] = useState<User[]>([]);
   const socket = useSocket();
-  const [testId, setTestId] = useState(null);
-  const [receiverId, setReceiverId] = useState('');
+  // const [testId, setTestId] = useState(null);
 
   const viewUsers = async () => {
     try {
@@ -37,7 +39,6 @@ export default function AddFriend() {
 
   const addFriend = async (id: string, receiverId: string) => {
     try {
-      setReceiverId(receiverId);
       console.log(id, 'user id');
       console.log(receiverId, "User is the request.");
       const response = await axiosInstance.post(`/friend/${id}`);
@@ -72,7 +73,7 @@ export default function AddFriend() {
 
   return (
     <div className='mt-5'>
-      <p>test:{testId}</p>
+      {/* <p>test:{testId}</p> */}
       {users.map(user => (
         <div key={user.id} className='mt-1 flex items-center justify-between p-4 border-b border-gray-200'>
           <div className='flex items-center'>
@@ -109,3 +110,4 @@ export default function AddFriend() {
     </div>
   );
 }
+export default AddFriend
