@@ -1,7 +1,7 @@
 import AddFriend from '../molecules/AddFriend';
 
 interface RightSideBarProps {
-  setTestId: (id: string | null, senderDetails: any) => void;
+  setTestId: (id: string | null, senderDetails: any,notiService:any) => void;
 }
 
 const RightSidebar: React.FC<RightSideBarProps> = ({ setTestId }) => {

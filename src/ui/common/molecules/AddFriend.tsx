@@ -15,7 +15,7 @@ interface User {
 }
 
 interface RightSideBarProps {
-  setTestId: (id: string | null, senderDetails: any) => void;
+  setTestId: (id: string | null, senderDetails: any,notiService:any) => void;
 }
 interface Media {
   id: string;
@@ -36,16 +36,14 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
     }
   };
 
-  const addFriend = async (id: string, receiverId: string) => {
+  const addFriend = async (receiverId: string) => {
     try {
-      console.log(id, 'user id');
+      console.log(receiverId, 'user id');
       console.log(receiverId, "User is the request.");
-      const response = await axiosInstance.post(`/friend/${id}`);
       if (socket) {
         socket.emit('request', receiverId);
       }
-      console.log(response.data, 'Request added');
-      setUsers(prevRequests => prevRequests.filter(request => request.id !== id));
+      setUsers(prevRequests => prevRequests.filter(request => request.id !== receiverId));
     } catch (error) {
       console.log(error);
     }
@@ -60,10 +58,11 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
     if (socket) {
       console.log('Socket connected from AddFriend:', socket.connected);
 
-      socket.on('notiReceiver', ({ receiverId, senderDetails }) => {
-        console.log(senderDetails, "hahahaha");
+      socket.on('notiReceiver', ({ receiverId, senderDetails,notiService }) => {
+        console.log(senderDetails, "hahahaha sent friend request...");
         console.log(receiverId, "Receiver ID received in real-time");
-        setTestId(receiverId, senderDetails);
+        console.log(notiService,"Notificaiton in real-time")
+        setTestId(receiverId, senderDetails,notiService);
       });
 
       return () => {
@@ -93,7 +92,7 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
           </div>
           <div className='ml-28'>
             <button
-              onClick={() => addFriend(user.id, user.id)}
+              onClick={() => addFriend( user.id)}
               className='inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
             >
               <IoIosPersonAdd className='text-xl mr-2' />

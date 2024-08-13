@@ -2,12 +2,13 @@
 import Nav from '../molecules/Nav'
 interface Props{
   testId:string | null,
-  senderDetails:any
+  senderDetails:any,
+  notiService:any
 }
-  const Navbar:React.FC<Props> = ({testId,senderDetails}) =>{ 
+  const Navbar:React.FC<Props> = ({testId,senderDetails,notiService}) =>{ 
   return (
     <div className='flex   bg-white p-4 ml-[1px] justify-end sticky top-0 z-10 rounded-lg shadow-md'>
-< Nav testId={testId} senderDetails={senderDetails}/>
+< Nav testId={testId} senderDetails={senderDetails} notiService={notiService}/>
 {/* <LanguageToggle /> */}
     </div>
   )
