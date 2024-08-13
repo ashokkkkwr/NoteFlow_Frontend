@@ -13,19 +13,18 @@ interface User {
     phone_number: string;
   };
 }
-interface RightSideBarProps{
-  setTestId: (id: string | null) => void;
-}
 
+interface RightSideBarProps {
+  setTestId: (id: string | null, senderDetails: any) => void;
+}
 interface Media {
   id: string;
   path: string;
 }
 
-const AddFriend:React.FC<RightSideBarProps>=({setTestId})=> {
+const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   const [users, setUsers] = useState<User[]>([]);
   const socket = useSocket();
-  // const [testId, setTestId] = useState(null);
 
   const viewUsers = async () => {
     try {
@@ -59,12 +58,14 @@ const AddFriend:React.FC<RightSideBarProps>=({setTestId})=> {
   // Client-side socket event handling
   useEffect(() => {
     if (socket) {
-      console.log('Socket connected from AddFriend:', socket.connected); // Check if socket is connected
+      console.log('Socket connected from AddFriend:', socket.connected);
 
-      socket.on('notiReceiver', ({ receiverId }) => {
+      socket.on('notiReceiver', ({ receiverId, senderDetails }) => {
+        console.log(senderDetails, "hahahaha");
         console.log(receiverId, "Receiver ID received in real-time");
-        setTestId(receiverId);
+        setTestId(receiverId, senderDetails);
       });
+
       return () => {
         socket.off('notiReceiver');
       };
@@ -73,7 +74,6 @@ const AddFriend:React.FC<RightSideBarProps>=({setTestId})=> {
 
   return (
     <div className='mt-5'>
-      {/* <p>test:{testId}</p> */}
       {users.map(user => (
         <div key={user.id} className='mt-1 flex items-center justify-between p-4 border-b border-gray-200'>
           <div className='flex items-center'>
@@ -109,5 +109,6 @@ const AddFriend:React.FC<RightSideBarProps>=({setTestId})=> {
       </Link>
     </div>
   );
-}
-export default AddFriend
+};
+
+export default AddFriend;
