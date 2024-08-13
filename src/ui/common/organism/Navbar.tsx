@@ -1,10 +1,9 @@
 
-import LanguageToggle from '../molecules/LanguageToggle'
-import Logo from '../molecules/Logo'
-import useLang from '@hooks/useLang'
 import Nav from '../molecules/Nav'
-
-  const Navbar = () =>{
+interface Props{
+  testId:string | null
+}
+  const Navbar:React.FC<Props> = ({testId}) =>{
   
   
   return (
@@ -13,7 +12,7 @@ import Nav from '../molecules/Nav'
 
 
 
-< Nav />
+< Nav testId={testId}/>
 {/* <LanguageToggle /> */}
     </div>
   )
