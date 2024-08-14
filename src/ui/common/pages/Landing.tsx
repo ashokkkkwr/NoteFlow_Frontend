@@ -22,21 +22,20 @@ const Landing = () => {
     setSenderDetails(senderDetails)
     setNotiService(notiService)
   }
+
   return (
     <>
-      <div className='flex '>
+      <div className='flex'>
         <div className=''>
           <LeftSidebar />
         </div>
-        <div className='flex-grow'>
+        <div className='flex-grow flex flex-col'>
           <Navbar testId={testId || ''} senderDetails={senderDetails} notiService={notiService} />
-       
-
-          <div className='flex justify-between'>
-            <div>
+          <div className='flex flex-grow'>
+            <div className='flex-grow flex justify-center'>
               <Posts refreshPosts={refreshPosts} />
             </div>
-            <div className='fixed right-0'>
+            <div className=' flex flex-col '>
               <RightSidebar setTestId={handleSetTestId} />
               <RightSidebarDown onPostAdded={handlePostAdded} />
             </div>
@@ -46,4 +45,5 @@ const Landing = () => {
     </>
   )
 }
+
 export default Landing

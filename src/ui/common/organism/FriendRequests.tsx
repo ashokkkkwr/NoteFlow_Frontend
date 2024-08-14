@@ -68,10 +68,10 @@ export default function FriendRequests() {
         friendRequest();
     }, []);
     return (
-        <div className='p-4 bg-white m-3 w-[113vh] max-w-screen-xl'>
+        
             <div className='flex flex-wrap gap-28'>
                 {request.map(friends => (
-                    <div key={friends.id} className='flex flex-col items-center bg-gray-200 p-4 h- rounded-lg shadow-md w-1 md:w-1/3 lg:w-1/4'>
+                    <div key={friends.id} className='bg-white p-4'>
                         <div className='flex-shrink-0'>
                             {friends.sender.details.profileImage.map(media => (
                                 <img
@@ -86,7 +86,7 @@ export default function FriendRequests() {
                             <p className='text-xl font-semibold'>{friends.sender.details.first_name}</p>
                             <p className='text-xl'>{friends.sender.details.last_name}</p>
                         </div>
-                        <div className='flex mt- gap-3'>
+                        <div className='flex justify-between'>
                             <button
                                 onClick={() => {
                                     if (friends.receiver_id) {
@@ -108,6 +108,6 @@ export default function FriendRequests() {
                     </div>
                 ))}
             </div>
-        </div>
+      
     );
 }

@@ -15,7 +15,7 @@ interface User {
 }
 
 interface RightSideBarProps {
-  setTestId: (id: string | null, senderDetails: any,notiService:any) => void;
+  setTestId: (id: string | null, senderDetails: any, notiService: any) => void;
 }
 interface Media {
   id: string;
@@ -58,11 +58,11 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
     if (socket) {
       console.log('Socket connected from AddFriend:', socket.connected);
 
-      socket.on('notiReceiver', ({ receiverId, senderDetails,notiService }) => {
+      socket.on('notiReceiver', ({ receiverId, senderDetails, notiService }) => {
         console.log(senderDetails, "hahahaha sent friend request...");
         console.log(receiverId, "Receiver ID received in real-time");
-        console.log(notiService,"Notificaiton in real-time")
-        setTestId(receiverId, senderDetails,notiService);
+        console.log(notiService, "Notification in real-time");
+        setTestId(receiverId, senderDetails, notiService);
       });
 
       return () => {
@@ -72,10 +72,16 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   }, [socket]);
 
   return (
-    <div className='mt-5'>
+    // <div className="mt-2 bg-white p-4 rounded-lg inline-flex flex-col min-w-max w-[45vh] h-[45vh] sm:w-[50vw]">
+
+    <div className='mt-2  bg-white p-4 rounded-lg inline-flex flex-col min-w-max w-[500px] h-[45vh] 2xl:w-[45vh]'>
+      <div className='flex items-center justify-center mb-4'>
+        <p className='font-poppins text-red-700 text-base'>People you may know</p>
+      </div>
+
       {users.map(user => (
-        <div key={user.id} className='mt-1 flex items-center justify-between p-4 border-b border-gray-200'>
-          <div className='flex items-center'>
+        <div key={user.id} className='mt-1 flex items-start p-4 border-b border-gray-200'>
+          <div className='flex items-start flex-1'>
             {user.details.profileImage.length > 0 && (
               <img
                 src={user.details.profileImage[0].path}
@@ -83,16 +89,16 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
                 className='w-12 h-12 rounded-full object-cover'
               />
             )}
-            <div className='ml-3 w-48'>
-              <Link to={`/auth/user/${user.id}`} className=''>
+            <div className='ml-3 flex-1'>
+              <Link to={`/auth/user/${user.id}`}>
                 <p className='text-lg truncate'>{user.details.first_name} {user.details.last_name}</p>
                 <p className='text-sm text-red-500 truncate'>+{user.details.phone_number}</p>
               </Link>
             </div>
           </div>
-          <div className='ml-28'>
+          <div className='flex items-center'>
             <button
-              onClick={() => addFriend( user.id)}
+              onClick={() => addFriend(user.id)}
               className='inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
             >
               <IoIosPersonAdd className='text-xl mr-2' />

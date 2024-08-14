@@ -1,20 +1,30 @@
-import { useSidebar } from '@context/SidebarContext'
-import Nav from '../molecules/Nav'
+import { useSidebar } from '@context/SidebarContext';
+import { useRightSidebar } from '@context/RightSidebarContext';
+import Nav from '../molecules/Nav';
+import { FiMenu, FiX } from 'react-icons/fi'; // Importing icons
+import { BsArrowLeftCircleFill } from "react-icons/bs";
+
 interface Props {
-  testId: string | null
-  senderDetails: any
-  notiService: any
+  testId: string | null;
+  senderDetails: any;
+  notiService: any;
 }
+
 const Navbar: React.FC<Props> = ({ testId, senderDetails, notiService }) => {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, isSidebarOpen } = useSidebar();
+  const { toggleRightSidebar, isRightSidebarOpen } = useRightSidebar(); 
+
   return (
-    <div className='flex   bg-white p-4 ml-[1px] justify-end sticky top-0 z-10 rounded-lg shadow-md'>
-      <button onClick={toggleSidebar} className='block md:hidden'>
-        Toggle Sidebar
+    <div className="flex bg-white p-4 ml-[1px] justify-between sticky top-0 z-10 rounded-lg shadow-md 2xl:justify-end">
+      <button onClick={toggleSidebar} className="block 2xl:hidden">
+        {isSidebarOpen ? <FiX className='text-3xl text-red-500' /> : <BsArrowLeftCircleFill  className='text-3xl text-black'/>} 
       </button>
       <Nav testId={testId} senderDetails={senderDetails} notiService={notiService} />
-      {/* <LanguageToggle /> */}
+      <button onClick={toggleRightSidebar} className="block 2xl:hidden">
+        {isRightSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />} 
+      </button>
     </div>
-  )
+  );
 }
-export default Navbar
+
+export default Navbar;

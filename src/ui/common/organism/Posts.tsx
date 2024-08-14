@@ -6,7 +6,8 @@ import useLang from '@hooks/useLang';
 import { RiCornerRightDownFill } from "react-icons/ri";
 import { IoClose } from "react-icons/io5";
 import CommentComponent from './CommentComponent';
-
+import { useRightSidebar } from '@context/RightSidebarContext';
+import { useSidebar } from '@context/SidebarContext';
 
 export interface Comment {
   id: string;
@@ -39,6 +40,8 @@ interface Media {
   path: string;
 }
 export default function Posts({refreshPosts}:PostsProps) {
+  const { isRightSidebarOpen } = useRightSidebar();
+  const { isSidebarOpen } = useSidebar();
   const { lang } = useLang();
   const [notes, setNotes] = useState<Note[]>([]);
   const [comments, setComments] = useState<Record<string, Comment[]>>({});
@@ -133,7 +136,8 @@ export default function Posts({refreshPosts}:PostsProps) {
   };
 
   return (
-    <div className="ml-36 mt-10 bg-grey max-w-3xl">
+
+    <div className={`mt-10 bg-grey max-w-3xl ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block  `}>
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
