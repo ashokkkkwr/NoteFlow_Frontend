@@ -191,7 +191,6 @@ export default function ChatOrganism() {
             }
             socket.emit('joinRoom', { receiverId: userId });
         }
-
         const response = await axiosInstance.get(`/chat/${userId}`);
         setSelectedUser(user);
         console.log(response.data.data, "messgages")
@@ -203,7 +202,6 @@ export default function ChatOrganism() {
         const unreadMessageIds = response.data.data
             .filter((chats: Chat) => !chats.read)
             .map((chats: Chat) => chats.id);
-
         console.log(unreadMessageIds)
         if (unreadMessageIds.length > 0) {
             markMessagesAsRead(unreadMessageIds);

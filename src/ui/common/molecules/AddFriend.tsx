@@ -30,7 +30,7 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
     try {
       const response = await axiosInstance.get('/friend/view-user');
       console.log(response.data.data, 'response all friends');
-      setUsers(response.data.data);
+      setUsers(response.data.data.slice(0, 3));
     } catch (error) {
       console.log(error);
     }
