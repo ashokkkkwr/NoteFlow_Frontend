@@ -22,7 +22,7 @@ import axiosInstance from 'services/instance';
 import { io } from 'socket.io-client';
 import { SocketProvider } from '@context/SocketContext';
 import './index.css'
-
+import {SidebarProvider} from './context/SidebarContext'
 
 const socket = io('http://localhost:5000', {
   auth: {
@@ -166,11 +166,13 @@ function App() {
     userActive()
   },[])
   return (
+    <SidebarProvider>
     <SocketProvider>
     <NoteState>
       <RouterProvider router={router} />
     </NoteState>
     </SocketProvider>
+    </SidebarProvider>
   );
 }
 
