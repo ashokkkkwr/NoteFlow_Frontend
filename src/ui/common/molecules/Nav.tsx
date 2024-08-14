@@ -6,6 +6,7 @@ import { FaChevronDown } from 'react-icons/fa'
 import axiosInstance from 'services/instance'
 import { useSocket } from '@context/SocketContext'
 
+
 interface User {
   id: string
   createdAt: any
@@ -117,7 +118,7 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
 
   return (
     <div className='bg-white flex justify-between items-center p-4'>
-      <div className='flex'>
+      <div className='flex '>
         <Link to='/auth/user/message'>
           <div className='p-3 bg-gray-200 rounded-full'>
             <MdMessage />

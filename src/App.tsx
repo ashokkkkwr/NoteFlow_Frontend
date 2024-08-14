@@ -23,6 +23,7 @@ import { io } from 'socket.io-client';
 import { SocketProvider } from '@context/SocketContext';
 import './index.css'
 import {SidebarProvider} from './context/SidebarContext'
+import { RightSidebarProvider } from '@context/RightSidebarContext';
 
 const socket = io('http://localhost:5000', {
   auth: {
@@ -166,6 +167,7 @@ function App() {
     userActive()
   },[])
   return (
+    <RightSidebarProvider>
     <SidebarProvider>
     <SocketProvider>
     <NoteState>
@@ -173,6 +175,7 @@ function App() {
     </NoteState>
     </SocketProvider>
     </SidebarProvider>
+    </RightSidebarProvider>
   );
 }
 

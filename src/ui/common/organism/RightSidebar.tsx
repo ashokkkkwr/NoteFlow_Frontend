@@ -1,17 +1,21 @@
 import AddFriend from '../molecules/AddFriend';
+import { useRightSidebar } from '@context/RightSidebarContext';
 
 interface RightSideBarProps {
-  setTestId: (id: string | null, senderDetails: any,notiService:any) => void;
+  setTestId: (id: string | null, senderDetails: any, notiService: any) => void;
 }
 
 const RightSidebar: React.FC<RightSideBarProps> = ({ setTestId }) => {
+  const { isRightSidebarOpen } = useRightSidebar();
+
   return (
-    <div className='m-[10px] p-4 bg-white sticky top-0 z-10 rounded-md shadow-md w-[470px]'>
-      <div className='mt-1 flex flex-col items-start'>
-        <p className='ml-20 font-poppins text-red-700 text-base'>People you may know</p>
+    <>
+      <div
+        className={`sticky top-[104px] ${isRightSidebarOpen ? 'block' : 'hidden'} 2xl:block  md:w-auto`}
+      >
         <AddFriend setTestId={setTestId} />
       </div>
-    </div>
+    </>
   );
 };
 
