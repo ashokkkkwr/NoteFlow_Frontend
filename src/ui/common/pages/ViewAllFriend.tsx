@@ -1,50 +1,48 @@
-import { useContext, useEffect } from "react"
-import noteContext from "context/NoteContext"
-import Posts from "../organism/Posts"
-import LeftSidebar from "../organism/LeftSidebar"
+import { useContext, useEffect, useState } from 'react'
+import LeftSidebar from '../organism/LeftSidebar'
 import Navbar from '@ui/common/organism/Navbar'
-import RightSidebar from "../organism/RightSidebar"
-import RightSidebarDown from "../organism/RightSidebarDown"
-import Profiles from "../organism/Profiles"
-import FriendRequests from "../organism/FriendRequests"
-import ViewAllFriends from "../organism/ViewAllFriends"
+import RightSidebar from '../organism/RightSidebar'
+import RightSidebarDown from '../organism/RightSidebarDown'
 
-const FriendRequest = () => {
-    const a = useContext(noteContext)
-    useEffect(() => {
-        a.update()
-    }, [])
-    return (
-        <>
+import ViewAllFriends from '../organism/ViewAllFriends'
 
-            <div className="flex ">
+const ViewAllFriend = () => {
+  const [refreshPosts, setRefreshPosts] = useState(0)
+  const [testId, setTestId] = useState<string | null>(null)
+  const [senderDetails, setSenderDetails] = useState<any>(null)
+  const [notiService, setNotiService] = useState<any>(null)
+  const handlePostAdded = () => {
+    setRefreshPosts((prev) => prev + 1)
+  }
 
-                {/* {a.state.name} */}
-                <div className="">
-
-                <LeftSidebar />
-                </div>
-                <div className="flex-grow">
-                    <Navbar />
-                    <div className="flex  justify-between">
-                        <div >
-                        <ViewAllFriends />
-                        </div>
-                        <div className="fixed right-0">
-                            <RightSidebar />
-                            
-                            <RightSidebarDown />
-                        </div>
-                    </div>
-                </div>
-              
-
-
+  const handleSetTestId = (id: string | null, senderDetails: any, notiService: any) => {
+    console.log('Test ID:', id)
+    console.log('Sender Details:', senderDetails)
+    setTestId(id)
+    setSenderDetails(senderDetails)
+    setNotiService(notiService)
+  }
+  return (
+    <>
+      <div className='flex '>
+        <div className=''>
+          <LeftSidebar />
+        </div>
+        <div className='flex-grow flex flex-col'>
+          <Navbar testId={testId || ''} senderDetails={senderDetails} notiService={notiService} />
+          <div className='flex flex-grow'>
+            <div className='flex-grow'>
+              <ViewAllFriends />
             </div>
+            <div className=' flex flex-col '>
+              <RightSidebar setTestId={handleSetTestId} />
 
-        </>
-    )
+              <RightSidebarDown onPostAdded={handlePostAdded} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }
-export default FriendRequest
-
-
+export default ViewAllFriend

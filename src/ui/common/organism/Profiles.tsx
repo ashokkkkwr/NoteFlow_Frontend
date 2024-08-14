@@ -48,7 +48,7 @@ export default function Profiles() {
   return (
     //w-[119vh]
     // <div className={`mt-10 bg-grey max-w-3xl ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block  `}>
-    <div className={`mt-2 bg-white cursor-pointer shadow-lg rounded-lg w-[50vh]  h-screen flex items-center justify-center ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block  2xl:w-[119vh]`}>
+    <div className={`mt-2 bg-white cursor-pointer shadow-lg rounded-lg w-[50vh]  h-[87vh] flex items-center justify-center ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block  2xl:w-[119vh]`}>
   <div className="flex flex-col items-center">
     {user?.details.profileImage.map((media) => (
       <div key={media.id} className="flex justify-center">

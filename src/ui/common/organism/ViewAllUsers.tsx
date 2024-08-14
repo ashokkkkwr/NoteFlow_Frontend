@@ -3,7 +3,8 @@ import axiosInstance from 'services/instance';
 import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import { GrView } from 'react-icons/gr';
-
+import { useRightSidebar } from '@context/RightSidebarContext'
+import { useSidebar } from '@context/SidebarContext'
 interface User {
   id: string;
   details: {
@@ -21,7 +22,8 @@ interface Media {
 
 export default function ViewAllFriends() {
   const [users, setUsers] = useState<User[]>([]);
-
+  const { isRightSidebarOpen } = useRightSidebar()
+  const { isSidebarOpen } = useSidebar()
   const viewUsers = async () => {
     try {
       const response = await axiosInstance.get('/friend/view-user');
@@ -49,17 +51,17 @@ export default function ViewAllFriends() {
 
   return (
 
-    <div className='p-4 bg-white m-3 w-[111vh] max-w-screen-xl'>
-      <div className='flex flex-wrap gap-28'>
-        {users.map(friends => (
-          <div key={friends.id} className='flex flex-col items-center bg-gray-200 p-4 h- rounded-lg shadow-md w-1 md:w-1/3 lg:w-1/4'>
+    <div className={`bg-white rounded-lg ${isRightSidebarOpen ? 'hidden' : 'block'} ${isSidebarOpen ? 'hidden' : 'block'} 2xl:block 2xl:w-[1115px] 2xl:ml-1 2xl:h-[812px] 2xl:mt-1`}>
+      <div className='flex flex-wrap gap-x-12 ml-12 2xl:ml-20'>
+      {users.map(friends => (
+          <div key={friends.id} className='bg-gray-200 p-20 mt-2 2xl:p-7 rounded-2xl '>
             <div className='flex-shrink-0'>
               {friends.details.profileImage.map(media => (
                 <img
                   key={media.id}
                   src={`${media.path}`}
                   alt={`Profile ${media.id}`}
-                  className='w-96 h-52 object-cover rounded-md '
+                  className='w-56 h-52 object-cover rounded-md '
                 />
               ))}
             </div>
