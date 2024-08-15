@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import axiosInstance from 'services/instance';
-
+import { useRightSidebar } from '@context/RightSidebarContext';
+import { useSidebar } from '@context/SidebarContext';
 interface User {
   id: string;
   createdAt: any;
@@ -25,7 +26,8 @@ interface Media {
 export default function UserDetails() {
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<User | null>(null);
-
+  const { isRightSidebarOpen } = useRightSidebar();
+  const { isSidebarOpen } = useSidebar();
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
@@ -44,10 +46,10 @@ export default function UserDetails() {
   if (!user) return <div>Loading...</div>;
 
   return (
-    <div className=' mt-[10px] ml-[10px] pl-[30vh] pr-[37vh] pb-[142px] pt-[6vh] bg-white cursor-pointer shadow-lg rounded-lg'>
-      <div>
-        {user?.details.profileImage.map(media => (
-          <div key={media.id} className='ml-10'>
+    <div className={`mt-2 bg-white cursor-pointer shadow-lg rounded-lg w-[50vh]  h-[87vh] flex items-center justify-center ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block  2xl:w-[119vh]`}>
+  <div className="flex flex-col items-center">
+  {user?.details.profileImage.map(media => (
+          <div key={media.id} className='flex justify-center'>
             <img
               src={`${media.path}`}
               alt={`Profile ${media.id}`}
@@ -57,7 +59,7 @@ export default function UserDetails() {
         ))}
 
         <div className='ml mt-2'>
-          <div className='ml-32' key={user?.id}>
+          <div className='ml-' key={user?.id}>
             <div className='flex mt-10'>
               <p className='text-4xl bold font-bold'>
                 {user?.details.first_name}
@@ -80,9 +82,7 @@ export default function UserDetails() {
             </div>
 
            
-            <div className='flex items-center mt-8 ml-10'>
 
-</div>
           </div>
         </div>
       </div>
