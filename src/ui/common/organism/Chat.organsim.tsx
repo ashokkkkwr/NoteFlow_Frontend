@@ -190,7 +190,6 @@ export default function ChatOrganism() {
         }
         socket.emit('joinRoom', { receiverId: userId })
       }
-
       const response = await axiosInstance.get(`/chat/${userId}`)
       setSelectedUser(user)
       setChats(response.data.data)
@@ -205,13 +204,11 @@ export default function ChatOrganism() {
       console.log('Error in handleUserClick:', error)
     }
   }
-
   const markMessagesAsRead = (messageIds: string[]) => {
     if (socket) {
       socket.emit('markMessagesAsRead', { messageIds })
     }
   }
-
   const viewUser = async () => {
     try {
       const response = await axiosInstance.get('/friend/view-user')
@@ -221,7 +218,6 @@ export default function ChatOrganism() {
       console.log(error)
     }
   }
-
   const addFriend = async (id: string) => {
     try {
       console.log(id, 'user id')

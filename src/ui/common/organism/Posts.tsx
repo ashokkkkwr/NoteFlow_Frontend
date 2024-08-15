@@ -32,14 +32,17 @@ export interface Note {
   };
   comments: Comment[];
 }
+
 interface PostsProps {
   refreshPosts: number; 
 }
+
 interface Media {
   id: string;
   path: string;
 }
-export default function Posts({refreshPosts}:PostsProps) {
+
+export default function Posts({ refreshPosts }: PostsProps) {
   const { isRightSidebarOpen } = useRightSidebar();
   const { isSidebarOpen } = useSidebar();
   const { lang } = useLang();
@@ -75,14 +78,14 @@ export default function Posts({refreshPosts}:PostsProps) {
 
   const fetchCommentsForNote = async (noteId: string) => {
     try {
-
       const response = await axiosInstance.get(`/comment/${noteId}`);
-      console.log(response,'commentsss')
+      console.log(response, 'commentsss');
       setComments((prevComments) => ({ ...prevComments, [noteId]: response.data.data }));
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleTopLevelCommentSubmit = async (e: React.FormEvent<HTMLFormElement>, noteId: string) => {
     e.preventDefault();
     try {
@@ -122,7 +125,7 @@ export default function Posts({refreshPosts}:PostsProps) {
     notes.forEach((note) => {
       fetchCommentsForNote(note.id);
     });
-  }, []);
+  }, [notes]);
 
   const toggleCommentFormVisibility = (noteId: string) => {
     setVisibleCommentForm(visibleCommentForm === noteId ? null : noteId);
@@ -136,15 +139,17 @@ export default function Posts({refreshPosts}:PostsProps) {
   };
 
   return (
-
-    <div className={`mt-10 bg-grey max-w-3xl ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block  `}>
+    <div
+      className={`mt-2 bg-grey max-w-3xl ${isRightSidebarOpen ? 'hidden' : 'block'} ${isSidebarOpen ? 'hidden' : 'block'} 2xl:block overflow-auto`}
+      style={{ scrollBehavior: 'smooth' }}
+    >
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
           <div key={note.id} className="mb-20 h-auto w-auto border bg-white shadow-xl rounded-lg p-4">
             <div className="flex items-center mb-4">
               {note.user.details.profileImage.map((media) => (
-                <div key={media.id}className=''>
+                <div key={media.id} className="">
                   <img src={media.path} alt={`Profile ${media.id}`} className="w-12 h-12 rounded-full object-contain" />
                 </div>
               ))}
