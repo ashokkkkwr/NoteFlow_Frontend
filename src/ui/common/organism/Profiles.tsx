@@ -52,7 +52,7 @@ export default function Profiles() {
     >
       <div className='flex flex-col items-center'>
         {user?.details.profileImage.map((media) => (
-          <div key={media.id} className='flex justify-center'>
+          <div key={media.id} className='flex justify-center mt-1 2xl:mt-20'>
             <img src={`${media.path}`} alt={`Profile ${media.id}`} className='w-96 h-96 rounded-full object-cover' />
           </div>
         ))}
