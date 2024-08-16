@@ -3,7 +3,7 @@ import axiosInstance from 'services/instance';
 import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import { useSocket } from '@context/SocketContext';
-
+import Default from '../../../assets/default.png'
 interface User {
   id: string;
   details: {
@@ -82,13 +82,22 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
       {users.map(user => (
         <div key={user.id} className='mt-1 flex items-start p-4 border-b border-gray-200'>
           <div className='flex items-start flex-1'>
-            {user.details.profileImage.length > 0 && (
+          {(user?.details?.profileImage?.length ?? 0) > 0 ? (
+            user?.details.profileImage.map((media) => (
               <img
-                src={user.details.profileImage[0].path}
-                alt={`Profile ${user.details.profileImage[0].id}`}
+                src={media.path}
+                alt={Default}
                 className='w-12 h-12 rounded-full object-cover'
               />
-            )}
+            )             
+            )):(
+              <img
+                src={Default}
+                alt={Default}
+                className='w-12 h-12 rounded-full object-cover'
+              />
+            )
+          }
             <div className='ml-3 flex-1'>
               <Link to={`/auth/user/${user.id}`}>
                 <p className='text-lg truncate'>{user.details.first_name} {user.details.last_name}</p>

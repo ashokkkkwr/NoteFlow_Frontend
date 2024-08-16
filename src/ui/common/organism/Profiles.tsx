@@ -4,6 +4,7 @@ import { FaChevronDown, FaEdit, FaTimes } from 'react-icons/fa'
 import axiosInstance from 'services/instance'
 import { useRightSidebar } from '@context/RightSidebarContext'
 import { useSidebar } from '@context/SidebarContext'
+import Default from '../../../assets/default.png'
 
 interface User {
   id: string
@@ -17,6 +18,7 @@ interface User {
   email: string
   role: string
 }
+
 interface Media {
   id: string
   path: string
@@ -38,7 +40,6 @@ export default function Profiles() {
   const viewUser = async () => {
     try {
       const response = await axiosInstance.get('/user/byToken')
-      console.log(response.data.data, 'yoyo')
       setUser(response.data.data)
     } catch (error) {
       console.log(error, 'yo chai error')
@@ -69,7 +70,6 @@ export default function Profiles() {
           'Content-Type': 'application/json',
         },
       })
-      console.log(response)
       setIsFormOpen(false) // Hide form after successful update
       viewUser() // Refresh user details
     } catch (error) {
@@ -80,6 +80,7 @@ export default function Profiles() {
   useEffect(() => {
     viewUser()
   }, [])
+
   const { lang } = useLang()
   const toggleForm = () => {
     setIsFormOpen(!isFormOpen)
@@ -94,16 +95,25 @@ export default function Profiles() {
       <div className='flex flex-col items-center'>
         {!isFormOpen ? (
           <>
-            {user?.details.profileImage.map((media) => (
-              <div key={media.id} className='flex justify-center mt-1 2xl:mt-20'>
+            {(user?.details?.profileImage?.length ?? 0) > 0 ? (
+              user?.details.profileImage.map((media) => (
+                <div key={media.id} className='flex justify-center mt-1 2xl:mt-20'>
+                  <img
+                    src={media.path ? media.path : Default}
+                    alt={`Profile ${media.id}`}
+                    className='w-96 h-96 rounded-full object-cover'
+                  />
+                </div>
+              ))
+            ) : (
+              <div className='flex justify-center mt-1 2xl:mt-20'>
                 <img
-                  src={`${media.path}`}
-                  alt={`Profile ${media.id}`}
+                  src={Default}
+                  alt='Default Profile'
                   className='w-96 h-96 rounded-full object-cover'
                 />
               </div>
-            ))}
-
+            )}
             <div className='ml mt-2'>
               <div className='ml-' key={user?.id}>
                 <div className='flex mt-10'>

@@ -14,7 +14,7 @@ export default function NavBar() {
 
   return (
     <div className=''>
-      <div className={`mt-20 ml-8 ${isActive('/') ? 'border-l-4 border-red-500' : ''}`}>
+      <div className={`mt-20 ml-8 ${isActive('/') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
         <Link to='/'>
           <div className="flex items-center">
             <FaHome className="text-2xl" />
@@ -22,7 +22,7 @@ export default function NavBar() {
           </div>
         </Link>
       </div>
-      <div className={`mt-10 ml-8 ${isActive('/auth/user/profile') ? 'border-l-4 border-red-500' : ''}`}>
+      <div className={`mt-10 ml-8 ${isActive('/auth/user/profile') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
         <Link to='/auth/user/profile'>
           <div className="flex items-center">
             <FaUserEdit className="text-2xl" />
@@ -30,7 +30,7 @@ export default function NavBar() {
           </div>
         </Link>
       </div>
-      <div className={`mt-10 ml-8 ${isActive('/auth/user/friend-request') ? 'border-l-4 border-red-500' : ''}`}>
+      <div className={`mt-10 ml-8 ${isActive('/auth/user/friend-request') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
         <Link to='/auth/user/friend-request'>
           <div className="flex items-center">
             <FaUserFriends className="text-2xl" />
@@ -38,7 +38,7 @@ export default function NavBar() {
           </div>
         </Link>
       </div>
-      <div className={`mt-10 ml-8 ${isActive('/auth/user/settings') ? 'border-l-4 border-red-500' : ''}`}>
+      <div className={`mt-10 ml-8 ${isActive('/auth/user/settings') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
         <Link to='/auth/user/settings'>
           <div className="flex items-center">
             <IoSettings className="text-2xl" />

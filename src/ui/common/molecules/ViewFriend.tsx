@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axiosInstance from 'services/instance';
-
+import Default from '../../../assets/default.png'
 interface User {
   id: string;
   createdAt: any;
@@ -45,7 +45,9 @@ export default function ViewFriend() {
         <div key={friends.id} className="mt-3 ml-6 border-b border-gray-200 pb-5" >
           <div className="flex">
             <div>
-              {friends.details.profileImage.map((media) => (
+            {(friends?.details?.profileImage?.length ?? 0) > 0 ? (
+
+              friends.details.profileImage.map((media) => (
                 <div key={media.id}>
                   <img
                     src={media.path}
@@ -53,7 +55,13 @@ export default function ViewFriend() {
                     className="w-12 h-12 rounded-full object-cover"
                   />
                 </div>
-              ))}
+              ))):(
+                <img
+                    src={Default}
+                    alt={`Profile`}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+              )}
             </div>
               <div className=''>
             <div className="flex mt- ml-2">
