@@ -109,7 +109,6 @@ export default function ChatOrganism() {
           prevChats.map((chat) => (messageIds.includes(chat.id!) ? { ...chat, read: true } : chat))
         )
       })
-
       return () => {
         socket.off('message')
         socket.off('typing')
@@ -117,20 +116,6 @@ export default function ChatOrganism() {
       }
     }
   }, [socket, loggedInUserId, receiverId])
-
-  useEffect(() => {
-    if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [chats])
-
-  useEffect(() => {
-    if (users.length > 0) {
-      const firstUser = users[0]
-      handleUserClick(firstUser, firstUser.id)
-    }
-  }, [users])
-
   useEffect(() => {
     // Handle status change
     if (socket) {
@@ -148,6 +133,21 @@ export default function ChatOrganism() {
       }
     }
   }, [socket])
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [chats])
+
+  useEffect(() => {
+    if (users.length > 0) {
+      const firstUser = users[0]
+      handleUserClick(firstUser, firstUser.id)
+    }
+  }, [users])
+
+
 
   const viewUsers = async () => {
     try {

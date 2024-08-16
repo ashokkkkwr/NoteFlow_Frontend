@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { GrView } from 'react-icons/gr';
 import { useRightSidebar } from '@context/RightSidebarContext'
 import { useSidebar } from '@context/SidebarContext'
+import Default from '../../../assets/default.png'
 interface User {
   id: string;
   details: {
@@ -56,14 +57,22 @@ export default function ViewAllFriends() {
       {users.map(friends => (
           <div key={friends.id} className='bg-gray-200 p-20 mt-2 2xl:p-7 rounded-2xl '>
             <div className='flex-shrink-0'>
-              {friends.details.profileImage.map(media => (
+            {(friends?.details?.profileImage?.length ?? 0) > 0 ? (
+            friends?.details.profileImage.map((media) => (
                 <img
                   key={media.id}
                   src={`${media.path}`}
                   alt={`Profile ${media.id}`}
                   className='w-56 h-52 object-cover rounded-md '
                 />
-              ))}
+              ))):(
+                <img
+              
+                  src={`${Default}`}
+                  alt={`Profile ${Default}`}
+                  className='w-56 h-52 object-cover rounded-md '
+                />
+              )}
             </div>
 
             <div className='flex flex-col items-center mt-4'>

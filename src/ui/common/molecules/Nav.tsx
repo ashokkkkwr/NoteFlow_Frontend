@@ -5,7 +5,11 @@ import { IoIosNotifications } from 'react-icons/io'
 import { FaChevronDown } from 'react-icons/fa'
 import axiosInstance from 'services/instance'
 import { useSocket } from '@context/SocketContext'
+import Default from '../../../assets/default.png'
+import { RiNotificationLine } from 'react-icons/ri'
 
+import { RiNotificationFill } from 'react-icons/ri'
+import { BiSolidMessage } from 'react-icons/bi'
 
 interface User {
   id: string
@@ -63,7 +67,6 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
 
   const viewNotifications = async () => {
     try {
-      
       const response = await axiosInstance.get('/friend/notification')
       setNoti(response.data.data)
     } catch (error) {
@@ -74,7 +77,7 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
   const markAsRead = async (notificationId: string) => {
     try {
       if (socket) {
-        socket.emit('markAsRead', notificationId);
+        socket.emit('markAsRead', notificationId)
       }
       // await axiosInstance.patch(`/friend/read/${notificationId}`)
       // setNoti(prevNoti =>
@@ -114,25 +117,26 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
     }
   }, [])
 
-  const totalNotifications = noti.length + (senderDetails ? 1 : 0)
+  const unreadNotifications =
+    noti.filter((notification) => !notification.read).length + (senderDetails && !notiService?.read ? 1 : 0)
 
   return (
     <div className='bg-white flex justify-between items-center p-4'>
       <div className='flex '>
         <Link to='/auth/user/message'>
-          <div className='p-3 bg-gray-200 rounded-full'>
-            <MdMessage />
+          <div className='p-3 bg-gray-100 border rounded-full hover:bg-gray-200 hover:border-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-red-500'>
+            <BiSolidMessage className='text-[21px] transition-transform duration-300 ease-in-out hover:scale-110' />
           </div>
         </Link>
         <div className='flex items-center relative' ref={notiDropdownRef}>
           <div
-            className='ml-8 flex items-center cursor-pointer bg-gray-200 rounded-full p-3'
+            className='ml-8 p-3 bg-gray-100 border rounded-full hover:bg-gray-200 hover:border-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-red-500 cursor-pointer'
             onClick={() => setNotiDropDownOpen(!notiDropDownOpen)}
           >
-            <IoIosNotifications />
-            {totalNotifications > 0 && (
+            <RiNotificationFill className='text-[21px]' />
+            {unreadNotifications > 0 && (
               <div className='absolute top-0 right-0 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs'>
-                {totalNotifications}
+                {unreadNotifications}
               </div>
             )}
           </div>
@@ -171,7 +175,9 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
                 {noti.map((notification) => (
                   <div
                     key={notification.id}
-                    className={`flex mt-4 p-3 rounded-md cursor-pointer ${notification.read ? 'bg-red-100' : 'bg-red-300'}`}
+                    className={`flex mt-4 p-3 rounded-md cursor-pointer ${
+                      notification.read ? 'bg-red-100' : 'bg-red-300'
+                    }`}
                     onClick={() => markAsRead(notification.id)}
                   >
                     <Link to='/auth/user/friend-request' className='flex'>
@@ -201,15 +207,15 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
       <div className='flex items-center relative' ref={dropdownRef}>
         {user ? (
           <div className='ml-16 flex items-center cursor-pointer' onClick={() => setDropdownOpen(!dropdownOpen)}>
-            {user.details.profileImage?.map((media) => (
-              <div key={media.id}>
-                <img
-                  src={media.path}
-                  alt={`Profile ${media.id}`}
-                  className='w-10 h-10 rounded-full object-cover'
-                />
-              </div>
-            ))}
+            {(user.details.profileImage?.length ?? 0) > 0 ? (
+              user.details.profileImage?.map((media) => (
+                <div key={media.id}>
+                  <img src={media.path} alt={`Profile ${media.id}`} className='w-10 h-10 rounded-full object-cover' />
+                </div>
+              ))
+            ) : (
+              <img src={Default} alt={`Profile`} className='w-10 h-10 rounded-full object-cover' />
+            )}
             <div className='ml-2 mt-2'>
               <div key={user.id}>
                 <p>{user.details.first_name}</p>
