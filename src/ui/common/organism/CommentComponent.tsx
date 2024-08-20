@@ -21,7 +21,7 @@ const CommentComponent: React.FC<{
     replyForm,
     toggleReplyFormVisibility,
   }) => (
-    <div key={comment.id} className="ml-10">
+    <div key={comment.id} className="ml-10 mt-3">
       <div>
   
       <p className='font-poppins font-bold flex'>{comment.comment}<RiCornerRightDownFill /></p></div>
