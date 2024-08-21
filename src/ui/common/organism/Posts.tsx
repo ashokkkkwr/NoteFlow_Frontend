@@ -9,7 +9,7 @@ import { jwtDecode } from 'jwt-decode'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
-import { MdBrowserUpdated } from "react-icons/md";
+import { MdBrowserUpdated } from 'react-icons/md'
 
 export interface Comment {
   id: string
@@ -69,7 +69,18 @@ export default function Posts({ refreshPosts }: PostsProps) {
   const [error, setError] = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [openFormId, setOpenFormId] = useState<string | null>(null)
+  const [visibleCommentsCount, setVisibleCommentsCount] = useState<Record<string, number>>({})
+  const commentsPerPage = 3
 
+
+  
+
+  const handleShowMoreComments = (noteId: string) => {
+    setVisibleCommentsCount((prev) => ({
+      ...prev,
+      [noteId]: (prev[noteId] || commentsPerPage) + commentsPerPage,
+    }))
+  }
   const handleTopLevelCommentChange = (noteId: string, value: string) => {
     setTopLevelCommentForm((prev) => ({ ...prev, [noteId]: value }))
   }
@@ -117,6 +128,7 @@ export default function Posts({ refreshPosts }: PostsProps) {
     }
   }
 
+
   const handleReplySubmit = async (e: React.FormEvent<HTMLFormElement>, noteId: string, commentId: string) => {
     e.preventDefault()
     try {
@@ -143,6 +155,8 @@ export default function Posts({ refreshPosts }: PostsProps) {
       fetchCommentsForNote(note.id)
     })
   }, [notes])
+
+
 
   const toggleCommentFormVisibility = (noteId: string) => {
     setVisibleCommentForm(visibleCommentForm === noteId ? null : noteId)
@@ -187,13 +201,13 @@ export default function Posts({ refreshPosts }: PostsProps) {
     }))
   }
 
-  const handleDelete = async (id:string)=>{
-    try{
+  const handleDelete = async (id: string) => {
+    try {
       const response = await axiosInstance.delete(`/notes/${id}`)
       console.log(response)
       fetchNotes()
-    }catch(error){
-      console.log("🚀 ~ handleDelete ~ error:", error)
+    } catch (error) {
+      console.log('🚀 ~ handleDelete ~ error:', error)
     }
   }
 
@@ -251,12 +265,14 @@ export default function Posts({ refreshPosts }: PostsProps) {
       return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`
     }
   }
+  
   const handleFileChange = (e: any) => {
     setFormData((prevData) => ({
       ...prevData,
       files: e.target.files,
     }))
   }
+  
 
   return (
     <div
@@ -309,8 +325,10 @@ export default function Posts({ refreshPosts }: PostsProps) {
                   </div>
                   <div>
                     <button className='bg-red-400 w-[43vh] h-14 rounded-xl ml- mt-5 hover:bg-red-500' type='submit'>
-                      <p className='font-poppins text-white flex items-center justify-center'><MdBrowserUpdated />
-                       Update</p>
+                      <p className='font-poppins text-white flex items-center justify-center'>
+                        <MdBrowserUpdated />
+                        Update
+                      </p>
                     </button>
                   </div>
                 </form>
@@ -352,7 +370,9 @@ export default function Posts({ refreshPosts }: PostsProps) {
                             <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => toggleForm(note.id)}>
                               Edit
                             </li>
-                            <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={()=>handleDelete(note.id)}>Delete</li>
+                            <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => handleDelete(note.id)}>
+                              Delete
+                            </li>
                           </ul>
                         </div>
                       )}
@@ -385,12 +405,11 @@ export default function Posts({ refreshPosts }: PostsProps) {
                         value={topLevelCommentForm[note.id] || ''}
                       />
                       {error}
-                      <button type='submit'  >Submit</button>
+                      <button type='submit'>Submit</button>
                     </form>
                   )}
-
                   <div>
-                    {comments[note.id]?.map((comment) => (
+                    {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
                       <CommentComponent
                         key={comment.id}
                         noteId={note.id}
@@ -402,6 +421,12 @@ export default function Posts({ refreshPosts }: PostsProps) {
                         toggleReplyFormVisibility={toggleReplyFormVisibility}
                       />
                     ))}
+
+                    {
+                      comments[note.id]?.length>(visibleCommentsCount[note.id]|| commentsPerPage)&&(
+                        <button onClick={()=>handleShowMoreComments(note.id)}>Show More Comment</button>
+                      )
+                    }
                   </div>
                 </div>
               </>
