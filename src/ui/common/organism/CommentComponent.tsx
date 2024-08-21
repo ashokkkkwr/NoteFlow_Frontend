@@ -27,7 +27,7 @@ const CommentComponent: React.FC<{
     return (
       <div key={comment.id} className="ml-10">
         <div>
-          <p>{comment?.user?.email}</p>
+          <p>{comment?.user?.details.first_name}</p>
           {/* {
             comment?.user?.details?.profileImage.map((image)=>(
               <img src={image.path} alt="" />

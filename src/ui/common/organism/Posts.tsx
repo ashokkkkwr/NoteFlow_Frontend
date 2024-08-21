@@ -23,7 +23,6 @@ export interface Comment {
       profileImage: Media[]
     }
   }
-
 }
 
 export interface Note {
@@ -93,13 +92,29 @@ export default function Posts({ refreshPosts }: PostsProps) {
       [noteId]: (prev[noteId] || commentsPerPage) + commentsPerPage,
     }))
   }
-
+  const handleShowLessComments = (noteId: string) => {
+    setVisibleCommentsCount((prev) => ({
+      ...prev,
+      [noteId]: Math.max(commentsPerPage, (prev[noteId] || commentsPerPage) - commentsPerPage),
+    }))
+  }
   const handleShowMoreReplies = (noteId: string, commentId: string) => {
     setVisibleRepliesCount((prev) => ({
       ...prev,
       [`${noteId}_${commentId}`]: (prev[`${noteId}_${commentId}`] || repliesPerPage) + repliesPerPage,
-    }))
+    }));
   }
+  
+  const handleShowLessReplies = (noteId: string, commentId: string) => {
+    setVisibleRepliesCount((prev) => ({
+      ...prev,
+      [`${noteId}_${commentId}`]: Math.max(
+        repliesPerPage,
+        (prev[`${noteId}_${commentId}`] || repliesPerPage) - repliesPerPage
+      ),
+    }));
+  }
+  
 
   const handleTopLevelCommentChange = (noteId: string, value: string) => {
     setTopLevelCommentForm((prev) => ({ ...prev, [noteId]: value }))
@@ -300,7 +315,7 @@ export default function Posts({ refreshPosts }: PostsProps) {
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
-          <div key={note.id} className='mb-20 h-auto w-auto border bg-white shadow-xl rounded-lg p-4 '>
+          <div key={note.id} className='mb-20 h-auto w-auto border bg-white shadow-xl rounded-lg p-5 '>
             {openFormId === note.id && (
               <div className='flex justify-end mr-10 mt-5'>
                 <button onClick={() => toggleForm(note.id)} className='text-red-500 hover:text-red-700'>
@@ -407,7 +422,7 @@ export default function Posts({ refreshPosts }: PostsProps) {
                     </div>
                   ))}
                 </div>
-                <div className='p-5 bg-gray-200  rounded-xl'>
+                <div className='p-5 bg-gray-100  rounded-xl'>
                   <button onClick={() => toggleCommentFormVisibility(note.id)}>
                     {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'}
                   </button>
@@ -425,7 +440,6 @@ export default function Posts({ refreshPosts }: PostsProps) {
                     </form>
                   )}
                   <div>
-                   
                     {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
                       <CommentComponent
                         key={comment.id}
@@ -437,11 +451,16 @@ export default function Posts({ refreshPosts }: PostsProps) {
                         replyForm={replyForm}
                         toggleReplyFormVisibility={toggleReplyFormVisibility}
                       />
-                      
                     ))}
 
                     {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
                       <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
+                    )}
+
+                    {visibleCommentsCount[note.id] > commentsPerPage && (
+                      <button onClick={() => handleShowLessComments(note.id)} className=''>
+                        Show Less Comments
+                      </button>
                     )}
                   </div>
                 </div>
