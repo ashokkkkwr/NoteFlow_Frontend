@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axiosInstance from 'services/instance'
 import InputField from '../atoms/InputField'
-import Button from '../atoms/Button'
 import CommentComponent from './CommentComponent'
 import { useRightSidebar } from '@context/RightSidebarContext'
 import { useSidebar } from '@context/SidebarContext'
@@ -15,6 +14,16 @@ export interface Comment {
   id: string
   comment: string
   replies: Comment[]
+  user: {
+    id: string
+    email: string
+    details: {
+      first_name: string
+      last_name: string
+      profileImage: Media[]
+    }
+  }
+
 }
 
 export interface Note {
@@ -44,6 +53,10 @@ interface Media {
   id: string
   path: string
 }
+interface Media1 {
+  id: string
+  path: string
+}
 interface FormData {
   title: string
   content: string
@@ -70,10 +83,9 @@ export default function Posts({ refreshPosts }: PostsProps) {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [openFormId, setOpenFormId] = useState<string | null>(null)
   const [visibleCommentsCount, setVisibleCommentsCount] = useState<Record<string, number>>({})
+  const [visibleRepliesCount, setVisibleRepliesCount] = useState<Record<string, number>>({})
   const commentsPerPage = 3
-
-
-  
+  const repliesPerPage = 3
 
   const handleShowMoreComments = (noteId: string) => {
     setVisibleCommentsCount((prev) => ({
@@ -81,6 +93,14 @@ export default function Posts({ refreshPosts }: PostsProps) {
       [noteId]: (prev[noteId] || commentsPerPage) + commentsPerPage,
     }))
   }
+
+  const handleShowMoreReplies = (noteId: string, commentId: string) => {
+    setVisibleRepliesCount((prev) => ({
+      ...prev,
+      [`${noteId}_${commentId}`]: (prev[`${noteId}_${commentId}`] || repliesPerPage) + repliesPerPage,
+    }))
+  }
+
   const handleTopLevelCommentChange = (noteId: string, value: string) => {
     setTopLevelCommentForm((prev) => ({ ...prev, [noteId]: value }))
   }
@@ -128,7 +148,6 @@ export default function Posts({ refreshPosts }: PostsProps) {
     }
   }
 
-
   const handleReplySubmit = async (e: React.FormEvent<HTMLFormElement>, noteId: string, commentId: string) => {
     e.preventDefault()
     try {
@@ -155,8 +174,6 @@ export default function Posts({ refreshPosts }: PostsProps) {
       fetchCommentsForNote(note.id)
     })
   }, [notes])
-
-
 
   const toggleCommentFormVisibility = (noteId: string) => {
     setVisibleCommentForm(visibleCommentForm === noteId ? null : noteId)
@@ -265,14 +282,13 @@ export default function Posts({ refreshPosts }: PostsProps) {
       return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`
     }
   }
-  
+
   const handleFileChange = (e: any) => {
     setFormData((prevData) => ({
       ...prevData,
       files: e.target.files,
     }))
   }
-  
 
   return (
     <div
@@ -409,24 +425,24 @@ export default function Posts({ refreshPosts }: PostsProps) {
                     </form>
                   )}
                   <div>
+                   
                     {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
                       <CommentComponent
                         key={comment.id}
                         noteId={note.id}
-                        comment={{ ...comment, replies: comment.replies || [] }}
+                        comment={comment}
                         handleReplySubmit={handleReplySubmit}
                         handleReplyChange={handleReplyChange}
                         visibleReplyForm={visibleReplyForm}
                         replyForm={replyForm}
                         toggleReplyFormVisibility={toggleReplyFormVisibility}
                       />
+                      
                     ))}
 
-                    {
-                      comments[note.id]?.length>(visibleCommentsCount[note.id]|| commentsPerPage)&&(
-                        <button onClick={()=>handleShowMoreComments(note.id)}>Show More Comment</button>
-                      )
-                    }
+                    {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
+                      <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
+                    )}
                   </div>
                 </div>
               </>
