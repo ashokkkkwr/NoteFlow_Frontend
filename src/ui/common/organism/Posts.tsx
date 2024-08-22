@@ -52,17 +52,13 @@ interface Media {
   id: string
   path: string
 }
-interface Media1 {
-  id: string
-  path: string
-}
 interface FormData {
   title: string
   content: string
   files: FileList | null
 }
 
-export default function Posts({ refreshPosts }: PostsProps) {
+const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null)
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
   const [formData, setFormData] = useState<FormData>({
@@ -99,22 +95,18 @@ export default function Posts({ refreshPosts }: PostsProps) {
     }))
   }
   const handleShowMoreReplies = (noteId: string, commentId: string) => {
-    setVisibleRepliesCount((prev) => ({
-      ...prev,
-      [`${noteId}_${commentId}`]: (prev[`${noteId}_${commentId}`] || repliesPerPage) + repliesPerPage,
-    }));
+    setVisibleRepliesCount((prevState) => ({
+      ...prevState,
+      [`${noteId}_${commentId}`]: (prevState[`${noteId}_${commentId}`] || repliesPerPage) + repliesPerPage,
+    }))
   }
-  
+
   const handleShowLessReplies = (noteId: string, commentId: string) => {
-    setVisibleRepliesCount((prev) => ({
-      ...prev,
-      [`${noteId}_${commentId}`]: Math.max(
-        repliesPerPage,
-        (prev[`${noteId}_${commentId}`] || repliesPerPage) - repliesPerPage
-      ),
-    }));
+    setVisibleRepliesCount((prevState) => ({
+      ...prevState,
+      [`${noteId}_${commentId}`]: repliesPerPage, // Reset to initial number of replies
+    }))
   }
-  
 
   const handleTopLevelCommentChange = (noteId: string, value: string) => {
     setTopLevelCommentForm((prev) => ({ ...prev, [noteId]: value }))
@@ -440,28 +432,30 @@ export default function Posts({ refreshPosts }: PostsProps) {
                     </form>
                   )}
                   <div>
-                    {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
-                      <CommentComponent
-                        key={comment.id}
-                        noteId={note.id}
-                        comment={comment}
-                        handleReplySubmit={handleReplySubmit}
-                        handleReplyChange={handleReplyChange}
-                        visibleReplyForm={visibleReplyForm}
-                        replyForm={replyForm}
-                        toggleReplyFormVisibility={toggleReplyFormVisibility}
-                      />
-                    ))}
+                  {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
+              <CommentComponent
+                key={comment.id}
+                noteId={note.id}
+                comment={comment}
+                handleReplySubmit={handleReplySubmit}
+                handleReplyChange={handleReplyChange}
+                visibleReplyForm={visibleReplyForm}
+                replyForm={replyForm}
+                toggleReplyFormVisibility={toggleReplyFormVisibility}
+                handleShowMoreReplies={handleShowMoreReplies}
+                handleShowLessReplies={handleShowLessReplies}
+                visibleRepliesCount={visibleRepliesCount}
+                repliesPerPage={repliesPerPage}
+              />
+            ))}
 
-                    {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
-                      <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
-                    )}
+            {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
+              <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
+            )}
 
-                    {visibleCommentsCount[note.id] > commentsPerPage && (
-                      <button onClick={() => handleShowLessComments(note.id)} className=''>
-                        Show Less Comments
-                      </button>
-                    )}
+            {visibleCommentsCount[note.id] > commentsPerPage && (
+              <button onClick={() => handleShowLessComments(note.id)}>Show Less Comments</button>
+            )}
                   </div>
                 </div>
               </>
@@ -472,3 +466,5 @@ export default function Posts({ refreshPosts }: PostsProps) {
     </div>
   )
 }
+export default Posts;
+
