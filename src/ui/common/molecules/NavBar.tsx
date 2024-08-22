@@ -1,10 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaUserFriends } from "react-icons/fa";
-import { GiPlagueDoctorProfile } from "react-icons/gi";
+import { FaHome, FaUserFriends, FaUserEdit } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
-import { navbarLabel } from '@data/localization/common/landingPage/navbar';
 import useLang from '@hooks/useLang';
-import { FaUserEdit } from "react-icons/fa";
+import { navbarLabel } from '@data/localization/common/landingPage/navbar';
 
 export default function NavBar() {
   const { lang } = useLang();
@@ -13,36 +11,41 @@ export default function NavBar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className=''>
-      <div className={`mt-20 ml-8 ${isActive('/') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
-        <Link to='/'>
-          <div className="flex items-center">
-            <FaHome className="text-2xl" />
-            <p className="mt-1 ml-2 text-lg"> {navbarLabel.home[lang]} </p>
+    <div className="flex flex-col items-start justify-center p-4 bg-white rounded-lg">
+      <p className="text-red-700 text-xl font-bold mb-6 ml-10">Browse</p>
+      
+      <div className={`w-full mb-3 ${isActive('/') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+        <Link to="/">
+          <div className="flex items-center p-3">
+            <FaHome className="text-2xl text-black" />
+            <p className="ml-4 text-lg text-black font-medium">{navbarLabel.home[lang]}</p>
           </div>
         </Link>
       </div>
-      <div className={`mt-10 ml-8 ${isActive('/auth/user/profile') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
-        <Link to='/auth/user/profile'>
-          <div className="flex items-center">
-            <FaUserEdit className="text-2xl" />
-            <p className="mt-1 ml-2 text-lg"> {navbarLabel.profile[lang]}</p>
+
+      <div className={`w-full mb-3 ${isActive('/auth/user/profile') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+        <Link to="/auth/user/profile">
+          <div className="flex items-center p-3">
+            <FaUserEdit className="text-2xl text-black" />
+            <p className="ml-4 text-lg text-black font-medium">{navbarLabel.profile[lang]}</p>
           </div>
         </Link>
       </div>
-      <div className={`mt-10 ml-8 ${isActive('/auth/user/friend-request') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
-        <Link to='/auth/user/friend-request'>
-          <div className="flex items-center">
-            <FaUserFriends className="text-2xl" />
-            <p className="mt-1 ml-2 text-lg">{navbarLabel.friendRequest[lang]}</p>
+
+      <div className={`w-full mb-3 ${isActive('/auth/user/friend-request') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+        <Link to="/auth/user/friend-request">
+          <div className="flex items-center p-3">
+            <FaUserFriends className="text-2xl text-black" />
+            <p className="ml-4 text-lg text-black font-medium">{navbarLabel.friendRequest[lang]}</p>
           </div>
         </Link>
       </div>
-      <div className={`mt-10 ml-8 ${isActive('/auth/user/settings') ? 'border-l-[12px] border-red-500 pl-2' : ''}`}>
-        <Link to='/auth/user/settings'>
-          <div className="flex items-center">
-            <IoSettings className="text-2xl" />
-            <p className="mt-1 ml-2 text-lg"> {navbarLabel.setting[lang]}</p>
+
+      <div className={`w-full mb-1 ${isActive('/auth/user/settings') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+        <Link to="/auth/user/settings">
+          <div className="flex items-center p-3">
+            <IoSettings className="text-2xl text-black" />
+            <p className="ml-4 text-lg text-black font-medium">{navbarLabel.setting[lang]}</p>
           </div>
         </Link>
       </div>

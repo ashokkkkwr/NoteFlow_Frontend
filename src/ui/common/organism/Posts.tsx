@@ -9,6 +9,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import { MdBrowserUpdated } from 'react-icons/md'
+import Modal from './Modal'
 
 export interface Comment {
   id: string
@@ -77,6 +78,11 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const [error, setError] = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [openFormId, setOpenFormId] = useState<string | null>(null)
+  const [openDeleteId, setOpenDeleteId] = useState<string | null>(null)
+
+  
+  
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [visibleCommentsCount, setVisibleCommentsCount] = useState<Record<string, number>>({})
   const [visibleRepliesCount, setVisibleRepliesCount] = useState<Record<string, number>>({})
   const commentsPerPage = 3
@@ -217,12 +223,25 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const toggleForm = (noteId: string) => {
     setOpenFormId((prevId) => (prevId === noteId ? null : noteId))
   }
+ 
   const handleChange = (e: any) => {
     const { name, value } = e.target
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }))
+  }
+
+  const toggleDelete = (noteId: string) => {
+    setOpenDeleteId(noteId)
+    setIsModalOpen(true) // Open the modal
+  }
+
+  const handleConfirmDelete = async () => {
+    if (openDeleteId) {
+      await handleDelete(openDeleteId)
+      setIsModalOpen(false) // Close the modal after delete
+    }
   }
 
   const handleDelete = async (id: string) => {
@@ -242,8 +261,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
     if (formData.title) data.append('title', formData.title)
     if (formData.content) data.append('content', formData.content)
     data.append('type', 'POST')
-
-    // Only append files if they are selected
     if (formData.files && formData.files.length > 0) {
       for (let i = 0; i < formData.files.length; i++) {
         data.append('files', formData.files[i])
@@ -256,14 +273,8 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
           'content-type': 'multipart/form-data',
         },
       })
-
-      // Log the response to the console
       console.log(response)
-
-      // Close the form after successful update
       setOpenFormId(null)
-
-      // Refresh the notes list to show updated content
       fetchNotes()
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -299,7 +310,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
   return (
     <div
-      className={`mt-2 bg-grey max-w-3xl ${isRightSidebarOpen ? 'hidden' : 'block'} ${
+      className={`bg-grey w-[110vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
         isSidebarOpen ? 'hidden' : 'block'
       } 2xl:block overflow-auto`}
       style={{ scrollBehavior: 'smooth' }}
@@ -307,7 +318,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
-          <div key={note.id} className='mb-20 h-auto w-auto border bg-white shadow-xl rounded-lg p-5 '>
+          <div key={note.id} className='mb-20  w-auto border bg-white shadow-xl rounded-lg p-5 '>
             {openFormId === note.id && (
               <div className='flex justify-end mr-10 mt-5'>
                 <button onClick={() => toggleForm(note.id)} className='text-red-500 hover:text-red-700'>
@@ -315,6 +326,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                 </button>
               </div>
             )}
+
 
             {openFormId === note.id ? (
               <div className='flex items-center justify-center'>
@@ -328,7 +340,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                       onChange={handleChange}
                     />
                   </div>
-
                   <div className='mt-5 ml- flex'>
                     <input
                       className='h-14 w-[43vh] border-b-2 pr-10 pl-5 focus:outline-none'
@@ -360,9 +371,9 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
               <>
                 <div className='flex items-center mb-4 mt-4 justify-between'>
                   <div className='flex'>
-                    <div className='flex items-start'>
+                    <div className=''>
                       {note.user.details.profileImage.map((media) => (
-                        <div key={media.id} className=''>
+                        <div key={media.id} className='flex items-center justify-center'>
                           <img
                             src={media.path}
                             alt={`Profile ${media.id}`}
@@ -393,7 +404,8 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                             <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => toggleForm(note.id)}>
                               Edit
                             </li>
-                            <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => handleDelete(note.id)}>
+                            {/* <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => handleDelete(note.id)}> */}
+                            <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => toggleDelete(note.id)}>
                               Delete
                             </li>
                           </ul>
@@ -407,7 +419,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                   <h3 className='text-lg font-semibold mt-10'>{note.title}</h3>
                   <p>{note.content}</p>
                 </div>
-                <div>
+                <div className='flex justify-center items-center'>
                   {note.noteMedia.map((media) => (
                     <div key={media.id} className='mb-4'>
                       <img src={media.path} alt={`Media ${media.id}`} className='w-[85vh] h-[65vh] object-contain' />
@@ -432,30 +444,30 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     </form>
                   )}
                   <div>
-                  {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
-              <CommentComponent
-                key={comment.id}
-                noteId={note.id}
-                comment={comment}
-                handleReplySubmit={handleReplySubmit}
-                handleReplyChange={handleReplyChange}
-                visibleReplyForm={visibleReplyForm}
-                replyForm={replyForm}
-                toggleReplyFormVisibility={toggleReplyFormVisibility}
-                handleShowMoreReplies={handleShowMoreReplies}
-                handleShowLessReplies={handleShowLessReplies}
-                visibleRepliesCount={visibleRepliesCount}
-                repliesPerPage={repliesPerPage}
-              />
-            ))}
+                    {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
+                      <CommentComponent
+                        key={comment.id}
+                        noteId={note.id}
+                        comment={comment}
+                        handleReplySubmit={handleReplySubmit}
+                        handleReplyChange={handleReplyChange}
+                        visibleReplyForm={visibleReplyForm}
+                        replyForm={replyForm}
+                        toggleReplyFormVisibility={toggleReplyFormVisibility}
+                        handleShowMoreReplies={handleShowMoreReplies}
+                        handleShowLessReplies={handleShowLessReplies}
+                        visibleRepliesCount={visibleRepliesCount}
+                        repliesPerPage={repliesPerPage}
+                      />
+                    ))}
 
-            {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
-              <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
-            )}
+                    {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
+                      <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
+                    )}
 
-            {visibleCommentsCount[note.id] > commentsPerPage && (
-              <button onClick={() => handleShowLessComments(note.id)}>Show Less Comments</button>
-            )}
+                    {visibleCommentsCount[note.id] > commentsPerPage && (
+                      <button onClick={() => handleShowLessComments(note.id)}>Show Less Comments</button>
+                    )}
                   </div>
                 </div>
               </>
@@ -463,8 +475,14 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
           </div>
         ))}
       </ul>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Delete"
+        message="Are you sure you want to delete this note? This action cannot be undone."
+      />
     </div>
   )
 }
-export default Posts;
-
+export default Posts

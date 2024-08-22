@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        mutedOrange: '#FF7F50',
+      },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
       },

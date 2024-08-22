@@ -40,9 +40,9 @@ export default function ViewFriend() {
 
 
   return (
-    <div className='mt-14'>
+    <div className='mt-10'>
       {users.slice(0, 3).map((friends) => (
-        <div key={friends.id} className="mt-3 ml-6 border-b border-gray-200 pb-5" >
+        <div key={friends.id} className=" ml border-b border-gray-200 pb-3 mt-5" >
           <div className="flex">
             <div>
             {(friends?.details?.profileImage?.length ?? 0) > 0 ? (
@@ -84,7 +84,7 @@ export default function ViewFriend() {
       <Link to={`/auth/user/viewAllFriends`}>
       
      
-      <button className="ml-6 mt-10 w-48 h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-base hover:bg-red-500 hover:text-white transition-colors duration-300">
+      <button className="ml-6 mt-7 w-48 h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-base hover:bg-red-500 hover:text-white transition-colors duration-300">
         View All
       </button>
       </Link>
