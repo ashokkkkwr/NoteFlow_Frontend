@@ -41,4 +41,7 @@
     @apply text-inherit;
   }
 }
+*{
+  scroll-behavior: smooth;
+}
 

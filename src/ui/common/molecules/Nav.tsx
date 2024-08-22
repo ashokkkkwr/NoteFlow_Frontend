@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { MdMessage } from 'react-icons/md'
-import { IoIosNotifications } from 'react-icons/io'
 import { FaChevronDown } from 'react-icons/fa'
 import axiosInstance from 'services/instance'
 import { useSocket } from '@context/SocketContext'
 import Default from '../../../assets/default.png'
-import { RiNotificationLine } from 'react-icons/ri'
-
 import { RiNotificationFill } from 'react-icons/ri'
 import { BiSolidMessage } from 'react-icons/bi'
+import Logo from './Logo'
+
+
 
 interface User {
   id: string
@@ -121,7 +120,11 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
     noti.filter((notification) => !notification.read).length + (senderDetails && !notiService?.read ? 1 : 0)
 
   return (
-    <div className='bg-white flex justify-between items-center p-4'>
+    <>
+    <div className='flex justify-start items-start'>
+      <Logo />
+    </div>
+    <div className='bg-white flex justify-between items-center p-2'>
       <div className='flex '>
         <Link to='/auth/user/message'>
           <div className='p-3 bg-gray-100 border rounded-full hover:bg-gray-200 hover:border-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-red-500'>
@@ -239,5 +242,6 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
         )}
       </div>
     </div>
+    </>
   )
 }

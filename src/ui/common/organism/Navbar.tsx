@@ -15,8 +15,8 @@ const Navbar: React.FC<Props> = ({ testId, senderDetails, notiService }) => {
   const { toggleRightSidebar, isRightSidebarOpen } = useRightSidebar(); 
 
   return (
-    <div className="flex bg-white p-4 ml-[1px] justify-between sticky top-0 z-10 rounded-lg shadow-md 2xl:justify-end">
-      <button onClick={toggleSidebar} className="block 2xl:hidden">
+<div className="flex bg-white p-4 ml-[1px] justify-between  border rounded-lg shadow-md">
+<button onClick={toggleSidebar} className="block 2xl:hidden">
         {isSidebarOpen ? <FiX className='text-3xl text-red-500' /> : <BsArrowLeftCircleFill  className='text-3xl text-black'/>} 
       </button>
       <Nav testId={testId} senderDetails={senderDetails} notiService={notiService} />

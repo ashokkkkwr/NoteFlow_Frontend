@@ -4,6 +4,8 @@ import { IoIosPersonAdd } from "react-icons/io";
 import { Link } from 'react-router-dom';
 import { useSocket } from '@context/SocketContext';
 import Default from '../../../assets/default.png'
+import { TbFriends } from "react-icons/tb";
+
 interface User {
   id: string;
   details: {
@@ -74,13 +76,13 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   return (
     // <div className="mt-2 bg-white p-4 rounded-lg inline-flex flex-col min-w-max w-[45vh] h-[45vh] sm:w-[50vw]">
 
-    <div className='mt-2  bg-white p-4 rounded-lg inline-flex flex-col min-w-max w-[500px] h-[45vh] 2xl:w-[45vh]'>
-      <div className='flex items-center justify-center mb-4'>
+    <div className=' bg-white p-4 rounded-lg inline-flex flex-col  2xl:w-[45vh]'>
+      <div className='flex items-center justify-center '>
         <p className='font-poppins text-red-700 text-base'>People you may know</p>
       </div>
 
       {users.map(user => (
-        <div key={user.id} className='mt-1 flex items-start p-4 border-b border-gray-200'>
+        <div key={user.id} className='mt-1 flex items-start py-4 border-b border-gray-200'>
           <div className='flex items-start flex-1'>
           {(user?.details?.profileImage?.length ?? 0) > 0 ? (
             user?.details.profileImage.map((media) => (
@@ -116,9 +118,10 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
           </div>
         </div>
       ))}
-      <Link to={`/auth/user/viewAllUser`}>
-        <button className="ml-6 mt-6 w-48 h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-base hover:bg-red-500 hover:text-white transition-colors duration-300">
-          See All
+      <Link to={`/auth/user/viewAllUser`} className='flex justify-center items-center'>
+        <button className="flex items-center justify-center ml- mt- w-40 h-10 border-2 bg-white  border-red-500 text-red-500  rounded-xl text-base hover:bg-red-600 hover:text-white transition-colors duration-300">
+        <TbFriends className='mr-2'/>
+        View All
         </button>
       </Link>
     </div>

@@ -10,12 +10,13 @@ export default function NavBarDown() {
     <>
    
     
-    <div className='flex items-center space-x-2 mt-5 ml-6'>
-    <p className='ml- font-poppins text-red-700 text-base'>Check your pals</p>
+    <div className='ml-10'>
+    <p className='font-poppins text-red-700 text-base'>Check your pals</p>
 
   </div>
-     
+     <div className=''>
 <ViewFriend />
+</div>
         </>
   )
 }
