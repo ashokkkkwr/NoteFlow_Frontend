@@ -11,8 +11,9 @@ export default function NavBar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="flex flex-col items-start justify-center p-4 bg-white rounded-lg">
-      <p className="text-red-700 text-xl font-bold mb-6 ml-10">Browse</p>
+    <div className="flex flex-col items- justify- py-7 px-2 bg-white rounded-lg">
+      <p className="font-poppins text-red-700 text-base mb-6 ml-4">Browse through
+      </p>
       
       <div className={`w-full mb-3 ${isActive('/') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
         <Link to="/">

@@ -310,7 +310,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
   return (
     <div
-      className={`bg-grey w-[110vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
+      className={` mt-3 bg-grey w-[110vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
         isSidebarOpen ? 'hidden' : 'block'
       } 2xl:block overflow-auto`}
       style={{ scrollBehavior: 'smooth' }}

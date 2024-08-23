@@ -26,24 +26,21 @@ const Profile = () => {
   }
   return (
     <>
-      <div className='flex '>
-        <div className=''>
-          <LeftSidebar />
-        </div>
-        <div className='flex-grow flex flex-col'>
+      <div className='bg-warmGray-200'>
+        <div className='sticky top-0 z-50'>
           <Navbar testId={testId || ''} senderDetails={senderDetails} notiService={notiService} />
-          <div className='flex flex-grow'>
-          <div className='flex-grow flex justify-center items-center'>
-          <Profiles />
-            </div>
-            <div className=' flex flex-col '>
+        </div>
+        <div className='flex justify-between'>
+          <LeftSidebar />
+              <Profiles />
+              <div className='flex-col'>
               <RightSidebar setTestId={handleSetTestId} />
 
               <RightSidebarDown onPostAdded={handlePostAdded} />
             </div>
           </div>
         </div>
-      </div>
+   
     </>
   )
 }

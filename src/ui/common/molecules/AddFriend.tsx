@@ -76,7 +76,7 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   return (
     // <div className="mt-2 bg-white p-4 rounded-lg inline-flex flex-col min-w-max w-[45vh] h-[45vh] sm:w-[50vw]">
 
-    <div className=' bg-white p-4 rounded-lg inline-flex flex-col  2xl:w-[45vh]'>
+    <div className=' bg-white p-4 rounded-lg inline-flex flex-col  2xl:w-[45vh]' >
       <div className='flex items-center justify-center '>
         <p className='font-poppins text-red-700 text-base'>People you may know</p>
       </div>
@@ -118,9 +118,10 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
           </div>
         </div>
       ))}
-      <Link to={`/auth/user/viewAllUser`} className='flex justify-center items-center'>
-        <button className="flex items-center justify-center ml- mt- w-40 h-10 border-2 bg-white  border-red-500 text-red-500  rounded-xl text-base hover:bg-red-600 hover:text-white transition-colors duration-300">
-        <TbFriends className='mr-2'/>
+      <Link to={`/auth/user/viewAllUser`} className='flex justify-center items-center mt-4'>
+        <button 
+              className=' flex justify-center items-center w-40 h-12 bg-gradient-to-r from-red-400 to-red-600 text-white font-semibold rounded-full hover:from-red-500 hover:to-red-700 transition-colors duration-300 shadow-lg'
+>
         View All
         </button>
       </Link>

@@ -10,7 +10,7 @@ export default function NavBarDown() {
     <>
    
     
-    <div className='ml-10'>
+    <div className='ml-[7px]'>
     <p className='font-poppins text-red-700 text-base'>Check your pals</p>
 
   </div>

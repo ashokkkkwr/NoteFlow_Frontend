@@ -25,6 +25,7 @@ const Landing = () => {
 
   return (
     <>
+    <div className='bg-warmGray-200'>
     <div className='sticky top-0 z-50'>
       <Navbar testId={testId || ''} senderDetails={senderDetails} notiService={notiService} />
 </div>
@@ -36,6 +37,7 @@ const Landing = () => {
           <RightSidebar setTestId={handleSetTestId} />
           <RightSidebarDown onPostAdded={handlePostAdded} />
         </div>
+      </div>
       </div>
     </>
   )
