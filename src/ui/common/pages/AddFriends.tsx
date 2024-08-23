@@ -56,13 +56,6 @@ export default function AddFriends() {
             <p>{user.id}</p>
             <p>{user.details.first_name}</p>
             <p>{user.details.last_name}</p>
-
-            {/* <p>
-                {user.details.first_name}
-              </p>
-              <p>
-                {user.details.last_name}
-              </p> */}
             <button onClick={() => addFriend(user.id)}>Add Friend</button>
 
           </li>
