@@ -71,7 +71,7 @@ export default function FriendRequests() {
   }, [])
   return (
     // <div className={`mt-10 bg-grey max-w-3xl ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block  `}>
-    <div className={` bg-white rounded-lg   ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block 2xl:w-[1115px] 2xl:ml-1 2xl:h-[812px] 2xl:mt-1`}>
+    <div className={` bg-white rounded-lg   ${isRightSidebarOpen?'hidden':'block'} ${isSidebarOpen?'hidden':'block'} 2xl:block 2xl:w-[116vh] 2xl:ml-1 2xl:h-[848px] 2xl:mt-2`}>
       <div className={`flex  flex-wrap gap-x-12  ml-12 2xl:ml-20`}>
         {request.map((friends) => (
           <div key={friends.id} className='bg-gray-200  p-20 mt-2 2xl:p-7 rounded-2xl '>

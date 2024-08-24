@@ -90,7 +90,7 @@ export default function Profiles() {
     <div
       className={`mt-2 bg-white cursor-pointer shadow-lg rounded-lg w-[50vh] h-[87vh] flex items-center justify-center ${
         isRightSidebarOpen ? 'hidden' : 'block'
-      } ${isSidebarOpen ? 'hidden' : 'block'} 2xl:block 2xl:w-[119vh]`}
+      } ${isSidebarOpen ? 'hidden' : 'block'} 2xl:block 2xl:w-[116vh] 2xl:h-[848px]`}
     >
       <div className='flex flex-col items-center'>
         {!isFormOpen ? (
