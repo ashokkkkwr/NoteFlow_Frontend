@@ -23,7 +23,6 @@ interface Media {
   id: string
   path: string
 }
-
 export default function Profiles() {
   const [user, setUser] = useState<User | null>(null)
   const { isRightSidebarOpen } = useRightSidebar()
