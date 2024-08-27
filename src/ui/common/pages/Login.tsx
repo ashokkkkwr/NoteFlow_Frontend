@@ -15,6 +15,7 @@ import { FaGoogle } from 'react-icons/fa'
 import { FaFacebook } from 'react-icons/fa'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai' // Import eye icons
 import Image from '../../../assets/rotate.jpg'
+import GoogleAuth from '../molecules/GoogleLogin.molecules'
 const Login = () => {
   const { lang } = useLang()
   const navigate = useNavigate()
@@ -123,7 +124,7 @@ const Login = () => {
                   <p className='font-poppins text-white'>Sign in</p>
                 </button>
               </div>
-
+              </form>
               <p className='mt-8 ml-48 flex font-poppins'>
                 <GoDash className='mt-1' /> or signin with
                 <GoDash className='mt-1' />
@@ -132,7 +133,7 @@ const Login = () => {
                 <button className='mt-10 ml-[10vh] border rounded-xl h-14 w-44 flex items-center justify-center'>
                   <p className='flex text-xl font-bold font-poppins'>
                     <span className='mt-1'>
-                      <FaGoogle />
+                      <GoogleAuth />
                     </span>{' '}
                     <span className='ml-3'>Google</span>
                   </p>
@@ -152,7 +153,7 @@ const Login = () => {
                   <p className='ml-1 font-poppins font-semibold'>Request Now</p>
                 </Link>
               </div>
-            </form>
+            
           </div>
         </div>
         <div className='h-screen bg-black'></div>
