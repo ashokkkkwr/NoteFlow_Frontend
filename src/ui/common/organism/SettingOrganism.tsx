@@ -1,8 +1,13 @@
 import { useAutoCorrect } from '@context/AutoCorrectContext';
-import React from 'react'
+import React, { useState } from 'react';
 
 export default function SettingOrganism() {
   const { isAutoCorrectOn, toggleAutoCorrect } = useAutoCorrect();
+  const [selectedSetting, setSelectedSetting] = useState(null);
+
+  const handleSettingClick = (setting:any) => {
+    setSelectedSetting(setting);
+  };
 
   return (
     <div className='w-[116vh] h-[848px] bg-white mt-2 flex'>
@@ -31,30 +36,30 @@ export default function SettingOrganism() {
             <p className='font-semibold'>Appearance</p>
             <p className='text-sm text-gray-600'>Adjust the visual theme and layout of the application to your preference.</p>
           </div>
-
-          <div>
-            <p className='font-semibold'>Chat settings</p>
+          <div onClick={() => handleSettingClick('chat')}>
+            <p className='font-semibold cursor-pointer'>Chat settings</p>
             <p className='text-sm text-gray-600'>Adjust the chat settings to your preference.</p>
-            <div className='mt-2'>
-                        <label className='flex items-center'>
-                            <input
-                                type='checkbox'
-                                checked={isAutoCorrectOn}
-                                onChange={toggleAutoCorrect}
-                                className='form-checkbox h-5 w-5 text-blue-600'
-                            />
-                            <span className='ml-2 text-gray-700'>Enable Auto-Correct</span>
-                        </label>
-                    </div>
           </div>
-        
         </div>
       </div>
       
       {/* Main Content Area */}
       <div className='flex-1 bg-gray-50 p-6'>
-        {/* Add your content here */}
+        {selectedSetting === 'chat' && (
+          <div className='bg-white p-4 shadow-lg rounded-lg'>
+            <h2 className='text-xl font-semibold mb-4'>Chat Settings</h2>
+            <label className='flex items-center'>
+              <input
+                type='checkbox'
+                checked={isAutoCorrectOn}
+                onChange={toggleAutoCorrect}
+                className='form-checkbox h-5 w-5 text-blue-600'
+              />
+              <span className='ml-2 text-gray-700'>Enable Auto-Correct</span>
+            </label>
+          </div>
+        )}
       </div>
     </div>
-  )
+  );
 }

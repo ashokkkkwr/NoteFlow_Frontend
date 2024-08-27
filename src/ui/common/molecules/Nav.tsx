@@ -59,6 +59,8 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
     try {
       const response = await axiosInstance.get('/user/byToken')
       setUser(response.data.data)
+      console.log("🚀 ~ viewUser ~ response.data.data:", response.data.data)
+
     } catch (error) {
       console.log(error, 'Error fetching user data')
     }
