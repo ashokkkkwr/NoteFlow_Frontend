@@ -22,6 +22,7 @@ const Landing = () => {
     setSenderDetails(senderDetails)
     setNotiService(notiService)
   }
+  
 
   return (
     <>
