@@ -24,6 +24,8 @@ import { SocketProvider } from '@context/SocketContext';
 import './index.css'
 import {SidebarProvider} from './context/SidebarContext'
 import { RightSidebarProvider } from '@context/RightSidebarContext';
+import { AutoCorrectProvider } from '@context/AutoCorrectContext';
+import NotificationComponent from './NotificationComponent';
 
 const socket = io('http://localhost:5000', {
   auth: {
@@ -58,6 +60,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <LandingPageTemplate />
+      <NotificationComponent />
       </ProtectedRoute>
     ),
     children: [{ index: true, element: <Landing /> }],
@@ -167,6 +170,7 @@ function App() {
     userActive()
   },[])
   return (
+    <AutoCorrectProvider>
     <RightSidebarProvider>
     <SidebarProvider>
     <SocketProvider>
@@ -176,6 +180,7 @@ function App() {
     </SocketProvider>
     </SidebarProvider>
     </RightSidebarProvider>
+    </AutoCorrectProvider>
   );
 }
 
