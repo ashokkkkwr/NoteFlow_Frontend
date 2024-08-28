@@ -23,8 +23,6 @@ interface User {
     phone_number: string
   }
   email: string
-  
-
 }
 
 interface Chat {
@@ -68,7 +66,7 @@ export default function ChatOrganism() {
   const chatEndRef = useRef<HTMLDivElement | null>(null)
   const emojiPickerRef = useRef<HTMLDivElement>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false) // New state for sidebar visibility
-  const [unreadCounts,setUnreadCounts]=useState<{[Key:string]:number}>({})
+  const [unreadCounts, setUnreadCounts] = useState<{ [Key: string]: number }>({})
 
   // const [isAutoCorrectOn, setIsAutoCorrectOn] = useState(true)
   const { isAutoCorrectOn } = useAutoCorrect()
@@ -130,24 +128,32 @@ export default function ChatOrganism() {
           setTimeout(() => setTyping(false), 2000)
         }
       })
-      socket.on('read', ({ receiverId,unreadCount }) => {
-        console.log('aayush ')
-        setUnreadCounts((prev)=>({
-          ...prev,[receiverId]:unreadCount
+      socket?.on('unreadCounts', ({ receiverId, unreadCount }) => {
+        console.log("🚀 ~ socket?.on ~ receiverId:", receiverId)
+        console.log(unreadCount, 'unread count')
+        setUnreadCounts((prev) => ({
+          ...prev,
+          [receiverId]: unreadCount,
         }))
-      });
+      })
+      socket.on('read', ({ receiverId, unreadCount }) => {
+        console.log('aayush ')
+        setUnreadCounts((prev) => ({
+          ...prev,
+          [receiverId]: unreadCount,
+        }))
+      })
+     
+      console.log(unreadCounts, 'unread counts hahhahaha')
 
       return () => {
         socket.off('message')
         socket.off('typing')
-        socket.off('read');
-
+        socket.off('read')
+        socket?.off('unreadCounts')
       }
     }
   }, [socket, loggedInUserId, receiverId])
- 
-  
-
 
   useEffect(() => {
     // Handle status change
@@ -183,7 +189,7 @@ export default function ChatOrganism() {
     try {
       const response = await axiosInstance.get('/friend/friends')
       setUsers(response.data.data)
-      response.data.data.map((friend:any)=>fetchUnreadCounts(friend.id))
+      response.data.data.map((friend: any) => fetchUnreadCounts(friend.id))
     } catch (error) {
       console.log(error)
     }
@@ -192,10 +198,10 @@ export default function ChatOrganism() {
   const fetchUnreadCounts = async (id: string) => {
     try {
       const response = await axiosInstance.get(`/chat/counts/${id}`)
-      setUnreadCounts(()=>({
-        [id]:response.data.data,
+      setUnreadCounts(() => ({
+        [id]: response.data.data,
       }))
-      console.log(response,'haha')
+      console.log(response, 'haha')
     } catch (error) {
       console.log('Error fetching unread count:', error)
     }
@@ -233,22 +239,19 @@ export default function ChatOrganism() {
         }
         socket.emit('joinRoom', { receiverId: userId })
       }
-    
-        socket?.emit('readed',{receiverId:userId})
+
+      socket?.emit('readed', { receiverId: userId })
       console.log(userId)
       // console.log(loggedInUserId)
       const response = await axiosInstance.get(`/chat/${userId}`)
-      
+
       setSelectedUser(user)
       setChats(response.data.data)
       setReceiverId(userId)
-     
     } catch (error) {
       console.log('Error in handleUserClick:', error)
     }
   }
-
-
   const viewUser = async () => {
     try {
       const response = await axiosInstance.get('/friend/view-user')
@@ -294,7 +297,7 @@ export default function ChatOrganism() {
         {/* User list */}
         <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
           {users.map((user) => {
-            const unreadCount = unreadCounts[user.id] || 0;
+            const unreadCount = unreadCounts[user.id]
             return (
               <div
                 key={user.id}
@@ -316,10 +319,8 @@ export default function ChatOrganism() {
                   </p>
                   <p className='text-sm text-red-600'>+{user.details.phone_number}</p>
                 </div>
-                <div>
-                  {unreadCounts[user.id]>0}
-                </div>
-                {unreadCount>0&& (
+                <div></div>
+                {unreadCount > 0 && (
                   <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{unreadCount}</span>
                 )}
                 {/* {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>} */}
