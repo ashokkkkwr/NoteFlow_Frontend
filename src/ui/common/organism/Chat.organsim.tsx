@@ -127,19 +127,37 @@ export default function ChatOrganism() {
           setTimeout(() => setTyping(false), 2000)
         }
       })
-      // Listen for read receipt updates
-      socket.on('messagesRead', ({ messageIds }: { messageIds: string[] }) => {
-        setChats((prevChats) =>
-          prevChats.map((chat) => (messageIds.includes(chat.id!) ? { ...chat, read: true } : chat))
-        )
-      })
+     
       return () => {
         socket.off('message')
         socket.off('typing')
-        socket.off('messagesRead')
+      
       }
     }
   }, [socket, loggedInUserId, receiverId])
+  useEffect(() => {
+    if (socket) {
+      socket.on('messagesRead', ({ messageIds }) => {
+        setChats((prevChats) => {
+          console.log("🚀 ~ socket.on ~ prevChats:", prevChats)
+          return prevChats.map((chat) =>
+            	messageIds.includes(chat.id) ? { ...chat, read: true } : chat
+        	);
+        })
+      });
+  
+      return () => {
+        socket.off('messagesRead');
+      };
+    }
+  }, [socket]);
+
+  useEffect(()=>{
+    if(socket){
+      socket.emit('unreadcounts',({}))
+    }
+  })
+  
   useEffect(() => {
     // Handle status change
     if (socket) {
@@ -204,32 +222,36 @@ export default function ChatOrganism() {
     }
   }, [message, receiverId, socket])
 
+
+
   const handleUserClick = async (user: User, userId: string) => {
     try {
       if (socket) {
         if (receiverId) {
-          socket.emit('leaveRoom', { receiverId })
+          socket.emit('leaveRoom', { receiverId });
         }
-        socket.emit('joinRoom', { receiverId: userId })
+        socket.emit('joinRoom', { receiverId: userId });
       }
-      const response = await axiosInstance.get(`/chat/${userId}`)
-      setSelectedUser(user)
-      setChats(response.data.data)
-      setReceiverId(userId)
-      // Mark unread messages as read
-      const unreadMessageIds = response.data.data.filter((chat: Chat) => !chat.read).map((chat: Chat) => chat.id)
-      if (unreadMessageIds.length > 0) {
-        markMessagesAsRead(unreadMessageIds)
+  
+      const response = await axiosInstance.get(`/chat/${userId}`);
+      setSelectedUser(user);
+      setChats(response.data.data);
+      setReceiverId(userId);
+  
+      if (socket) {
+        socket.emit('markMessagesAsRead', { receiverId: userId });
       }
+  
     } catch (error) {
-      console.log('Error in handleUserClick:', error)
+      console.log('Error in handleUserClick:', error);
     }
-  }
+  };
   const markMessagesAsRead = (messageIds: string[]) => {
     if (socket) {
       socket.emit('markMessagesAsRead', { messageIds })
     }
   }
+  
   const viewUser = async () => {
     try {
       const response = await axiosInstance.get('/friend/view-user')
@@ -291,7 +313,7 @@ export default function ChatOrganism() {
         {/* User list */}
         <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
           {users.map((user) => {
-            const unreadCount = chats.filter((chat) => chat.sender_id === user.id && !chat.read).length
+            // const unreadCount = chats.filter((chat) => chat.sender_id === user.id && !chat.read).length
             return (
               <div
                 key={user.id}
@@ -313,9 +335,9 @@ export default function ChatOrganism() {
                   </p>
                   <p className='text-sm text-red-600'>+{user.details.phone_number}</p>
                 </div>
-                {unreadCount > 0 && (
+                {/* {unreadCount > 0 && (
                   <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{unreadCount}</span>
-                )}
+                )} */}
                 {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>}
               </div>
             )
