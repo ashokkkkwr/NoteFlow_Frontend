@@ -68,6 +68,7 @@ export default function ChatOrganism() {
   const chatEndRef = useRef<HTMLDivElement | null>(null)
   const emojiPickerRef = useRef<HTMLDivElement>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false) // New state for sidebar visibility
+  const [unreadCounts,setUnreadCounts]=useState<{[Key:string]:number}>({})
 
   // const [isAutoCorrectOn, setIsAutoCorrectOn] = useState(true)
   const { isAutoCorrectOn } = useAutoCorrect()
@@ -129,33 +130,24 @@ export default function ChatOrganism() {
           setTimeout(() => setTyping(false), 2000)
         }
       })
+      socket.on('read', ({ receiverId,unreadCount }) => {
+        console.log('aayush ')
+        setUnreadCounts((prev)=>({
+          ...prev,[receiverId]:unreadCount
+        }))
+      });
 
       return () => {
         socket.off('message')
         socket.off('typing')
+        socket.off('read');
+
       }
     }
   }, [socket, loggedInUserId, receiverId])
-  useEffect(() => {
-    if (socket) {
-      socket.on('messagesRead', ({ messageIds }) => {
-        setChats((prevChats) => {
-          console.log('🚀 ~ socket.on ~ prevChats:', prevChats)
-          return prevChats.map((chat) => (messageIds.includes(chat.id) ? { ...chat, read: true } : chat))
-        })
-      })
+ 
+  
 
-      return () => {
-        socket.off('messagesRead')
-      }
-    }
-  }, [socket])
-
-  useEffect(() => {
-    if (socket) {
-      socket.emit('unreadcounts', {})
-    }
-  })
 
   useEffect(() => {
     // Handle status change
@@ -180,38 +172,32 @@ export default function ChatOrganism() {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [chats])
-  useEffect(() => {
-    if (users.length > 0) {
-      const firstUser = users[0]
-      handleUserClick(firstUser, firstUser.id)
-    }
-  }, [users])
+  // useEffect(() => {
+  //   if (users.length > 0) {
+  //     const firstUser = users[0]
+  //     handleUserClick(firstUser, firstUser.id)
+  //   }
+  // }, [users])
 
   const viewUsers = async () => {
     try {
       const response = await axiosInstance.get('/friend/friends')
-      const usersWithUnreadCounts = await Promise.all(
-        response.data.data.map(async (user: User) => {
-          const unreadCount = await viewChatCounts(user.id)
-          return { ...user, unreadCount }
-        })
-      )
-      setUsers(usersWithUnreadCounts)
-      console.log("🚀 ~ viewUsers ~ usersWithUnreadCounts:", usersWithUnreadCounts)
-
+      setUsers(response.data.data)
+      response.data.data.map((friend:any)=>fetchUnreadCounts(friend.id))
     } catch (error) {
       console.log(error)
     }
   }
 
-  const viewChatCounts = async (id: string) => {
+  const fetchUnreadCounts = async (id: string) => {
     try {
       const response = await axiosInstance.get(`/chat/counts/${id}`)
-      console.log(response.data.data)
-      return response.data.data // Assuming this returns the unread count
+      setUnreadCounts(()=>({
+        [id]:response.data.data,
+      }))
+      console.log(response,'haha')
     } catch (error) {
       console.log('Error fetching unread count:', error)
-      return 0 // Fallback if there's an error
     }
   }
 
@@ -247,22 +233,21 @@ export default function ChatOrganism() {
         }
         socket.emit('joinRoom', { receiverId: userId })
       }
+    
+        socket?.emit('readed',{receiverId:userId})
+      console.log(userId)
+      // console.log(loggedInUserId)
       const response = await axiosInstance.get(`/chat/${userId}`)
+      
       setSelectedUser(user)
       setChats(response.data.data)
       setReceiverId(userId)
-      if (socket) {
-        socket.emit('markMessagesAsRead', { receiverId: userId })
-      }
+     
     } catch (error) {
       console.log('Error in handleUserClick:', error)
     }
   }
-  const markMessagesAsRead = (messageIds: string[]) => {
-    if (socket) {
-      socket.emit('markMessagesAsRead', { messageIds })
-    }
-  }
+
 
   const viewUser = async () => {
     try {
@@ -290,22 +275,6 @@ export default function ChatOrganism() {
 
   return (
     <div className='flex h-screen'>
-      {/* <div>
-        <label className='flex items-center mb-4'>
-          <input type='checkbox' checked={isAutoCorrectOn} onChange={toggleAutoCurrect} className='mr-2' />
-          Auto-Correct
-        </label>
-
-        <input
-          type='text'
-          value={message}
-          onChange={handleChange}
-          spellCheck={true}
-          placeholder='Type a message...'
-          className='p-2 border rounded w-full'
-        />
-      </div> */}
-      {/* Left Sidebar: User List */}
       <button className='absolute top-8 left-4 md:hidden z-30' onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
         {isSidebarOpen ? (
           <IoMdClose className='text-3xl text-red-500 mt-3' />
@@ -325,6 +294,7 @@ export default function ChatOrganism() {
         {/* User list */}
         <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
           {users.map((user) => {
+            const unreadCount = unreadCounts[user.id] || 0;
             return (
               <div
                 key={user.id}
@@ -346,10 +316,13 @@ export default function ChatOrganism() {
                   </p>
                   <p className='text-sm text-red-600'>+{user.details.phone_number}</p>
                 </div>
-                {user.unreadCount > 0 && (
-                  <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{user.unreadCount}</span>
+                <div>
+                  {unreadCounts[user.id]>0}
+                </div>
+                {unreadCount>0&& (
+                  <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{unreadCount}</span>
                 )}
-                {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>}
+                {/* {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>} */}
               </div>
             )
           })}

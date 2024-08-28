@@ -55,7 +55,6 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
     viewUsers();
   }, []);
 
-  // Client-side socket event handling
   useEffect(() => {
     if (socket) {
       console.log('Socket connected from AddFriend:', socket.connected);
