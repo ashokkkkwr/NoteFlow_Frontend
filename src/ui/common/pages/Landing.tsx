@@ -4,7 +4,6 @@ import LeftSidebar from '../organism/LeftSidebar'
 import Navbar from '@ui/common/organism/Navbar'
 import RightSidebar from '../organism/RightSidebar'
 import RightSidebarDown from '../organism/RightSidebarDown'
-
 const Landing = () => {
   const [refreshPosts, setRefreshPosts] = useState(0)
   const [testId, setTestId] = useState<string | null>(null)
