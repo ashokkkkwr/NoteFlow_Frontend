@@ -10,8 +10,9 @@ import { IoPersonAddSharp } from 'react-icons/io5'
 import { IoMdMenu, IoMdClose } from 'react-icons/io'
 import chatsvg from '../../../assets/chat.svg'
 import Logo from '@ui/common/molecules/Logo'
-import {useAutoCorrect} from '../../../context/AutoCorrectContext'
+import { useAutoCorrect } from '../../../context/AutoCorrectContext'
 interface User {
+  unreadCount: number
   id: string
   createdAt: any
   active_status: boolean
@@ -22,6 +23,8 @@ interface User {
     phone_number: string
   }
   email: string
+  
+
 }
 
 interface Chat {
@@ -66,9 +69,8 @@ export default function ChatOrganism() {
   const emojiPickerRef = useRef<HTMLDivElement>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false) // New state for sidebar visibility
 
-
   // const [isAutoCorrectOn, setIsAutoCorrectOn] = useState(true)
-  const { isAutoCorrectOn } = useAutoCorrect();
+  const { isAutoCorrectOn } = useAutoCorrect()
 
   const dictionary: Record<string, string> = {
     teh: 'the',
@@ -84,7 +86,7 @@ export default function ChatOrganism() {
       const correctedWords = words.map((word: string) => dictionary[word] || word)
       value = correctedWords.join(' ')
     }
-  
+
     setMessage(value)
   }
   // const toggleAutoCurrect = () => {
@@ -127,11 +129,10 @@ export default function ChatOrganism() {
           setTimeout(() => setTyping(false), 2000)
         }
       })
-     
+
       return () => {
         socket.off('message')
         socket.off('typing')
-      
       }
     }
   }, [socket, loggedInUserId, receiverId])
@@ -139,25 +140,23 @@ export default function ChatOrganism() {
     if (socket) {
       socket.on('messagesRead', ({ messageIds }) => {
         setChats((prevChats) => {
-          console.log("🚀 ~ socket.on ~ prevChats:", prevChats)
-          return prevChats.map((chat) =>
-            	messageIds.includes(chat.id) ? { ...chat, read: true } : chat
-        	);
+          console.log('🚀 ~ socket.on ~ prevChats:', prevChats)
+          return prevChats.map((chat) => (messageIds.includes(chat.id) ? { ...chat, read: true } : chat))
         })
-      });
-  
-      return () => {
-        socket.off('messagesRead');
-      };
-    }
-  }, [socket]);
+      })
 
-  useEffect(()=>{
-    if(socket){
-      socket.emit('unreadcounts',({}))
+      return () => {
+        socket.off('messagesRead')
+      }
+    }
+  }, [socket])
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit('unreadcounts', {})
     }
   })
-  
+
   useEffect(() => {
     // Handle status change
     if (socket) {
@@ -181,7 +180,6 @@ export default function ChatOrganism() {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [chats])
-
   useEffect(() => {
     if (users.length > 0) {
       const firstUser = users[0]
@@ -192,9 +190,28 @@ export default function ChatOrganism() {
   const viewUsers = async () => {
     try {
       const response = await axiosInstance.get('/friend/friends')
-      setUsers(response.data.data)
+      const usersWithUnreadCounts = await Promise.all(
+        response.data.data.map(async (user: User) => {
+          const unreadCount = await viewChatCounts(user.id)
+          return { ...user, unreadCount }
+        })
+      )
+      setUsers(usersWithUnreadCounts)
+      console.log("🚀 ~ viewUsers ~ usersWithUnreadCounts:", usersWithUnreadCounts)
+
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const viewChatCounts = async (id: string) => {
+    try {
+      const response = await axiosInstance.get(`/chat/counts/${id}`)
+      console.log(response.data.data)
+      return response.data.data // Assuming this returns the unread count
+    } catch (error) {
+      console.log('Error fetching unread count:', error)
+      return 0 // Fallback if there's an error
     }
   }
 
@@ -222,36 +239,31 @@ export default function ChatOrganism() {
     }
   }, [message, receiverId, socket])
 
-
-
   const handleUserClick = async (user: User, userId: string) => {
     try {
       if (socket) {
         if (receiverId) {
-          socket.emit('leaveRoom', { receiverId });
+          socket.emit('leaveRoom', { receiverId })
         }
-        socket.emit('joinRoom', { receiverId: userId });
+        socket.emit('joinRoom', { receiverId: userId })
       }
-  
-      const response = await axiosInstance.get(`/chat/${userId}`);
-      setSelectedUser(user);
-      setChats(response.data.data);
-      setReceiverId(userId);
-  
+      const response = await axiosInstance.get(`/chat/${userId}`)
+      setSelectedUser(user)
+      setChats(response.data.data)
+      setReceiverId(userId)
       if (socket) {
-        socket.emit('markMessagesAsRead', { receiverId: userId });
+        socket.emit('markMessagesAsRead', { receiverId: userId })
       }
-  
     } catch (error) {
-      console.log('Error in handleUserClick:', error);
+      console.log('Error in handleUserClick:', error)
     }
-  };
+  }
   const markMessagesAsRead = (messageIds: string[]) => {
     if (socket) {
       socket.emit('markMessagesAsRead', { messageIds })
     }
   }
-  
+
   const viewUser = async () => {
     try {
       const response = await axiosInstance.get('/friend/view-user')
@@ -313,7 +325,6 @@ export default function ChatOrganism() {
         {/* User list */}
         <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
           {users.map((user) => {
-            // const unreadCount = chats.filter((chat) => chat.sender_id === user.id && !chat.read).length
             return (
               <div
                 key={user.id}
@@ -335,9 +346,9 @@ export default function ChatOrganism() {
                   </p>
                   <p className='text-sm text-red-600'>+{user.details.phone_number}</p>
                 </div>
-                {/* {unreadCount > 0 && (
-                  <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{unreadCount}</span>
-                )} */}
+                {user.unreadCount > 0 && (
+                  <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{user.unreadCount}</span>
+                )}
                 {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>}
               </div>
             )
@@ -443,7 +454,7 @@ export default function ChatOrganism() {
             placeholder='Enter a message...'
             className='flex-1 p-2 mt-5 border rounded-lg focus:outline-none focus:border-red-500'
           />
-         
+
           <button
             onClick={handleMessageSend}
             className='ml-2 mt-5 bg-red-500 text-white p-2 rounded-lg pl-5 pr-5 hover:bg-red-600'
