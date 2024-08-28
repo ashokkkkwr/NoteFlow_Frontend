@@ -91,7 +91,7 @@ const Login = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className='mt-5 ml-16 flex'>
+              <div className='mt-5 ml-16 flex relative'>
                 <input
                   className='h-14 w-[43vh] border-b-2  pr-10 pl-5 focus:outline-none'
                   name={'password'}
@@ -100,7 +100,7 @@ const Login = () => {
                   onChange={handleChange}
                 />
 
-                <div className='mt-3 ml-1'>
+                <div className='mt-3 ml-1 absolute left-[38vh]'>
                   <button type='button' onClick={togglePassword} className=''>
                     {showPassword ? <AiFillEyeInvisible size={30} /> : <AiFillEye size={30} />}
                   </button>
