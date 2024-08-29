@@ -23,6 +23,7 @@ interface Media {
   id: string
   path: string
 }
+
 export default function Profiles() {
   const [user, setUser] = useState<User | null>(null)
   const { isRightSidebarOpen } = useRightSidebar()
@@ -44,6 +45,17 @@ export default function Profiles() {
       console.log(error, 'yo chai error')
     }
   }
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        email: user.email || '',
+        password: '',
+        first_name: user.details.first_name || '',
+        last_name: user.details.last_name || '',
+        phone_number: user.details.phone_number || '',
+      })
+    }
+  }, [user])
 
   const handleChange = (e: any) => {
     const { name, value } = e.target
@@ -64,7 +76,7 @@ export default function Profiles() {
     if (formData.phone_number) data.append('phone_number', formData.phone_number)
 
     try {
-      const response = await axiosInstance.patch(`/user/${id}`, data, {
+      const response = await axiosInstance.patch(`/user/update/${id}`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -153,6 +165,7 @@ export default function Profiles() {
               <div className='mt-16 ml-16'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pl-5 focus:outline-none'
+                  value={formData.email}
                   name='email'
                   type='email'
                   placeholder='Email'
@@ -171,6 +184,7 @@ export default function Profiles() {
               <div className='mt-5 ml-16 flex'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pr-10 pl-5 focus:outline-none'
+                  value={formData.first_name}
                   name='first_name'
                   placeholder='First name'
                   onChange={handleChange}
@@ -179,6 +193,7 @@ export default function Profiles() {
               <div className='mt-5 ml-16 flex'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pr-10 pl-5 focus:outline-none'
+                  value={formData.last_name}
                   name='last_name'
                   placeholder='Last Name'
                   onChange={handleChange}
@@ -187,6 +202,7 @@ export default function Profiles() {
               <div className='mt-5 ml-16 flex'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pr-10 pl-5 focus:outline-none'
+                  value={formData.phone_number}
                   name='phone_number'
                   placeholder='Phone Number'
                   onChange={handleChange}

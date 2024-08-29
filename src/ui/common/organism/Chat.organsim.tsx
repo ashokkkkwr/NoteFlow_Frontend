@@ -75,6 +75,7 @@ export default function ChatOrganism() {
     teh: 'the',
     receieeve: 'receive',
     adn: 'and',
+  
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     //The line of code let value = e.target.value; is used in JavaScript (often in the context of event handling) to capture the value of an input element or any other
@@ -103,7 +104,6 @@ export default function ChatOrganism() {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken')
     if (token) {
@@ -166,7 +166,6 @@ export default function ChatOrganism() {
           )
         )
       })
-
       return () => {
         socket.off('statusChange')
       }

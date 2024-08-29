@@ -7,8 +7,8 @@ import Default from '../../../assets/default.png'
 import { RiNotificationFill } from 'react-icons/ri'
 import { BiSolidMessage } from 'react-icons/bi'
 import Logo from './Logo'
-
-
+import useLang from '@hooks/useLang'
+import { navbarLabel } from '@data/localization/common/landingPage/navbar'
 
 interface User {
   id: string
@@ -20,7 +20,6 @@ interface User {
   }
   email: string
 }
-
 interface Noti {
   id: string
   sender: {
@@ -48,13 +47,14 @@ interface Props {
 
 export default function Nav({ testId, senderDetails, notiService }: Props) {
   const socket = useSocket()
+  const { lang } = useLang();
+
   const [user, setUser] = useState<User | null>(null)
   const [noti, setNoti] = useState<Noti[]>([])
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [notiDropDownOpen, setNotiDropDownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const notiDropdownRef = useRef<HTMLDivElement>(null)
-
   const viewUser = async () => {
     try {
       const response = await axiosInstance.get('/user/byToken')
@@ -237,7 +237,7 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
           <div className='absolute right-0 left-14 mt-32 w-48 bg-white rounded-md shadow-2xl z-10'>
             <ul>
               <li className='p-2 hover:bg-gray-200 cursor-pointer'>
-                <Link to='/auth/user/logout'>Logout</Link>
+                <Link to='/auth/user/logout'>{navbarLabel.logout[lang]}</Link>
               </li>
             </ul>
           </div>
