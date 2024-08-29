@@ -79,14 +79,14 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [openFormId, setOpenFormId] = useState<string | null>(null)
   const [openDeleteId, setOpenDeleteId] = useState<string | null>(null)
+  const [showComments, setShowComments] = useState(false)
 
-  
-  
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [visibleCommentsCount, setVisibleCommentsCount] = useState<Record<string, number>>({})
   const [visibleRepliesCount, setVisibleRepliesCount] = useState<Record<string, number>>({})
   const commentsPerPage = 1
   const repliesPerPage = 1
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
 
   const handleShowMoreComments = (noteId: string) => {
     setVisibleCommentsCount((prev) => ({
@@ -191,7 +191,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const toggleCommentFormVisibility = (noteId: string) => {
     setVisibleCommentForm(visibleCommentForm === noteId ? null : noteId)
   }
-
   const toggleReplyFormVisibility = (noteId: string, commentId: string) => {
     setVisibleReplyForm((prev) => ({
       ...prev,
@@ -223,7 +222,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const toggleForm = (noteId: string) => {
     setOpenFormId((prevId) => (prevId === noteId ? null : noteId))
   }
- 
+
   const handleChange = (e: any) => {
     const { name, value } = e.target
     setFormData((prevData) => ({
@@ -308,6 +307,9 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
     }))
   }
 
+  const handlePostSelect = (noteId: string) => {
+    setSelectedPostId(selectedPostId === noteId ? null : noteId)
+  }
   return (
     <div
       className={` mt-3 bg-grey w-[110vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
@@ -318,7 +320,11 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
-          <div key={note.id} className='mb-20  w-auto border bg-white shadow-xl rounded-lg p-5 '>
+          <div
+            key={note.id}
+           
+            className='mb-20  w-auto border bg-white shadow-xl rounded-lg p-5 '
+          >
             {openFormId === note.id && (
               <div className='flex justify-end mr-10 mt-5'>
                 <button onClick={() => toggleForm(note.id)} className='text-red-500 hover:text-red-700'>
@@ -326,7 +332,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                 </button>
               </div>
             )}
-
 
             {openFormId === note.id ? (
               <div className='flex items-center justify-center'>
@@ -426,50 +431,70 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     </div>
                   ))}
                 </div>
-                {/* <div className='p-5 bg-gray-100  rounded-xl'>
-                  <button onClick={() => toggleCommentFormVisibility(note.id)}>
-                    {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'}
-                  </button>
-                  {visibleCommentForm === note.id && (
-                    <form onSubmit={(e) => handleTopLevelCommentSubmit(e, note.id)}>
-                      <InputField
-                        name='comment'
-                        type='text'
-                        placeholder='Add a comment'
-                        onChange={(e) => handleTopLevelCommentChange(note.id, e.target.value)}
-                        value={topLevelCommentForm[note.id] || ''}
-                      />
-                      {error}
-                      <button type='submit'>Submit</button>
-                    </form>
-                  )}
+                <div className='flex justify-between px-10'>
                   <div>
-                    {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
-                      <CommentComponent
-                        key={comment.id}
-                        noteId={note.id}
-                        comment={comment}
-                        handleReplySubmit={handleReplySubmit}
-                        handleReplyChange={handleReplyChange}
-                        visibleReplyForm={visibleReplyForm}
-                        replyForm={replyForm}
-                        toggleReplyFormVisibility={toggleReplyFormVisibility}
-                        handleShowMoreReplies={handleShowMoreReplies}
-                        handleShowLessReplies={handleShowLessReplies}
-                        visibleRepliesCount={visibleRepliesCount}
-                        repliesPerPage={repliesPerPage}
-                      />
-                    ))}
+                Like
+                </div>
+                <div>
+                <button onClick={() => handlePostSelect(note.id)}>
+                  {selectedPostId === note.id ? 'Hide Comments' : 'Show Comments'}
+                </button>
+                </div>
+                <div>
+                  <p className='font-poppins'>Repost</p>
+                </div>
+                <div>
+                share
+                </div>
 
-                    {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
-                      <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
-                    )}
+                </div>
+                
 
-                    {visibleCommentsCount[note.id] > commentsPerPage && (
-                      <button onClick={() => handleShowLessComments(note.id)}>Show Less Comments</button>
-                    )}
+                {selectedPostId === note.id  && (
+                  <div className='p-5 bg-gray-100 rounded-xl'>
+                    <button onClick={() => toggleCommentFormVisibility(note.id)}>
+                      {/* {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'} */}
+                    </button>
+                    {/* {visibleCommentForm === note.id && ( */}
+                      <form onSubmit={(e) => handleTopLevelCommentSubmit(e, note.id)}>
+                        <InputField
+                          name='comment'
+                          type='text'
+                          placeholder='Add a comment'
+                          onChange={(e) => handleTopLevelCommentChange(note.id, e.target.value)}
+                          value={topLevelCommentForm[note.id] || ''}
+                        />
+                        <button type='submit'>Submit</button>
+                      </form>
+                    {/* )} */}
+                    <div>
+                      {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
+                        <CommentComponent
+                          key={comment.id}
+                          noteId={note.id}
+                          comment={comment}
+                          handleReplySubmit={handleReplySubmit}
+                          handleReplyChange={handleReplyChange}
+                          visibleReplyForm={visibleReplyForm}
+                          replyForm={replyForm}
+                          toggleReplyFormVisibility={toggleReplyFormVisibility}
+                          handleShowMoreReplies={handleShowMoreReplies}
+                          handleShowLessReplies={handleShowLessReplies}
+                          visibleRepliesCount={visibleRepliesCount}
+                          repliesPerPage={repliesPerPage}
+                        />
+                      ))}
+
+                      {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
+                        <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
+                      )}
+
+                      {visibleCommentsCount[note.id] > commentsPerPage && (
+                        <button onClick={() => handleShowLessComments(note.id)}>Show Less Comments</button>
+                      )}
+                    </div>
                   </div>
-                </div> */}
+                )}
               </>
             )}
           </div>
@@ -479,8 +504,8 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Confirm Delete"
-        message="Are you sure you want to delete this note? This action cannot be undone."
+        title='Confirm Delete'
+        message='Are you sure you want to delete this note? This action cannot be undone.'
       />
     </div>
   )
