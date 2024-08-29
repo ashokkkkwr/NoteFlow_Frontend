@@ -35,7 +35,6 @@ const Profile = () => {
               <Profiles />
               <div className='flex-col'>
               <RightSidebar setTestId={handleSetTestId} />
-
               <RightSidebarDown onPostAdded={handlePostAdded} />
             </div>
           </div>

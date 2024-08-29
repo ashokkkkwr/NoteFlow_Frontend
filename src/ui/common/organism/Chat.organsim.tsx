@@ -143,9 +143,6 @@ export default function ChatOrganism() {
           [receiverId]: unreadCount,
         }))
       })
-     
-      console.log(unreadCounts, 'unread counts hahhahaha')
-
       return () => {
         socket.off('message')
         socket.off('typing')
@@ -159,6 +156,12 @@ export default function ChatOrganism() {
     // Handle status change
     if (socket) {
       socket.on('statusChange', ({ userId, active }) => {
+        console.log("🚀 ~ socket.on ~ active:", active)
+       console.log(
+        users.map((user)=>(
+          console.log(user.id,userId)
+        ))
+       )
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             //the line effectively updates the active_status of a user object only if its id matches the specified userId; otherwise, it returns the user object as is.
@@ -171,7 +174,6 @@ export default function ChatOrganism() {
       }
     }
   }, [socket])
-
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -183,7 +185,6 @@ export default function ChatOrganism() {
   //     handleUserClick(firstUser, firstUser.id)
   //   }
   // }, [users])
-
   const viewUsers = async () => {
     try {
       const response = await axiosInstance.get('/friend/friends')
@@ -322,12 +323,11 @@ export default function ChatOrganism() {
                 {unreadCount > 0 && (
                   <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{unreadCount}</span>
                 )}
-                {/* {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>} */}
+                {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>}
               </div>
             )
           })}
         </div>
-
         <div className='ml-14 mt-24 flex border border-red-200 rounded-lg bg-red-50 p-0 w-52 items-center justify-center'>
           <IoPersonAddSharp className='mr-1 text-lg text-red-400' />
           <p className='text-sm'>Add them to start a chat</p>
