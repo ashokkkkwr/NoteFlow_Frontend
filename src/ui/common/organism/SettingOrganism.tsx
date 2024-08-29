@@ -1,10 +1,9 @@
 import { useAutoCorrect } from '@context/AutoCorrectContext';
 import React, { useState } from 'react';
-
+import LanguageToggle from '../molecules/LanguageToggle';
 export default function SettingOrganism() {
   const { isAutoCorrectOn, toggleAutoCorrect } = useAutoCorrect();
   const [selectedSetting, setSelectedSetting] = useState(null);
-
   const handleSettingClick = (setting:any) => {
     setSelectedSetting(setting);
   };
@@ -13,41 +12,62 @@ export default function SettingOrganism() {
     <div className='w-[116vh] h-[848px] bg-white mt-2 flex'>
       {/* Sidebar */}
       <div className='bg-gray-100 w-[250px] p-4'>
-        <div className="relative group mb-4">
-          <strong className="text-lg text-gray-700">Help & Support</strong>
-          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-sm rounded py-1 px-2">
-            Access resources and assistance for troubleshooting and inquiries.
-          </div>
-        </div>
-        <div className='space-y-4'>
-          <div>
-            <p className='font-semibold'>Change Password</p>
-            <p className='text-sm text-gray-600'>Update your current password to ensure account security.</p>
-          </div>
-          <div>
-            <p className='font-semibold'>Forgot Password</p>
-            <p className='text-sm text-gray-600'>Recover or reset your password if you’ve forgotten it.</p>
-          </div>
-          <div>
-            <p className='font-semibold'>Language Settings</p>
-            <p className='text-sm text-gray-600'>Select your preferred language for a customized experience.</p>
-          </div>
-          <div>
-            <p className='font-semibold'>Appearance</p>
-            <p className='text-sm text-gray-600'>Adjust the visual theme and layout of the application to your preference.</p>
-          </div>
-          <div onClick={() => handleSettingClick('chat')}>
-            <p className='font-semibold cursor-pointer'>Chat settings</p>
-            <p className='text-sm text-gray-600'>Adjust the chat settings to your preference.</p>
-          </div>
+        <strong className="text-lg text-gray-700">Help & Support</strong>
+        <div className='space-y-4 mt-4'>
+          {[
+            { id: 'changePassword', label: 'Change Password', description: 'Update your current password to ensure account security.' },
+            { id: 'forgotPassword', label: 'Forgot Password', description: 'Recover or reset your password if you’ve forgotten it.' },
+            { id: 'languageSettings', label: 'Language Settings', description: 'Select your preferred language for a customized experience.' },
+            { id: 'appearance', label: 'Appearance', description: 'Adjust the visual theme and layout of the application to your preference.' },
+            { id: 'chat', label: 'Chat Settings', description: 'Adjust the chat settings to your preference.' },
+          ].map(({ id, label, description }) => (
+            <div 
+              key={id} 
+              onClick={() => handleSettingClick(id)} 
+              className={`cursor-pointer group p-2 rounded-lg ${selectedSetting === id ? 'bg-red-100 text-red-600' : 'hover:bg-gray-200'}`}
+            >
+              <p className={`font-medium ${selectedSetting === id ? 'text-red-600' : 'text-gray-700'}`}>
+                {label}
+              </p>
+              <p className='text-sm text-gray-600'>{description}</p>
+            </div>
+          ))}
         </div>
       </div>
-      
+
       {/* Main Content Area */}
       <div className='flex-1 bg-gray-50 p-6'>
+        {selectedSetting === 'changePassword' && (
+          <div className='bg-white p-4 shadow-md rounded-lg'>
+            <h2 className='text-xl font-medium mb-4'>Change Password</h2>
+            <p>Here you can change your password.</p>
+            {/* Add relevant inputs and functionality */}
+          </div>
+        )}
+        {selectedSetting === 'forgotPassword' && (
+          <div className='bg-white p-4 shadow-md rounded-lg'>
+            <h2 className='text-xl font-medium mb-4'>Forgot Password</h2>
+            <p>Here you can recover your password.</p>
+            {/* Add relevant inputs and functionality */}
+          </div>
+        )}
+        {selectedSetting === 'languageSettings' && (
+          <div className='bg-white p-4 shadow-md rounded-lg'>
+            <h2 className='text-xl font-medium mb-4'>Language Settings</h2>
+          <LanguageToggle />
+            {/* Add relevant inputs and functionality */}
+          </div>
+        )}
+        {selectedSetting === 'appearance' && (
+          <div className='bg-white p-4 shadow-md rounded-lg'>
+            <h2 className='text-xl font-medium mb-4'>Appearance</h2>
+            <p>Here you can adjust the appearance of the application.</p>
+            {/* Add relevant inputs and functionality */}
+          </div>
+        )}
         {selectedSetting === 'chat' && (
-          <div className='bg-white p-4 shadow-lg rounded-lg'>
-            <h2 className='text-xl font-semibold mb-4'>Chat Settings</h2>
+          <div className='bg-white p-4 shadow-md rounded-lg'>
+            <h2 className='text-xl font-medium mb-4'>Chat Settings</h2>
             <label className='flex items-center'>
               <input
                 type='checkbox'

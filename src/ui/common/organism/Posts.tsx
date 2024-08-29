@@ -85,8 +85,8 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [visibleCommentsCount, setVisibleCommentsCount] = useState<Record<string, number>>({})
   const [visibleRepliesCount, setVisibleRepliesCount] = useState<Record<string, number>>({})
-  const commentsPerPage = 3
-  const repliesPerPage = 3
+  const commentsPerPage = 1
+  const repliesPerPage = 1
 
   const handleShowMoreComments = (noteId: string) => {
     setVisibleCommentsCount((prev) => ({
@@ -426,7 +426,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     </div>
                   ))}
                 </div>
-                <div className='p-5 bg-gray-100  rounded-xl'>
+                {/* <div className='p-5 bg-gray-100  rounded-xl'>
                   <button onClick={() => toggleCommentFormVisibility(note.id)}>
                     {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'}
                   </button>
@@ -469,7 +469,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                       <button onClick={() => handleShowLessComments(note.id)}>Show Less Comments</button>
                     )}
                   </div>
-                </div>
+                </div> */}
               </>
             )}
           </div>

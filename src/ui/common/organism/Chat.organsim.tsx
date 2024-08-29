@@ -23,8 +23,6 @@ interface User {
     phone_number: string
   }
   email: string
-  
-
 }
 
 interface Chat {
@@ -68,7 +66,7 @@ export default function ChatOrganism() {
   const chatEndRef = useRef<HTMLDivElement | null>(null)
   const emojiPickerRef = useRef<HTMLDivElement>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false) // New state for sidebar visibility
-  const [unreadCounts,setUnreadCounts]=useState<{[Key:string]:number}>({})
+  const [unreadCounts, setUnreadCounts] = useState<{ [Key: string]: number }>({})
 
   // const [isAutoCorrectOn, setIsAutoCorrectOn] = useState(true)
   const { isAutoCorrectOn } = useAutoCorrect()
@@ -77,6 +75,7 @@ export default function ChatOrganism() {
     teh: 'the',
     receieeve: 'receive',
     adn: 'and',
+  
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     //The line of code let value = e.target.value; is used in JavaScript (often in the context of event handling) to capture the value of an input element or any other
@@ -105,7 +104,6 @@ export default function ChatOrganism() {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken')
     if (token) {
@@ -130,29 +128,40 @@ export default function ChatOrganism() {
           setTimeout(() => setTyping(false), 2000)
         }
       })
-      socket.on('read', ({ receiverId,unreadCount }) => {
-        console.log('aayush ')
-        setUnreadCounts((prev)=>({
-          ...prev,[receiverId]:unreadCount
+      socket?.on('unreadCounts', ({ receiverId, unreadCount }) => {
+        console.log("🚀 ~ socket?.on ~ receiverId:", receiverId)
+        console.log(unreadCount, 'unread count')
+        setUnreadCounts((prev) => ({
+          ...prev,
+          [receiverId]: unreadCount,
         }))
-      });
-
+      })
+      socket.on('read', ({ receiverId, unreadCount }) => {
+        console.log('aayush ')
+        setUnreadCounts((prev) => ({
+          ...prev,
+          [receiverId]: unreadCount,
+        }))
+      })
       return () => {
         socket.off('message')
         socket.off('typing')
-        socket.off('read');
-
+        socket.off('read')
+        socket?.off('unreadCounts')
       }
     }
   }, [socket, loggedInUserId, receiverId])
- 
-  
-
 
   useEffect(() => {
     // Handle status change
     if (socket) {
       socket.on('statusChange', ({ userId, active }) => {
+        console.log("🚀 ~ socket.on ~ active:", active)
+       console.log(
+        users.map((user)=>(
+          console.log(user.id,userId)
+        ))
+       )
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
             //the line effectively updates the active_status of a user object only if its id matches the specified userId; otherwise, it returns the user object as is.
@@ -160,13 +169,11 @@ export default function ChatOrganism() {
           )
         )
       })
-
       return () => {
         socket.off('statusChange')
       }
     }
   }, [socket])
-
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -178,12 +185,11 @@ export default function ChatOrganism() {
   //     handleUserClick(firstUser, firstUser.id)
   //   }
   // }, [users])
-
   const viewUsers = async () => {
     try {
       const response = await axiosInstance.get('/friend/friends')
       setUsers(response.data.data)
-      response.data.data.map((friend:any)=>fetchUnreadCounts(friend.id))
+      response.data.data.map((friend: any) => fetchUnreadCounts(friend.id))
     } catch (error) {
       console.log(error)
     }
@@ -192,10 +198,10 @@ export default function ChatOrganism() {
   const fetchUnreadCounts = async (id: string) => {
     try {
       const response = await axiosInstance.get(`/chat/counts/${id}`)
-      setUnreadCounts(()=>({
-        [id]:response.data.data,
+      setUnreadCounts(() => ({
+        [id]: response.data.data,
       }))
-      console.log(response,'haha')
+      console.log(response, 'haha')
     } catch (error) {
       console.log('Error fetching unread count:', error)
     }
@@ -233,22 +239,19 @@ export default function ChatOrganism() {
         }
         socket.emit('joinRoom', { receiverId: userId })
       }
-    
-        socket?.emit('readed',{receiverId:userId})
+
+      socket?.emit('readed', { receiverId: userId })
       console.log(userId)
       // console.log(loggedInUserId)
       const response = await axiosInstance.get(`/chat/${userId}`)
-      
+
       setSelectedUser(user)
       setChats(response.data.data)
       setReceiverId(userId)
-     
     } catch (error) {
       console.log('Error in handleUserClick:', error)
     }
   }
-
-
   const viewUser = async () => {
     try {
       const response = await axiosInstance.get('/friend/view-user')
@@ -294,7 +297,7 @@ export default function ChatOrganism() {
         {/* User list */}
         <div className='mt-10 border border-red-100 rounded-md max-h-[calc(3*6rem)] overflow-y-auto'>
           {users.map((user) => {
-            const unreadCount = unreadCounts[user.id] || 0;
+            const unreadCount = unreadCounts[user.id]
             return (
               <div
                 key={user.id}
@@ -316,18 +319,15 @@ export default function ChatOrganism() {
                   </p>
                   <p className='text-sm text-red-600'>+{user.details.phone_number}</p>
                 </div>
-                <div>
-                  {unreadCounts[user.id]>0}
-                </div>
-                {unreadCount>0&& (
+                <div></div>
+                {unreadCount > 0 && (
                   <span className='bg-red-500 text-white rounded-full text-xs px-2 py-1'>{unreadCount}</span>
                 )}
-                {/* {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>} */}
+                {user.active_status && <span className='ml-2 text-green-500 text-xs'>Online</span>}
               </div>
             )
           })}
         </div>
-
         <div className='ml-14 mt-24 flex border border-red-200 rounded-lg bg-red-50 p-0 w-52 items-center justify-center'>
           <IoPersonAddSharp className='mr-1 text-lg text-red-400' />
           <p className='text-sm'>Add them to start a chat</p>

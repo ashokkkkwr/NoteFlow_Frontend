@@ -5,6 +5,7 @@ import axiosInstance from 'services/instance'
 import { useRightSidebar } from '@context/RightSidebarContext'
 import { useSidebar } from '@context/SidebarContext'
 import Default from '../../../assets/default.png'
+import axios from 'axios'
 
 interface User {
   id: string
@@ -23,6 +24,7 @@ interface Media {
   id: string
   path: string
 }
+
 export default function Profiles() {
   const [user, setUser] = useState<User | null>(null)
   const { isRightSidebarOpen } = useRightSidebar()
@@ -33,8 +35,10 @@ export default function Profiles() {
     last_name: '',
     phone_number: '',
   })
+  const [formImage, setFormImage] = useState<File | null>(null)
   const { isSidebarOpen } = useSidebar()
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isImageEdit, setIsImageEdit] = useState(false)
 
   const viewUser = async () => {
     try {
@@ -45,7 +49,19 @@ export default function Profiles() {
     }
   }
 
-  const handleChange = (e: any) => {
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        email: user.email || '',
+        password: '',
+        first_name: user.details.first_name || '',
+        last_name: user.details.last_name || '',
+        phone_number: user.details.phone_number || '',
+      })
+    }
+  }, [user])
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prevData) => ({
       ...prevData,
@@ -53,7 +69,13 @@ export default function Profiles() {
     }))
   }
 
-  const handleSubmit = async (e: any, id: string) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFormImage(e.target.files[0])
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent, id: string) => {
     e.preventDefault()
     const data = new FormData()
 
@@ -64,7 +86,7 @@ export default function Profiles() {
     if (formData.phone_number) data.append('phone_number', formData.phone_number)
 
     try {
-      const response = await axiosInstance.patch(`/user/${id}`, data, {
+      const response = await axiosInstance.patch(`/user/update/${id}`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -73,6 +95,29 @@ export default function Profiles() {
       viewUser() // Refresh user details
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleImageSubmit = async () => {
+    const data = new FormData()
+
+    data.append('type', 'PROFILE')
+    if (formImage) {
+      data.append('files', formImage)
+    }
+    try {
+      const response = await axiosInstance.patch(`/user/update-media`, data, {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      })
+      setIsImageEdit(false)
+      viewUser() // Refresh user details
+      console.log(response)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data.message)
+      }
     }
   }
 
@@ -85,6 +130,11 @@ export default function Profiles() {
     setIsFormOpen(!isFormOpen)
   }
 
+  // Toggle the image edit form
+  const toggleImageEdit = () => {
+    setIsImageEdit(!isImageEdit)
+  }
+
   return (
     <div
       className={`mt-2 bg-white cursor-pointer shadow-lg rounded-lg w-[50vh] h-[87vh] flex items-center justify-center ${
@@ -94,25 +144,45 @@ export default function Profiles() {
       <div className='flex flex-col items-center'>
         {!isFormOpen ? (
           <>
-            {(user?.details?.profileImage?.length ?? 0) > 0 ? (
-              user?.details.profileImage.map((media) => (
-                <div key={media.id} className='flex justify-center mt-1 2xl:mt-20'>
+            <div className='relative mt-1 2xl:mt-20'>
+              {(user?.details?.profileImage?.length ?? 0) > 0 ? (
+                user?.details.profileImage.map((media) => (
                   <img
+                    key={media.id}
                     src={media.path ? media.path : Default}
                     alt={`Profile ${media.id}`}
                     className='w-96 h-96 rounded-full object-cover'
                   />
-                </div>
-              ))
-            ) : (
-              <div className='flex justify-center mt-1 2xl:mt-20'>
-                <img
-                  src={Default}
-                  alt='Default Profile'
-                  className='w-96 h-96 rounded-full object-cover'
+                ))
+              ) : (
+                <img src={Default} alt='Default Profile' className='w-96 h-96 rounded-full object-cover' />
+              )}
+              <button
+                className='absolute right-0 bottom-0 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600'
+                onClick={toggleImageEdit}
+              >
+                <FaEdit />
+              </button>
+            </div>
+
+            {isImageEdit && (
+              <div className='mt-5'>
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleImageChange}
+                  className='border-b-2 pr-10 pl-5 focus:outline-none'
                 />
+                <button
+                  type='button'
+                  onClick={handleImageSubmit}
+                  className='text-white bg-orange-500 hover:bg-orange-700 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4 ml-4'
+                >
+                  Upload Image
+                </button>
               </div>
             )}
+
             <div className='ml mt-2'>
               <div className='ml-' key={user?.id}>
                 <div className='flex mt-10'>
@@ -153,6 +223,7 @@ export default function Profiles() {
               <div className='mt-16 ml-16'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pl-5 focus:outline-none'
+                  value={formData.email}
                   name='email'
                   type='email'
                   placeholder='Email'
@@ -171,6 +242,7 @@ export default function Profiles() {
               <div className='mt-5 ml-16 flex'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pr-10 pl-5 focus:outline-none'
+                  value={formData.first_name}
                   name='first_name'
                   placeholder='First name'
                   onChange={handleChange}
@@ -179,23 +251,28 @@ export default function Profiles() {
               <div className='mt-5 ml-16 flex'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pr-10 pl-5 focus:outline-none'
+                  value={formData.last_name}
                   name='last_name'
-                  placeholder='Last Name'
+                  placeholder='Last name'
                   onChange={handleChange}
                 />
               </div>
               <div className='mt-5 ml-16 flex'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pr-10 pl-5 focus:outline-none'
+                  value={formData.phone_number}
                   name='phone_number'
-                  placeholder='Phone Number'
+                  placeholder='Phone'
                   onChange={handleChange}
                 />
               </div>
 
-              <div>
-                <button className='bg-red-400 w-[43vh] h-14 rounded-xl ml-16 mt-10 hover:bg-red-500' type='submit'>
-                  <p className='font-poppins text-white'>Update It</p>
+              <div className='ml-10 mt-5'>
+                <button
+                  className='text-white bg-orange-500 hover:bg-orange-700 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'
+                  type='submit'
+                >
+                  Submit
                 </button>
               </div>
             </form>

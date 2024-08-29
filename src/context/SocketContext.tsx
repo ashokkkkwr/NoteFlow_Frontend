@@ -24,9 +24,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     return () => {
       newSocket.close();
-    };
+    };  
   }, []);
-
   return (
     <SocketContext.Provider value={socket}>
       {children}
