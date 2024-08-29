@@ -164,7 +164,6 @@ export default function ChatOrganism() {
        )
         setUsers((prevUsers) =>
           prevUsers.map((user) =>
-            //the line effectively updates the active_status of a user object only if its id matches the specified userId; otherwise, it returns the user object as is.
             user.id === userId ? { ...user, active_status: active } : user
           )
         )
@@ -179,12 +178,12 @@ export default function ChatOrganism() {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [chats])
-  // useEffect(() => {
-  //   if (users.length > 0) {
-  //     const firstUser = users[0]
-  //     handleUserClick(firstUser, firstUser.id)
-  //   }
-  // }, [users])
+  useEffect(() => {
+    if (users.length > 0) {
+      const firstUser = users[0]
+      handleUserClick(firstUser, firstUser.id)
+    }
+  }, [users])
   const viewUsers = async () => {
     try {
       const response = await axiosInstance.get('/friend/friends')
