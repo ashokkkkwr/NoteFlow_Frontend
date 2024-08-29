@@ -191,7 +191,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const toggleCommentFormVisibility = (noteId: string) => {
     setVisibleCommentForm(visibleCommentForm === noteId ? null : noteId)
   }
-
   const toggleReplyFormVisibility = (noteId: string, commentId: string) => {
     setVisibleReplyForm((prev) => ({
       ...prev,
@@ -311,7 +310,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const handlePostSelect = (noteId: string) => {
     setSelectedPostId(selectedPostId === noteId ? null : noteId)
   }
-
   return (
     <div
       className={` mt-3 bg-grey w-[110vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
@@ -433,16 +431,31 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     </div>
                   ))}
                 </div>
+                <div className='flex justify-between px-10'>
+                  <div>
+                Like
+                </div>
+                <div>
                 <button onClick={() => handlePostSelect(note.id)}>
                   {selectedPostId === note.id ? 'Hide Comments' : 'Show Comments'}
                 </button>
+                </div>
+                <div>
+                  <p className='font-poppins'>Repost</p>
+                </div>
+                <div>
+                share
+                </div>
+
+                </div>
+                
 
                 {selectedPostId === note.id  && (
                   <div className='p-5 bg-gray-100 rounded-xl'>
                     <button onClick={() => toggleCommentFormVisibility(note.id)}>
-                      {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'}
+                      {/* {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'} */}
                     </button>
-                    {visibleCommentForm === note.id && (
+                    {/* {visibleCommentForm === note.id && ( */}
                       <form onSubmit={(e) => handleTopLevelCommentSubmit(e, note.id)}>
                         <InputField
                           name='comment'
@@ -453,7 +466,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                         />
                         <button type='submit'>Submit</button>
                       </form>
-                    )}
+                    {/* )} */}
                     <div>
                       {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
                         <CommentComponent
