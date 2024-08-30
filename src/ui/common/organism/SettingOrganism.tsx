@@ -2,10 +2,13 @@ import { useAutoCorrect } from '@context/AutoCorrectContext';
 import React, { useState } from 'react';
 import LanguageToggle from '../molecules/LanguageToggle';
 import PasswordChange from '../molecules/PasswordChange';
+import ForgotPassword from '../molecules/ForgotPassword';
+
 export default function SettingOrganism() {
   const { isAutoCorrectOn, toggleAutoCorrect } = useAutoCorrect();
   const [selectedSetting, setSelectedSetting] = useState(null);
-  const handleSettingClick = (setting:any) => {
+
+  const handleSettingClick = (setting: any) => {
     setSelectedSetting(setting);
   };
 
@@ -37,39 +40,42 @@ export default function SettingOrganism() {
       </div>
 
       {/* Main Content Area */}
-      <div className='flex-1 bg-gray-50 p-6'>
+      <div className='flex items-center justify-center bg-gray-50 p-6 w-full'>
         {selectedSetting === 'changePassword' && (
-          <div className='bg-white p-4 shadow-md rounded-lg'>
-            <h2 className='text-xl font-medium mb-4'>Change Password</h2>
-            <p>Here you can change your password.</p>
+          <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
+            <h2 className='text-xl font-medium mb-4 text-center'>Change Password</h2>
+            <p className='text-center mb-4'>Here you can change your password.</p>
             <PasswordChange />
           </div>
         )}
+
         {selectedSetting === 'forgotPassword' && (
-          <div className='bg-white p-4 shadow-md rounded-lg'>
-            <h2 className='text-xl font-medium mb-4'>Forgot Password</h2>
-            <p>Here you can recover your password.</p>
-            {/* Add relevant inputs and functionality */}
+          <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
+            <h2 className='text-xl font-medium mb-4 text-center'>Forgot Password</h2>
+            <p className='text-center mb-4'>Here you can recover your password.</p>
+            <ForgotPassword />
           </div>
         )}
+
         {selectedSetting === 'languageSettings' && (
-          <div className='bg-white p-4 shadow-md rounded-lg'>
-            <h2 className='text-xl font-medium mb-4'>Language Settings</h2>
-          <LanguageToggle />
-            {/* Add relevant inputs and functionality */}
+          <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
+            <h2 className='text-xl font-medium mb-4 text-center'>Language Settings</h2>
+            <LanguageToggle />
           </div>
         )}
+
         {selectedSetting === 'appearance' && (
-          <div className='bg-white p-4 shadow-md rounded-lg'>
-            <h2 className='text-xl font-medium mb-4'>Appearance</h2>
-            <p>Here you can adjust the appearance of the application.</p>
+          <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
+            <h2 className='text-xl font-medium mb-4 text-center'>Appearance</h2>
+            <p className='text-center'>Here you can adjust the appearance of the application.</p>
             {/* Add relevant inputs and functionality */}
           </div>
         )}
+
         {selectedSetting === 'chat' && (
-          <div className='bg-white p-4 shadow-md rounded-lg'>
-            <h2 className='text-xl font-medium mb-4'>Chat Settings</h2>
-            <label className='flex items-center'>
+          <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
+            <h2 className='text-xl font-medium mb-4 text-center'>Chat Settings</h2>
+            <label className='flex items-center justify-center'>
               <input
                 type='checkbox'
                 checked={isAutoCorrectOn}
