@@ -5,14 +5,15 @@ import CommentComponent from './CommentComponent'
 import { useRightSidebar } from '@context/RightSidebarContext'
 import { useSidebar } from '@context/SidebarContext'
 import { jwtDecode } from 'jwt-decode'
-import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FaRegCommentDots, FaTimes } from 'react-icons/fa'
+import { BsFillSendFill, BsThreeDotsVertical } from 'react-icons/bs'
+import { FaKissWinkHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import { MdBrowserUpdated } from 'react-icons/md'
 import Modal from './Modal'
-import { AiOutlineLike } from 'react-icons/ai'
-import { BiRepost } from 'react-icons/bi'
+import { AiFillDislike, AiOutlineLike } from 'react-icons/ai'
+import { BiRepost, BiSolidLike } from 'react-icons/bi'
 import { FiShare2 } from 'react-icons/fi'
+import { IoHeartSharp } from 'react-icons/io5'
 
 export interface Comment {
   id: string
@@ -149,7 +150,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       console.log(error)
     }
   }
-
   const handleTopLevelCommentSubmit = async (e: React.FormEvent<HTMLFormElement>, noteId: string) => {
     e.preventDefault()
     try {
@@ -315,8 +315,20 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   }
   const [activeButton, setActiveButton] = useState<string | null>(null)
 
-  const handleButtonClick = (button: string) => {
-    setActiveButton(activeButton === button ? null : button)
+  // const handleButtonClick = (button: string) => {
+  //   setActiveButton(activeButton === button ? null : button)
+  // }
+  const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set())
+  const handleButtonClick = (noteId: string) => {
+    setLikedPosts((prevLikedPosts) => {
+      const updatedLikedPosts = new Set(prevLikedPosts)
+      if (updatedLikedPosts.has(noteId)) {
+        updatedLikedPosts.delete(noteId)
+      } else {
+        updatedLikedPosts.add(noteId)
+      }
+      return updatedLikedPosts
+    })
   }
   return (
     <div
@@ -435,56 +447,88 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     </div>
                   ))}
                 </div>
-                <div className='flex justify-between px-28 py-3'>
+                {/**
+                 * Total Like and Comments sections.
+                 */}
+                <div className='flex justify-between pt-5 px-28'>
+                    <div className='flex text-red-500'>
+                    <BiSolidLike />
+                    <IoHeartSharp />
+                    <FaKissWinkHeart /> 
+                    <p className='text-sm'>150 Likes</p>
+
+                    </div>
+                    <div>
+                      <p className='text-sm'>150 comments</p>
+                      
+                    </div>
+
+                </div>
+                {/**
+                 * Like comments share section
+                 */}
+                <div className='flex justify-between px-28 pt-5 pb-5 border-t-2   w-[85vh] ml-24'>
                   <div>
                     <p
-                      className={`flex cursor-pointer ${activeButton === 'like' ? 'text-red-500' : ''}`}
-                      onClick={() => handleButtonClick('like')}
+                      className={`flex items-center cursor-pointer ${
+                        likedPosts.has(note.id) ? 'text-red-500' : ''
+                      } hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded`}
+                      onClick={() => handleButtonClick(note.id)}
                     >
-                      <AiOutlineLike />
-                      Like
+                      <AiOutlineLike className='text-xl mr-2' />
+                      <span className='text-base font-myriad font-semibold'>Like</span>
                     </p>
                   </div>
+
                   <div>
                     <button onClick={() => handlePostSelect(note.id)}>
                       {selectedPostId === note.id ? (
-                        <div className='text-blue-500'>'Hide Comments'</div>
+                        <div className='text-blue-500 hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded'>
+                          Hide Comments
+                        </div>
                       ) : (
-                        <div className='flex'>
-                          <FaRegCommentDots /> Show Comments
+                        <div className='flex items-center cursor-pointer hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded'>
+                          <FaRegCommentDots className='text-xl mr-2' />
+                          <span className='text-base font-myriad font-semibold'>Comment</span>
                         </div>
                       )}
                     </button>
                   </div>
+
                   <div>
-                    <p className='font-poppins flex'>
-                      <BiRepost />
-                      Repost
+                    <p className='flex items-center cursor-pointer hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded'>
+                      <BiRepost className='text-xl mr-2' />
+                      <span className='text-base font-myriad font-semibold'>Repost</span>
                     </p>
                   </div>
+
                   <div>
-                    <p className='flex'>
-                      <FiShare2 />
-                      share
+                    <p className='flex items-center cursor-pointer hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded'>
+                      <FiShare2 className='text-xl mr-2' />
+                      <span className='text-base font-myriad font-semibold'>Share</span>
                     </p>
                   </div>
                 </div>
 
                 {selectedPostId === note.id && (
-                  <div className='p-5 bg-gray-100 rounded-xl'>
+                  <div className='p-5 bg-gray-100 rounded-xl '>
                     <button onClick={() => toggleCommentFormVisibility(note.id)}>
                       {/* {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'} */}
                     </button>
                     {/* {visibleCommentForm === note.id && ( */}
                     <form onSubmit={(e) => handleTopLevelCommentSubmit(e, note.id)}>
-                      <InputField
+                      <div className='relative'>
+                      <input
                         name='comment'
+                        className='h-12 w-full border-2 border-gray-300 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500 placeholder-opacity-75'
                         type='text'
                         placeholder='Add a comment'
                         onChange={(e) => handleTopLevelCommentChange(note.id, e.target.value)}
                         value={topLevelCommentForm[note.id] || ''}
                       />
-                      <button type='submit'>Submit</button>
+                      <button type='submit'className='absolute right-5 top-3 '><BsFillSendFill className='text-2xl text-red-500'/>
+                      </button>
+                      </div>
                     </form>
                     {/* )} */}
                     <div>
