@@ -10,6 +10,7 @@ const RightSidebarDown: React.FC<RightSidebarDownProps> = ({ onPostAdded }) => {
 
   return (
 
+
       <>
     <div className={`sticky top-[500px] z-10 ${isRightSidebarOpen?'block':'hidden'} 2xl:block`}>
     <AddPost onPostAdded={onPostAdded} />
