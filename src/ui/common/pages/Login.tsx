@@ -76,13 +76,13 @@ const Login = () => {
           <img src={Image} alt='' className='h-screen w-1000vh' />
         </div>
         <div className='flex items-center justify-center h-screen ' style={{ backgroundColor: '#ECB2CA' }}>
-          <div className='bg-white w-[58vh] h-[85vh] rounded-3xl shadow-2xl'>
-            <p className='text-3xl font-bold font-poppins mt-14 ml-44'>User Login</p>
-            <p className='ml-32 mt-5 w-[29vh] text-center font-poppins text-lg'>
+          <div className='flex flex-col  items-center justify-center bg-white w-[58vh] h-[85vh] rounded-3xl shadow-2xl'>
+            <p className='text-3xl font-bold font-poppins mt- ml-'>User Login</p>
+            <p className='mt-5 w-[29vh] text-center font-poppins text-lg'>
               Hey, Enter Your Details to get sign in to your account.
             </p>
             <form onSubmit={handleSubmit} encType='multipart/form-data'>
-              <div className='mt-16 ml-16'>
+              <div className='mt-16 ml-'>
                 <input
                   className='h-14 w-[43vh] border-b-2 pl-5 focus:outline-none '
                   name={'email'}
@@ -91,7 +91,7 @@ const Login = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className='mt-5 ml-16 flex relative'>
+              <div className='mt-5 ml- flex relative'>
                 <input
                   className='h-14 w-[43vh] border-b-2  pr-10 pl-5 focus:outline-none'
                   name={'password'}
@@ -100,16 +100,16 @@ const Login = () => {
                   onChange={handleChange}
                 />
 
-                <div className='mt-3 ml-1 absolute left-[38vh]'>
+                <div className='mt-3 ml- absolute left-[38vh]'>
                   <button type='button' onClick={togglePassword} className=''>
                     {showPassword ? <AiFillEyeInvisible size={30} /> : <AiFillEye size={30} />}
                   </button>
                 </div>
               </div>
 
-              <p className='mt-6 ml-20 font-poppins text-sm text-red-500'>Having Trouble Sign in?</p>
+              <p className='mt-6 ml- font-poppins text-sm text-red-500'>Having Trouble Sign in?</p>
               <div className='flex'>
-                <p className='mt-6 ml-20 font-poppins text-sm text-red-500'>
+                <p className='mt-6 ml- font-poppins text-sm text-red-500'>
                   {errorMessage && (
                     <p className='flex'>
                       {' '}
@@ -120,34 +120,34 @@ const Login = () => {
                 </p>
               </div>
               <div>
-                <button className='bg-red-400 w-[43vh] h-14 rounded-xl ml-16 mt-10 hover:bg-red-500' type={'submit'}>
+                <button className='bg-red-400 w-[43vh] h-14 rounded-xl ml- mt-10 hover:bg-red-500' type={'submit'}>
                   <p className='font-poppins text-white'>Sign in</p>
                 </button>
               </div>
               </form>
-              <p className='mt-8 ml-48 flex font-poppins'>
+              <p className='mt-8 ml- flex font-poppins'>
                 <GoDash className='mt-1' /> or signin with
                 <GoDash className='mt-1' />
               </p>
-              <div className='flex'>
-                <button className='mt-10 ml-[10vh] border rounded-xl h-14 w-44 flex items-center justify-center'>
+              <div className='flex flex-col justify-center items-center'>
+                <button className='mt-4'>
                   <p className='flex text-xl font-bold font-poppins'>
                     <span className='mt-1'>
                       <GoogleAuth />
                     </span>{' '}
-                    <span className='ml-3'>Google</span>
+                    {/* <span className='ml-3'>Google</span> */}
                   </p>
                 </button>
-                <button className='mt-10 ml-2 border rounded-xl h-14 w-44 flex items-center justify-center'>
+                <button className='mt-4 ml- border rounded-xl h-14 w-44 flex items-center justify-center'>
                   <p className='flex text-xl font-bold font-poppins'>
                     <span className='mt-1'>
                       <FaFacebook />
                     </span>{' '}
-                    <span className='ml-3'>Facebook</span>
+                    <span className='ml-'>Facebook</span>
                   </p>
                 </button>
               </div>
-              <div className='flex mt-10 ml-32'>
+              <div className='flex mt-10 ml'>
                 <p className='font-poppins'>Don't Have An Account?</p>
                 <Link to='/auth/user/signup'>
                   <p className='ml-1 font-poppins font-semibold'>Request Now</p>

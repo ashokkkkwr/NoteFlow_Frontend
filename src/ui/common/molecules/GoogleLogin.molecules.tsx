@@ -29,8 +29,8 @@ const GoogleAuth = () => {
  }
  };
  return (
- <GoogleOAuthProvider clientId={clientId}>
- <div className="w-full">
+ <GoogleOAuthProvider clientId={clientId} >
+ <div className="w-">
  <GoogleLogin
  onSuccess={handleSuccess}
  onError={() => {

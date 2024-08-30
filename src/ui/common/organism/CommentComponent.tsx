@@ -35,7 +35,15 @@ const CommentComponent: React.FC<{
   return (
     <div key={comment.id} className="ml-10">
       <div>
-        <p>{comment?.user?.email}</p>
+        <p>{comment?.user?.details.first_name}</p>
+        {comment?.user?.details?.profileImage?.map((img)=>(
+          <img
+          key={img?.id}
+          src={img?.path}
+          alt={`Profile ${img?.id}`}
+          className='w-96 h-96 rounded-full object-cover'
+        />
+        ))}
         <p className="font-poppins font-bold flex">
           {comment.comment}
           <RiCornerRightDownFill />
