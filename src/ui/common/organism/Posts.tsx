@@ -6,7 +6,7 @@ import { useRightSidebar } from '@context/RightSidebarContext'
 import { useSidebar } from '@context/SidebarContext'
 import { jwtDecode } from 'jwt-decode'
 import { BsFillSendFill, BsThreeDotsVertical } from 'react-icons/bs'
-import { FaKissWinkHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa'
+import { FaChevronDown, FaChevronUp, FaKissWinkHeart, FaRegCommentDots, FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import { MdBrowserUpdated } from 'react-icons/md'
 import Modal from './Modal'
@@ -511,7 +511,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                 </div>
 
                 {selectedPostId === note.id && (
-                  <div className='p-5 bg-gray-100 rounded-xl '>
+                  <div className='p-5 bg-gray-100 rounded-xl w-[85vh] ml-[10vh]'>
                     <button onClick={() => toggleCommentFormVisibility(note.id)}>
                       {/* {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'} */}
                     </button>
@@ -550,12 +550,20 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                       ))}
 
                       {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
-                        <button onClick={() => handleShowMoreComments(note.id)}>Show More</button>
+                        <button 
+                        className="flex items-center justify-center mt-2 px-4 py-1 border border-red-400 rounded-lg shadow-sm bg-red-100 hover:bg-red-200 hover:border-red-600 transition duration-200"
+                        onClick={() => handleShowMoreComments(note.id)}
+                      >
+                        <FaChevronDown className="mr-2 text-gray-700 text-lg hover:text-black" />
+                        <p className="text-gray-700 font-medium">Show More</p>
+                      </button>
+                      
                       )}
 
-                      {visibleCommentsCount[note.id] > commentsPerPage && (
-                        <button onClick={() => handleShowLessComments(note.id)}>Show Less Comments</button>
-                      )}
+                      {/* {visibleCommentsCount[note.id] > commentsPerPage && (
+                        <button onClick={() => handleShowLessComments(note.id)}><FaChevronUp />
+Show Less Comments</button>
+                      )} */}
                     </div>
                   </div>
                 )}

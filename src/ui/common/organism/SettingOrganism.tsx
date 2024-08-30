@@ -1,6 +1,7 @@
 import { useAutoCorrect } from '@context/AutoCorrectContext';
 import React, { useState } from 'react';
 import LanguageToggle from '../molecules/LanguageToggle';
+import PasswordChange from '../molecules/PasswordChange';
 export default function SettingOrganism() {
   const { isAutoCorrectOn, toggleAutoCorrect } = useAutoCorrect();
   const [selectedSetting, setSelectedSetting] = useState(null);
@@ -41,7 +42,7 @@ export default function SettingOrganism() {
           <div className='bg-white p-4 shadow-md rounded-lg'>
             <h2 className='text-xl font-medium mb-4'>Change Password</h2>
             <p>Here you can change your password.</p>
-            {/* Add relevant inputs and functionality */}
+            <PasswordChange />
           </div>
         )}
         {selectedSetting === 'forgotPassword' && (
