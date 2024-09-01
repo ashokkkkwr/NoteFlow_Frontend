@@ -51,9 +51,8 @@ export default function SettingOrganism() {
 
         {selectedSetting === 'forgotPassword' && (
           <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
-            <h2 className='text-xl font-medium mb-4 text-center'>Forgot Password</h2>
-            <p className='text-center mb-4'>Here you can recover your password.</p>
-            <ForgotPassword />
+            
+            <ForgotPassword  />
           </div>
         )}
 
