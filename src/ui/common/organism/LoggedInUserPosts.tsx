@@ -400,7 +400,7 @@ export default function LoggedInUserPosts() {
   // },[])
   return (
     <div
-      className={` mt-3 bg-grey w-[110vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
+      className={` mt-3 bg-grey w-[116vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
         isSidebarOpen ? 'hidden' : 'block'
       } 2xl:block overflow-auto`}
       style={{ scrollBehavior: 'smooth' }}
@@ -408,7 +408,7 @@ export default function LoggedInUserPosts() {
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
-          <div key={note.id} className='mb-20  w-auto border bg-white shadow-xl rounded-lg p-5 '>
+          <div key={note.id} className='mb-2  w-auto border bg-white shadow-xl rounded-lg p-5 '>
             {openFormId === note.id && (
               <div className='flex justify-end mr-10 mt-5'>
                 <button onClick={() => toggleForm(note.id)} className='text-red-500 hover:text-red-700'>

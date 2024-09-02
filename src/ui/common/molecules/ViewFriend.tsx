@@ -50,7 +50,7 @@ export default function ViewFriend() {
               )}
             </div>
             <div className=''>
-              <div className='flex mt- ml-2'>
+              <div className='flex mt-1 ml-2'>
                 {/* <p onClick={()=>viewUsersDetails(friends.id)}>{friends.id}</p> */}
                 <Link to={`/auth/user/${friends.id}`} className='flex'>
                   <p className='mr-1 text-lg'>{friends.details.first_name}</p>
@@ -67,7 +67,7 @@ export default function ViewFriend() {
         </div>
       ))}
       <Link to={`/auth/user/viewAllFriends`}>
-        <button className='w-40 h-11 mt-3 bg-gradient-to-r from-red-400 to-red-600 text-white font-semibold rounded-3xl hover:from-red-500 hover:to-red-700 transition-colors duration-300 shadow-lg'>
+        <button className='w-40 h-11 mt-6 bg-gradient-to-r from-red-400 to-red-600 text-white font-semibold rounded-3xl hover:from-red-500 hover:to-red-700 transition-colors duration-300 shadow-lg'>
           View All
         </button>
       </Link>

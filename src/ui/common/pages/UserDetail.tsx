@@ -25,21 +25,19 @@ const Profile = () => {
   }
   return (
     <>
-      <div className='flex '>
-        {/* {a.state.name} */}
-        <div className=''>
-          <LeftSidebar />
-        </div>
-        <div className='flex-grow flex flex-col'>
+      <div className='bg-warmGray-200'>
+        <div className='sticky top-0 z-50'>
           <Navbar testId={testId || ''} senderDetails={senderDetails} notiService={notiService} />
-          <div className='flex flex-grow'>
-            <div className='flex-grow flex justify-center items-center'>
+        </div>
+        <div className='flex justify-between'>
+        <LeftSidebar />
+        <div className='flex flex-col justify-center items-center'>
+
               <UserDetails />
-            </div>
-            <div className=' flex flex-col '>
-              <RightSidebar setTestId={handleSetTestId} />
-              <RightSidebarDown onPostAdded={handlePostAdded} />
-            </div>
+              </div>
+          <div className='flex-col'>
+            <RightSidebar setTestId={handleSetTestId} />
+            <RightSidebarDown onPostAdded={handlePostAdded} />
           </div>
         </div>
       </div>

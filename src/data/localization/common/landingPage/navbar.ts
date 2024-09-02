@@ -43,5 +43,9 @@ export const navbarLabel: LabelTypes = {
   logout:{
     en:'Logout',
     ne:'लगआउट'
+  },
+  aboutUs:{
+    en:'AboutUS',
+    ne:'हाम्रो बारेमा'
   }
 }

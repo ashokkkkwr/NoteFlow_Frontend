@@ -35,16 +35,15 @@ const Profile = () => {
           <LeftSidebar />
 
           <div className='flex flex-col justify-center items-center'>
-              <Profiles />
-              <LoggedInUserPosts />
-                           </div>
-              <div className='flex-col'>
-              <RightSidebar setTestId={handleSetTestId} />
-              <RightSidebarDown onPostAdded={handlePostAdded} />
-            </div>
+            <Profiles />
+            <LoggedInUserPosts />
+          </div>
+          <div className='flex-col'>
+            <RightSidebar setTestId={handleSetTestId} />
+            <RightSidebarDown onPostAdded={handlePostAdded} />
           </div>
         </div>
-   
+      </div>
     </>
   )
 }

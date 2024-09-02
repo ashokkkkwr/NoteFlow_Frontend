@@ -11,7 +11,7 @@ const RightSidebar: React.FC<RightSideBarProps> = ({ setTestId }) => {
   return (
     <>
       <div
-        className={`sticky top-[12vh] z-10 ${isRightSidebarOpen ? 'block' : 'hidden'} 2xl:block  md:w-auto`}
+        className={`sticky top-[11vh] z-10 ${isRightSidebarOpen ? 'block' : 'hidden'} 2xl:block  md:w-auto`}
       >
         <AddFriend setTestId={setTestId} />
       </div>

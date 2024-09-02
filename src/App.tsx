@@ -25,6 +25,7 @@ import './index.css'
 import {SidebarProvider} from './context/SidebarContext'
 import { RightSidebarProvider } from '@context/RightSidebarContext';
 import { AutoCorrectProvider } from '@context/AutoCorrectContext';
+import AboutUs from '@ui/common/pages/AboutUs';
 // import NotificationComponent from './NotificationComponent';
 
 const socket = io('http://localhost:5000', {
@@ -132,6 +133,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Settings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'user/aboutUs',
+        element: (
+          <ProtectedRoute>
+            <AboutUs />
           </ProtectedRoute>
         ),
       },
