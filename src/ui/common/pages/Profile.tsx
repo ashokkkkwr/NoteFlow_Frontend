@@ -6,6 +6,7 @@ import Navbar from '@ui/common/organism/Navbar'
 import RightSidebar from '../organism/RightSidebar'
 import RightSidebarDown from '../organism/RightSidebarDown'
 import Profiles from '../organism/Profiles'
+import LoggedInUserPosts from '../organism/LoggedInUserPosts'
 
 const Profile = () => {
   const [refreshPosts, setRefreshPosts] = useState(0)
@@ -32,7 +33,11 @@ const Profile = () => {
         </div>
         <div className='flex justify-between'>
           <LeftSidebar />
+
+          <div className='flex flex-col justify-center items-center'>
               <Profiles />
+              <LoggedInUserPosts />
+                           </div>
               <div className='flex-col'>
               <RightSidebar setTestId={handleSetTestId} />
               <RightSidebarDown onPostAdded={handlePostAdded} />

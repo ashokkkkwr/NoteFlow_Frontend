@@ -81,8 +81,8 @@ interface FormData {
   files: FileList | null
 }
 
-const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
-  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null)
+export default function LoggedInUserPosts() {
+    const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null)
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
   const [likes, setLikes] = useState<boolean>(false)
   const [formData, setFormData] = useState<FormData>({
@@ -157,7 +157,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
   const fetchNotes = async () => {
     try {
-      const response = await axiosInstance.get('/notes/all', {
+      const response = await axiosInstance.get('/notes/user/all', {
         headers: { 'Content-Type': 'application/json' },
       })
 
@@ -215,7 +215,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
   useEffect(() => {
     fetchNotes()
-  }, [refreshPosts, loggedInUserId])
+  }, [ loggedInUserId])
 
   useEffect(() => {
     notes.forEach((note) => {
@@ -650,4 +650,3 @@ Show Less Comments</button>
     </div>
   )
 }
-export default Posts
