@@ -142,7 +142,7 @@ export default function Profiles() {
       } ${isSidebarOpen ? 'hidden' : 'block'} 2xl:block 2xl:w-[116vh] 2xl:h-[848px]`}
     >
       <div className='flex flex-col items-center'>
-        {!isFormOpen ? (
+        {isFormOpen ? (
           <>
             <div className='relative mt-1 2xl:mt-20'>
               {(user?.details?.profileImage?.length ?? 0) > 0 ? (
@@ -219,6 +219,7 @@ export default function Profiles() {
                 <FaTimes size={24} />
               </button>
             </div>
+            <div className='flex justify-center items-center '>
             <form onSubmit={(e) => handleSubmit(e, user?.id || '')} encType='multipart/form-data'>
               <div className='mt-16 ml-16'>
                 <input
@@ -267,15 +268,15 @@ export default function Profiles() {
                 />
               </div>
 
-              <div className='ml-10 mt-5'>
+              <div className='ml-16 mt-5  flex justify-center items-center'>
                 <button
-                  className='text-white bg-orange-500 hover:bg-orange-700 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'
+                  className='text-white bg-red-500 hover:bg-orange-700 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'
                   type='submit'
                 >
                   Submit
                 </button>
               </div>
-            </form>
+            </form></div>
           </div>
         )}
       </div>
