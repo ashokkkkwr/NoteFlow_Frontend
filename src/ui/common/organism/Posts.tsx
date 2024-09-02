@@ -46,7 +46,23 @@ export interface Note {
       profileImage: Media[]
     }
   }
+  likes: Likes[]
+
   comments: Comment[]
+}
+export interface Likes {
+  id: string
+  isLiked: boolean
+  user: {
+    id: string
+    email: string
+    details: {
+      first_name: string
+      last_name: string
+      profileImage: Media[]
+    }
+  }
+  // refresh:() => void
 }
 
 interface PostsProps {
@@ -66,6 +82,7 @@ interface FormData {
 const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null)
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
+  const [likes, setLikes] = useState<boolean>(false)
   const [formData, setFormData] = useState<FormData>({
     title: '',
     content: '',
@@ -83,8 +100,6 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [openFormId, setOpenFormId] = useState<string | null>(null)
   const [openDeleteId, setOpenDeleteId] = useState<string | null>(null)
-  const [showComments, setShowComments] = useState(false)
-
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [visibleCommentsCount, setVisibleCommentsCount] = useState<Record<string, number>>({})
   const [visibleRepliesCount, setVisibleRepliesCount] = useState<Record<string, number>>({})
@@ -128,13 +143,28 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       [noteId]: { ...prev[noteId], [commentId]: value },
     }))
   }
+  // const fetchLikes = async (noteId: string) => {
+  //   try {
+  //     const response = await axiosInstance.get(`/like/like/${noteId}`)
+  //     console.log(response, 'likessssss')
+  //     setLikes(response.data.data)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const fetchNotes = async () => {
     try {
       const response = await axiosInstance.get('/notes/all', {
         headers: { 'Content-Type': 'application/json' },
       })
+
       setNotes(response.data.data)
+
+      // Extract IDs and pass them to fetchUserLike
+      const ids = response.data.data.map((note: Note) => note.id)
+      fetchUserLike(ids)
+
       console.log('🚀 ~ fetchNotes ~ response.data.data:', response.data.data)
     } catch (error) {
       console.log(error)
@@ -183,7 +213,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
   useEffect(() => {
     fetchNotes()
-  }, [refreshPosts])
+  }, [refreshPosts, loggedInUserId])
 
   useEffect(() => {
     notes.forEach((note) => {
@@ -330,6 +360,42 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       return updatedLikedPosts
     })
   }
+  const likePosts = async (id: string) => {
+    try {
+      const response = await axiosInstance.post(`/like/like/${id}`)
+      setLikes((prev) => !prev)
+      fetchNotes()
+      console.log('🚀 ~ likePosts ~ response:', response)
+    } catch (error) {
+      console.log('🚀 ~ likePosts ~ error:', error)
+    }
+  }
+  const fetchUserLike = async (ids: string) => {
+    console.log('🚀 ~ fetchUserLike ~ ids:', ids)
+    try {
+      for (const id of ids) {
+        const response = await axiosInstance.get(`/like/post-like/${id}`)
+
+        const like = response.data.data
+
+        const liked = like.some((like: Likes) => like.user.id === loggedInUserId)
+        console.log('🚀 ~ fetchUserLike ~ liked:', liked)
+        setLikes(liked) // Update state based on like status
+
+        console.log('🚀 ~ fetchUserLike ~ response:', response)
+      }
+    } catch (error) {
+      console.log('🚀 ~ fetchUserLike ~ error:', error)
+    }
+  }
+  // useEffect(()=>{
+  //   // console.log('yoyo')
+  //   // console.log(notes)
+  //   // const ids=notes.map((note)=>(
+  //   //   note.id
+  //   // ))
+  //   fetchUserLike()
+  // },[])
   return (
     <div
       className={` mt-3 bg-grey w-[110vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
@@ -451,18 +517,15 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                  * Total Like and Comments sections.
                  */}
                 <div className='flex justify-between pt-5 px-28'>
-                    <div className='flex text-red-500'>
+                  <div className='flex text-red-500'>
                     <BiSolidLike />
                     <IoHeartSharp />
-                    <FaKissWinkHeart /> 
-                    <p className='text-sm'>150 Likes</p>
-
-                    </div>
-                    <div>
-                      <p className='text-sm'>150 comments</p>
-                      
-                    </div>
-
+                    <FaKissWinkHeart />
+                    <p className='text-sm'>{note.likes.length}</p>
+                  </div>
+                  <div>
+                    <p className='text-sm'>150 comments</p>
+                  </div>
                 </div>
                 {/**
                  * Like comments share section
@@ -470,16 +533,19 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                 <div className='flex justify-between px-28 pt-5 pb-5 border-t-2   w-[85vh] ml-24'>
                   <div>
                     <p
-                      className={`flex items-center cursor-pointer ${
-                        likedPosts.has(note.id) ? 'text-red-500' : ''
-                      } hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded`}
-                      onClick={() => handleButtonClick(note.id)}
+                    // className={`flex items-center cursor-pointer ${
+                    //   likedPosts.has(note.id) ? 'text-red-500' : ''
+                    // } hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded`}
+                    // onClick={() => handleButtonClick(note.id)}
                     >
                       <AiOutlineLike className='text-xl mr-2' />
-                      <span className='text-base font-myriad font-semibold'>Like</span>
+                      {/* onClick={() => toggleDelete(note.id)} */}
+                      <button onClick={() => likePosts(note.id)} className='text-base font-myriad font-semibold'>
+                        {note.likes.some((user) => user.user.id === loggedInUserId) ? <p>liked</p> : <p>like</p>}
+                    
+                      </button>
                     </p>
                   </div>
-
                   <div>
                     <button onClick={() => handlePostSelect(note.id)}>
                       {selectedPostId === note.id ? (
@@ -518,16 +584,17 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     {/* {visibleCommentForm === note.id && ( */}
                     <form onSubmit={(e) => handleTopLevelCommentSubmit(e, note.id)}>
                       <div className='relative'>
-                      <input
-                        name='comment'
-                        className='h-12 w-full border-2 border-gray-300 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500 placeholder-opacity-75'
-                        type='text'
-                        placeholder='Add a comment'
-                        onChange={(e) => handleTopLevelCommentChange(note.id, e.target.value)}
-                        value={topLevelCommentForm[note.id] || ''}
-                      />
-                      <button type='submit'className='absolute right-5 top-3 '><BsFillSendFill className='text-2xl text-red-500'/>
-                      </button>
+                        <input
+                          name='comment'
+                          className='h-12 w-full border-2 border-gray-300 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500 placeholder-opacity-75'
+                          type='text'
+                          placeholder='Add a comment'
+                          onChange={(e) => handleTopLevelCommentChange(note.id, e.target.value)}
+                          value={topLevelCommentForm[note.id] || ''}
+                        />
+                        <button type='submit' className='absolute right-5 top-3 '>
+                          <BsFillSendFill className='text-2xl text-red-500' />
+                        </button>
                       </div>
                     </form>
                     {/* )} */}
@@ -550,14 +617,13 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                       ))}
 
                       {comments[note.id]?.length > (visibleCommentsCount[note.id] || commentsPerPage) && (
-                        <button 
-                        className="flex items-center justify-center mt-2 px-4 py-1 border border-red-400 rounded-lg shadow-sm bg-red-100 hover:bg-red-200 hover:border-red-600 transition duration-200"
-                        onClick={() => handleShowMoreComments(note.id)}
-                      >
-                        <FaChevronDown className="mr-2 text-gray-700 text-lg hover:text-black" />
-                        <p className="text-gray-700 font-medium">Show More</p>
-                      </button>
-                      
+                        <button
+                          className='flex items-center justify-center mt-2 px-4 py-1 border border-red-400 rounded-lg shadow-sm bg-red-100 hover:bg-red-200 hover:border-red-600 transition duration-200'
+                          onClick={() => handleShowMoreComments(note.id)}
+                        >
+                          <FaChevronDown className='mr-2 text-gray-700 text-lg hover:text-black' />
+                          <p className='text-gray-700 font-medium'>Show More</p>
+                        </button>
                       )}
 
                       {/* {visibleCommentsCount[note.id] > commentsPerPage && (
