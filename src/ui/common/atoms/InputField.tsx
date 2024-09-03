@@ -24,7 +24,6 @@ const InputField: React.FC<IInput> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };

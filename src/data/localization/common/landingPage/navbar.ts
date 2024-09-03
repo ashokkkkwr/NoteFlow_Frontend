@@ -43,5 +43,34 @@ export const navbarLabel: LabelTypes = {
   logout:{
     en:'Logout',
     ne:'लगआउट'
-  }
+  },
+  aboutUs:{
+    en:'AboutUS',
+    ne:'हाम्रो बारेमा'
+  },
+  browseThrough:{
+    en: 'Browse through',
+    ne:'परीक्षण गर्नुहोस् '
+  },
+  checkYourPals:{
+    en:'Check Your Pals',
+    ne:'आफ्ना मित्रहरूलाई जाँच गर्नुहोस्'
+  },
+  peopleyoumayknow:{
+    en:'People You May Know',
+    ne:'तपाईंलाई चिनेका व्यक्तिहरू'
+  },
+  viewAll:{
+    en:'View All',
+    ne:'सबै हेर्नुहोस्'
+  },
+  noUsersAvailable:{
+    en:'noUsersAvailable',
+    ne:'उपलब्ध प्रयोगकर्ता छैनन्'
+  },
+  whatOnYourMind:{
+    en:`What's on your mind?`,
+    ne:'तपाईंको मनमा के छ?'
+  },
+  
 }

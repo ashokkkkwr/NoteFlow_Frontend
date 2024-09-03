@@ -14,7 +14,9 @@ import { AiFillDislike, AiOutlineLike } from 'react-icons/ai'
 import { BiRepost, BiSolidLike } from 'react-icons/bi'
 import { FiShare2 } from 'react-icons/fi'
 import { IoHeartSharp } from 'react-icons/io5'
-import { GiLoveMystery } from 'react-icons/gi'
+import { GiLoveMystery } from "react-icons/gi";
+import { useParams } from 'react-router-dom';
+
 
 export interface Comment {
   id: string
@@ -80,8 +82,12 @@ interface FormData {
   files: FileList | null
 }
 
-const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
-  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null)
+interface UserDetailsPostsProps {
+  id: string;
+}
+
+export default function UserDetailsPosts({ id }: UserDetailsPostsProps) {
+    const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null)
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
   const [likes, setLikes] = useState<boolean>(false)
   const [formData, setFormData] = useState<FormData>({
@@ -107,6 +113,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const commentsPerPage = 1
   const repliesPerPage = 1
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
+  // const { id } = useParams<{ id: string }>();
 
   const handleShowMoreComments = (noteId: string) => {
     setVisibleCommentsCount((prev) => ({
@@ -156,7 +163,9 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
   const fetchNotes = async () => {
     try {
-      const response = await axiosInstance.get('/notes/all', {
+      console.log("🚀 ~ fetchNotes ~ id:", id)
+
+      const response = await axiosInstance.get(`/notes/user/all/${id}`, {
         headers: { 'Content-Type': 'application/json' },
       })
 
@@ -214,7 +223,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
   useEffect(() => {
     fetchNotes()
-  }, [refreshPosts, loggedInUserId])
+  }, [ loggedInUserId])
 
   useEffect(() => {
     notes.forEach((note) => {
@@ -389,6 +398,9 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       console.log('🚀 ~ fetchUserLike ~ error:', error)
     }
   }
+  useEffect(() => {
+    fetchNotes();
+  }, [id]); // Fetch notes whenever the id prop changes
   // useEffect(()=>{
   //   // console.log('yoyo')
   //   // console.log(notes)
@@ -399,10 +411,10 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   // },[])
   return (
     <div
-      className={`mt-2 bg-grey w-[98vh] h-[0vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
+      className={` mt-3 bg-grey w-[116vh] h-[10vh]${isRightSidebarOpen ? 'hidden' : 'block'} ${
         isSidebarOpen ? 'hidden' : 'block'
-      } 2xl:block overflow-auto scroll-container`}
-      style={{ scrollBehavior: 'smooth' }} // Keep this CSS property
+      } 2xl:block overflow-auto`}
+      style={{ scrollBehavior: 'smooth' }}
     >
       {error && <p>{error}</p>}
       <ul>
@@ -532,32 +544,20 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                  * Like comments share section
                  */}
                 <div className='flex justify-between px-28 pt-5 pb-5 border-t-2   w-[85vh] ml-24'>
-                  <div
-                    className=' hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out px-1 rounded'
-                    onClick={() => likePosts(note.id)}
-                  >
+                  <div className=' hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out px-1 rounded' onClick={() => likePosts(note.id)}>
                     {/* // className={`flex items-center cursor-pointer ${
                     //   likedPosts.has(note.id) ? 'text-red-500' : ''
                     // } hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded`}
                     // nClick={() => handleButtonClick(note.id)}
                    */}
-
-                    {/* onClick={() => toggleDelete(note.id)} */}
-                    <button className='mt-2 flex text-base font-myriad font-semibold'>
-                      {note.likes.some((user) => user.user.id === loggedInUserId) ? (
-                        <p className='flex text-base font-myriad font-semibold text-red-500 hover:text-white'>
-                          {' '}
-                          <GiLoveMystery className='text-2xl mr-2' />
-                          Like
-                        </p>
-                      ) : (
-                        <p className='flex text-base font-myriad font-semibold'>
-                          {' '}
-                          <GiLoveMystery className='text-2xl mr-2 ' />
-                          Like
-                        </p>
-                      )}
-                    </button>
+                      
+                      {/* onClick={() => toggleDelete(note.id)} */}
+                      <button  className='mt-2 flex text-base font-myriad font-semibold'>
+                    
+                        {note.likes.some((user) => user.user.id === loggedInUserId) ? <p className='flex text-base font-myriad font-semibold text-red-500 hover:text-white' >  <GiLoveMystery className='text-2xl mr-2' />Like</p> : <p className='flex text-base font-myriad font-semibold'>  <GiLoveMystery className='text-2xl mr-2 ' />Like</p>}
+                    
+                      </button>
+                    
                   </div>
                   <div>
                     <button onClick={() => handlePostSelect(note.id)}>
@@ -661,4 +661,3 @@ Show Less Comments</button>
     </div>
   )
 }
-export default Posts

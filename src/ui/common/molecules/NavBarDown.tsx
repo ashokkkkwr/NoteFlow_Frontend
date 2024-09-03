@@ -11,7 +11,7 @@ export default function NavBarDown() {
    
     
     <div className='ml-[7px]'>
-    <p className='font-poppins text-red-700 text-base'>Check your pals</p>
+    <p className='font-poppins text-red-700 text-base'>{navbarLabel.checkYourPals[lang]}</p>
 
   </div>
      <div className=''>

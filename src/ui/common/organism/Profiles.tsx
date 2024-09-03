@@ -25,7 +25,7 @@ interface Media {
   path: string
 }
 
-export default function Profiles() {
+export default function sProfiles() {
   const [user, setUser] = useState<User | null>(null)
   const { isRightSidebarOpen } = useRightSidebar()
   const [formData, setFormData] = useState({
@@ -142,7 +142,7 @@ export default function Profiles() {
       } ${isSidebarOpen ? 'hidden' : 'block'} 2xl:block 2xl:w-[116vh] 2xl:h-[848px]`}
     >
       <div className='flex flex-col items-center'>
-        {isFormOpen ? (
+        {!isFormOpen ? (
           <>
             <div className='relative mt-1 2xl:mt-20'>
               {(user?.details?.profileImage?.length ?? 0) > 0 ? (

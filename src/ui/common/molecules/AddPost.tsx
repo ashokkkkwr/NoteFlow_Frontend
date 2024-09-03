@@ -2,8 +2,9 @@ import useLang from '@hooks/useLang'
 import React, { FormEvent, useState, useCallback } from 'react'
 import axiosInstance from 'services/instance'
 import { MdPermMedia } from 'react-icons/md'
-import { motion } from 'framer-motion' // For smooth animations
+import { motion } from 'framer-motion'
 import { useDropzone } from 'react-dropzone'
+import { navbarLabel } from '@data/localization/common/landingPage/navbar'
 
 interface FormData {
   title: string
@@ -79,8 +80,8 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
   return (
     <>
       <div className='mr-2 bg-white px-6 py-4 rounded-lg inline-flex flex-col min-w-max w-[492px] 2xl:w-[45vh] items-center justify-center shadow-md '>
-        <div className='flex items-center justify-center'>
-          <p className='font-poppins text-gray-800 text-lg font-bold mb-4'>What's on your mind?</p>
+        <div className='flex items-center justify-center mb-5'>
+          <p className='font-poppins text-gray-800 text-lg font-bold mb-4'>      {navbarLabel.whatOnYourMind[lang]}  </p>
         </div>
 
         <form onSubmit={handleSubmit} encType='multipart/form-data' className='w-full'>
@@ -107,7 +108,7 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
             {...getRootProps()}
             className={`mt-2 p-6 border-2 ${
               isDragActive ? 'border-red-400' : 'border-gray-300'
-            } border-dashed rounded-lg cursor-pointer flex flex-col items-center justify-center`}
+            } border-dashed rounded-lg cursor-pointer flex flex-col items-center justify-center relative`}
           >
             <input {...getInputProps()} />
             {isDragActive ? (
@@ -126,7 +127,7 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
                         key={index}
                         src={src}
                         alt='Selected'
-                        className='w-14 h-14 rounded-md object-cover shadow-sm'
+                        className='w-14 h-14 rounded-md object-cover shadow-sm absolute top-10 left-3' 
                       />
                     ))}
                   </div>
@@ -135,7 +136,7 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
             )}
           </div>
 
-          <div className='flex items-center justify-center mt-3'>
+          <div className='flex items-center justify-center mt-10'>
             <button
               type='submit'
               className='w-40 h-12 bg-gradient-to-r from-red-400 to-red-600 text-white font-semibold rounded-full hover:from-red-500 hover:to-red-700 transition-colors duration-300 shadow-lg'

@@ -12,10 +12,10 @@ export default function NavBar() {
 
   return (
     <div className="flex flex-col items- justify- py-7 px-2 bg-white rounded-lg">
-      <p className="font-poppins text-red-700 text-base mb-6 ml-4">Browse through
+      <p className="font-poppins text-red-700 text-base mb-7 ml-4">{navbarLabel.browseThrough[lang]}
       </p>
       
-      <div className={`w-full mb-3 ${isActive('/') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+      <div className={`w-full mb-5 ${isActive('/') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
         <Link to="/">
           <div className="flex items-center p-3">
             <FaHome className="text-2xl text-black" />
@@ -24,7 +24,7 @@ export default function NavBar() {
         </Link>
       </div>
 
-      <div className={`w-full mb-3 ${isActive('/auth/user/profile') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+      <div className={`w-full mb-5 ${isActive('/auth/user/profile') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
         <Link to="/auth/user/profile">
           <div className="flex items-center p-3">
             <FaUserEdit className="text-2xl text-black" />
@@ -33,7 +33,7 @@ export default function NavBar() {
         </Link>
       </div>
 
-      <div className={`w-full mb-3 ${isActive('/auth/user/friend-request') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+      <div className={`w-full mb-5 ${isActive('/auth/user/friend-request') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
         <Link to="/auth/user/friend-request">
           <div className="flex items-center p-3">
             <FaUserFriends className="text-2xl text-black" />
@@ -42,7 +42,7 @@ export default function NavBar() {
         </Link>
       </div>
 
-      <div className={`w-full mb-1 ${isActive('/auth/user/settings') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+      <div className={`w-full mb- ${isActive('/auth/user/settings') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
         <Link to="/auth/user/settings">
           <div className="flex items-center p-3">
             <IoSettings className="text-2xl text-black" />
@@ -50,6 +50,14 @@ export default function NavBar() {
           </div>
         </Link>
       </div>
+      {/* <div className={`w-full mb- ${isActive('/auth/user/aboutUs') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>
+        <Link to="/auth/user/aboutUs">
+          <div className="flex items-center p-3">
+            <IoSettings className="text-2xl text-black" />
+            <p className="ml-4 text-lg text-black font-medium">{navbarLabel.aboutUs[lang]}</p>
+          </div>
+        </Link>
+      </div> */}
     </div>
   );
 }
