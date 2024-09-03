@@ -5,6 +5,7 @@ import Navbar from '@ui/common/organism/Navbar'
 import RightSidebar from '../organism/RightSidebar'
 import RightSidebarDown from '../organism/RightSidebarDown'
 import UserDetails from '../organism/UserDetails'
+import UserDetailsPosts from '../organism/UserDetailsPosts'
 
 const Profile = () => {
   const [refreshPosts, setRefreshPosts] = useState(0)

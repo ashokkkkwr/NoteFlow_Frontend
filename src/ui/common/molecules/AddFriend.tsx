@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import { useSocket } from '@context/SocketContext';
 import Default from '../../../assets/default.png'
 import { TbFriends } from "react-icons/tb";
+import useLang from '@hooks/useLang';
+import { navbarLabel } from '@data/localization/common/landingPage/navbar';
+
 
 interface User {
   id: string;
@@ -25,6 +28,8 @@ interface Media {
 }
 
 const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
+  const { lang } = useLang();
+
   const [users, setUsers] = useState<User[]>([]);
   const socket = useSocket();
 
@@ -41,7 +46,6 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   const addFriend = async (receiverId: string) => {
     try {
       console.log(receiverId, 'user id');
-      console.log(receiverId, "User is the request.");
       if (socket) {
         socket.emit('request', receiverId);
       }
@@ -61,8 +65,6 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
 
       socket.on('notiReceiver', ({ receiverId, senderDetails, notiService }) => {
         console.log(senderDetails, "hahahaha sent friend request...");
-        console.log(receiverId, "Receiver ID received in real-time");
-        console.log(notiService, "Notification in real-time");
         setTestId(receiverId, senderDetails, notiService);
       });
 
@@ -73,55 +75,60 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   }, [socket]);
 
   return (
-    // <div className="mt-2 bg-white p-4 rounded-lg inline-flex flex-col min-w-max w-[45vh] h-[45vh] sm:w-[50vw]">
-
-    <div className=' bg-white p-4 rounded-lg inline-flex flex-col  2xl:w-[45vh]' >
+    <div className='bg-white p-4 rounded-lg inline-flex flex-col 2xl:w-[45vh] min-w-[45vh] min-h-[40vh]'>
       <div className='flex items-center justify-center mb-2'>
-        <p className='font-poppins text-red-700 text-base'>People you may know</p>
+        <p className='font-poppins text-red-700 text-base'>{navbarLabel.peopleyoumayknow[lang]}</p>
       </div>
 
-      {users.map(user => (
-        <div key={user.id} className='mt-1 flex items-start py-4 border-b border-gray-200'>
-          <div className='flex items-start flex-1'>
-          {(user?.details?.profileImage?.length ?? 0) > 0 ? (
-            user?.details.profileImage.map((media) => (
-              <img
-                src={media.path}
-                alt={Default}
-                className='w-12 h-12 rounded-full object-cover'
-              />
-            )             
-            )):(
-              <img
-                src={Default}
-                alt={Default}
-                className='w-12 h-12 rounded-full object-cover'
-              />
-            )
-          }
-            <div className='ml-3 flex-1'>
-              <Link to={`/auth/user/${user.id}`}>
-                <p className='text-lg truncate'>{user.details.first_name} {user.details.last_name}</p>
-                <p className='text-sm text-red-500 truncate'>+{user.details.phone_number}</p>
-              </Link>
+      {users.length === 0 ? (
+        <div className="flex items-center justify-center flex-1">
+          <p className='text-center text-gray-500'>{navbarLabel.noUsersAvailable[lang]}</p>
+        </div>
+      ) : (
+        users.map(user => (
+          <div key={user.id} className='mt-1 flex items-start py-4 border-b border-gray-200'>
+            <div className='flex items-start flex-1'>
+              {(user?.details?.profileImage?.length ?? 0) > 0 ? (
+                user?.details.profileImage.map((media) => (
+                  <img
+                    key={media.id}
+                    src={media.path}
+                    alt={Default}
+                    className='w-12 h-12 rounded-full object-cover'
+                  />
+                ))
+              ) : (
+                <img
+                  src={Default}
+                  alt={Default}
+                  className='w-12 h-12 rounded-full object-cover'
+                />
+              )}
+              <div className='ml-3 flex-1'>
+                <Link to={`/auth/user/${user.id}`}>
+                  <p className='text-lg truncate'>{user.details.first_name} {user.details.last_name}</p>
+                  <p className='text-sm text-red-500 truncate'>+{user.details.phone_number}</p>
+                </Link>
+              </div>
+            </div>
+            <div className='flex items-center'>
+              <button
+                onClick={() => addFriend(user.id)}
+                className='inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
+              >
+                <IoIosPersonAdd className='text-xl mr-2' />
+                Add
+              </button>
             </div>
           </div>
-          <div className='flex items-center'>
-            <button
-              onClick={() => addFriend(user.id)}
-              className='inline-flex items-center px-6 py-2 border-2 border-red-500 text-red-500 font-medium text-xs leading-tight uppercase rounded hover:bg-red-500 hover:text-white focus:outline-none focus:ring-0 transition duration-150 ease-in-out'
-            >
-              <IoIosPersonAdd className='text-xl mr-2' />
-              Add
-            </button>
-          </div>
-        </div>
-      ))}
-      <Link to={`/auth/user/viewAllUser`} className='flex justify-center items-center mt-5'>
+        ))
+      )}
+      <Link to={`/auth/user/viewAllUser`} className='flex justify-center items-end mt-5'>
         <button 
               className=' flex justify-center items-center w-40 h-12 bg-gradient-to-r from-red-400 to-red-600 text-white font-semibold rounded-full hover:from-red-500 hover:to-red-700 transition-colors duration-300 shadow-lg'
 >
-        View All
+        
+        {navbarLabel.viewAll[lang]}
         </button>
       </Link>
     </div>

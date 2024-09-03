@@ -2,8 +2,9 @@ import useLang from '@hooks/useLang'
 import React, { FormEvent, useState, useCallback } from 'react'
 import axiosInstance from 'services/instance'
 import { MdPermMedia } from 'react-icons/md'
-import { motion } from 'framer-motion' // For smooth animations
+import { motion } from 'framer-motion'
 import { useDropzone } from 'react-dropzone'
+import { navbarLabel } from '@data/localization/common/landingPage/navbar'
 
 interface FormData {
   title: string
@@ -80,7 +81,7 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
     <>
       <div className='mr-2 bg-white px-6 py-4 rounded-lg inline-flex flex-col min-w-max w-[492px] 2xl:w-[45vh] items-center justify-center shadow-md '>
         <div className='flex items-center justify-center mb-5'>
-          <p className='font-poppins text-gray-800 text-lg font-bold mb-4'>What's on your mind?</p>
+          <p className='font-poppins text-gray-800 text-lg font-bold mb-4'>      {navbarLabel.whatOnYourMind[lang]}  </p>
         </div>
 
         <form onSubmit={handleSubmit} encType='multipart/form-data' className='w-full'>

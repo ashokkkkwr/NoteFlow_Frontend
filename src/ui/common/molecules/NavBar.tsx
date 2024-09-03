@@ -12,7 +12,7 @@ export default function NavBar() {
 
   return (
     <div className="flex flex-col items- justify- py-7 px-2 bg-white rounded-lg">
-      <p className="font-poppins text-red-700 text-base mb-7 ml-4">Browse through
+      <p className="font-poppins text-red-700 text-base mb-7 ml-4">{navbarLabel.browseThrough[lang]}
       </p>
       
       <div className={`w-full mb-5 ${isActive('/') ? 'border-l-4 border-red-500 bg-gray-100' : 'hover:bg-gray-100'} transition-all duration-300 ease-in-out`}>

@@ -5,6 +5,7 @@ import axiosInstance from 'services/instance';
 import { useRightSidebar } from '@context/RightSidebarContext';
 import { useSidebar } from '@context/SidebarContext';
 import Default from '../../../assets/default.png';
+import UserDetailsPosts from './UserDetailsPosts';
 
 interface User {
   id: string;
@@ -46,6 +47,7 @@ export default function UserDetails() {
   if (!user) return <div>Loading...</div>;
 
   return (
+    <>
     <div
       className={`mt-2 bg-white cursor-pointer shadow-lg rounded-lg w-[50vh] h-[87vh] flex items-center justify-center ${
         isRightSidebarOpen ? 'hidden' : 'block'
@@ -60,23 +62,13 @@ export default function UserDetails() {
                 alt={`Profile ${media.id}`}
                 className='w-96 h-96 rounded-full object-cover'
               />
-              <button
-                className='absolute right-0 bottom-0 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600'
-                onClick={() => {} /* Add your image edit toggle function here */}
-              >
-                <FaEdit />
-              </button>
+             
             </div>
           ))
         ) : (
           <div className='relative mt-1 2xl:mt-20'>
             <img src={Default} alt='Default Profile' className='w-96 h-96 rounded-full object-cover' />
-            <button
-              className='absolute right-0 bottom-0 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600'
-              onClick={() => {} /* Add your image edit toggle function here */}
-            >
-              <FaEdit />
-            </button>
+            
           </div>
         )}
 
@@ -99,16 +91,20 @@ export default function UserDetails() {
               <p className='ml-7 text-lg'>{user?.role}</p>
             </div>
 
-            {/* Update Button */}
+            {/* Update Button 
             <div className='flex items-center mt-8 justify-center'>
-              <button className='flex items-center text-red-500 hover:text-red-700' onClick={() => {} /* Add your toggle function here */}>
+              <button className='flex items-center text-red-500 hover:text-red-700' onClick={() => {} /* Add your toggle function here 
                 <FaEdit className='mr-2' />
                 <span>Update</span>
               </button>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>
     </div>
+    <UserDetailsPosts id={id as string} />
+
+    </>
+
   );
 }
