@@ -72,18 +72,33 @@ export default function SettingOrganism() {
         )}
 
         {selectedSetting === 'chat' && (
-          <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
-            <h2 className='text-xl font-medium mb-4 text-center'>Chat Settings</h2>
-            <label className='flex items-center justify-center'>
-              <input
-                type='checkbox'
-                checked={isAutoCorrectOn}
-                onChange={toggleAutoCorrect}
-                className='form-checkbox h-5 w-5 text-blue-600'
-              />
-              <span className='ml-2 text-gray-700'>Enable Auto-Correct</span>
-            </label>
+          <div className='relative group bg-white p-6 shadow-md rounded-lg w-[80%] max-w-[600px]'>
+          <h2 className='text-xl font-medium mb-4 text-center'>Chat Settings</h2>
+          
+          <label className='flex items-center justify-center mb-4'>
+            <input
+              type='checkbox'
+              checked={isAutoCorrectOn}
+              onChange={toggleAutoCorrect}
+              className='form-checkbox h-5 w-5 text-blue-600'
+            />
+            <span className='ml-2 text-gray-700'>Enable Auto-Correct</span>
+          </label>
+        
+          {/* Tooltip Popup */}
+          <div className='absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-red-300 text-white text-sm rounded-lg p-4 w-[300px] bottom-36 left-1/2 transform -translate-x-1/2 z-10'>
+            <p className='mb-2'>
+              Auto-Correct helps you by automatically correcting spelling mistakes as you type, ensuring your messages are clear and professional.
+            </p>
+            <p className='mb-2'>
+              Keep in mind that Auto-Correct might sometimes change words in ways you don't expect. You can always review and edit your text before sending your message.
+            </p>
+            <p>
+              Whether you're writing in a hurry or just want a little extra help with spelling, Auto-Correct is here to make your chatting experience smoother.
+            </p>
           </div>
+        </div>
+        
         )}
       </div>
     </div>

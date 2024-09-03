@@ -72,5 +72,21 @@ export const navbarLabel: LabelTypes = {
     en:`What's on your mind?`,
     ne:'तपाईंको मनमा के छ?'
   },
-  
+  shareYourStoryToughtsOrIdeas:{
+    en:'Share Your Story, Thoughts Or Ideas',
+    ne:'आफ्नो कथा, विचार वा धारणा साझा गर्नुहोस्'
+  },
+  giveYourPostCatchyTitle:{
+    en:'Give Your Post a Catchy Title...',
+    ne:'आफ्नो पोस्टलाई आकर्षक शीर्षक दिनुहोस्...'
+  },
+  dragAndDropSomeFilesHere:{
+    en:' Drag& drop some files here.',
+    ne:'यहाँ केही फाइलहरू तान्नुहोस् र छोड्नुहोस्।'
+  },
+  addMedia:{
+    en:'Add Media',
+    ne:'मिडिया थप्नुहोस्'
+  }
+ 
 }
