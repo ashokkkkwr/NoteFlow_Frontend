@@ -90,7 +90,7 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
               className='h-12 w-full border-2 border-gray-300 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500 placeholder-opacity-75'
               name='title'
               type='text'
-              placeholder='Give your post a catchy title...'
+              placeholder={navbarLabel.giveYourPostCatchyTitle[lang]}
               onChange={handleChange}
               value={formData.title}
             />
@@ -98,7 +98,7 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
               className='h-14 w-full border-2 border-gray-300 rounded-lg p-4 mb-4 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500 placeholder-opacity-75'
               name='content'
               type='text'
-              placeholder='Share your story, thoughts, or ideas...'
+              placeholder={navbarLabel.shareYourStoryToughtsOrIdeas[lang]}
               onChange={handleChange}
               value={formData.content}
             />
@@ -118,9 +118,9 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                   <MdPermMedia className='text-2xl text-red-500' />
                 </motion.div>
-                <p className='text-gray-600'>Drag & drop some files here.</p>
+                <p className='text-gray-600'>{navbarLabel.dragAndDropSomeFilesHere[lang]}</p>
                 <div className='flex'>
-                  <span className='text-sm text-gray-500 mt-2'>Add Media</span>
+                  <span className='text-sm text-gray-500 mt-2'>{navbarLabel.addMedia[lang]}</span>
                   <div className='flex flex-wrap gap-2 mt-2'>
                     {imagePreviews.map((src, index) => (
                       <img
