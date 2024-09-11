@@ -12,6 +12,10 @@ export enum LanguageEnum {
   en = 'en',
   ne = 'ne',
 }
+export enum ThemeEnum{
+  dark='dark',
+  light='light'
+}
 //keyof is a TypeScript keyword that creates a union of the keys of an object type.
 /**
  * keyof typeof LanguageEnum creates a union of the keys of the 
