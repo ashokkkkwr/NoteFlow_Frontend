@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import LanguageToggle from '../molecules/LanguageToggle';
 import PasswordChange from '../molecules/PasswordChange';
 import ForgotPassword from '../molecules/ForgotPassword';
+import ThemeToggler from '../molecules/ThemeToggler';
 
 export default function SettingOrganism() {
   const { isAutoCorrectOn, toggleAutoCorrect } = useAutoCorrect();
@@ -67,6 +68,7 @@ export default function SettingOrganism() {
           <div className='bg-white p-4 shadow-md rounded-lg w-[80%] max-w-[600px]'>
             <h2 className='text-xl font-medium mb-4 text-center'>Appearance</h2>
             <p className='text-center'>Here you can adjust the appearance of the application.</p>
+            <ThemeToggler />
             {/* Add relevant inputs and functionality */}
           </div>
         )}
