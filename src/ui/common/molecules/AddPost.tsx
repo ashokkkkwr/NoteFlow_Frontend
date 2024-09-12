@@ -5,6 +5,8 @@ import { MdPermMedia } from 'react-icons/md'
 import { motion } from 'framer-motion'
 import { useDropzone } from 'react-dropzone'
 import { navbarLabel } from '@data/localization/common/landingPage/navbar'
+import { ThemeEnum } from '@type/global.types'
+import useTheme from '@hooks/useTheme'
 
 interface FormData {
   title: string
@@ -18,6 +20,7 @@ interface AddPostProps {
 
 const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
   const { lang } = useLang()
+  const{theme} = useTheme()
   const initialFormData: FormData = {
     title: '',
     content: '',
@@ -79,9 +82,9 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
 
   return (
     <>
-      <div className='mr-2 bg-white px-6 py-4 rounded-lg inline-flex flex-col min-w-max w-[492px] 2xl:w-[45vh] items-center justify-center shadow-md '>
+      <div className={`mr-2 bg-white px-6 py-4 rounded-lg inline-flex flex-col min-w-max w-[492px] 2xl:w-[45vh] items-center justify-center shadow-md ${theme===ThemeEnum.dark&&'bg-gray-800'}`}>
         <div className='flex items-center justify-center mb-5'>
-          <p className='font-poppins text-gray-800 text-lg font-bold mb-4'>      {navbarLabel.whatOnYourMind[lang]}  </p>
+          <p className='font-poppins text-red-700 text-lg font-bold mb-4'>      {navbarLabel.whatOnYourMind[lang]}  </p>
         </div>
 
         <form onSubmit={handleSubmit} encType='multipart/form-data' className='w-full'>

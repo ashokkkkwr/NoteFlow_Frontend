@@ -7,6 +7,8 @@ import Default from '../../../assets/default.png'
 import { TbFriends } from "react-icons/tb";
 import useLang from '@hooks/useLang';
 import { navbarLabel } from '@data/localization/common/landingPage/navbar';
+import useTheme from '@hooks/useTheme';
+import { ThemeEnum } from '@type/global.types';
 
 
 interface User {
@@ -29,6 +31,8 @@ interface Media {
 
 const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   const { lang } = useLang();
+  const { theme } = useTheme();  // Access the theme
+
 
   const [users, setUsers] = useState<User[]>([]);
   const socket = useSocket();
@@ -75,7 +79,7 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
   }, [socket]);
 
   return (
-    <div className='bg-white p-4 rounded-lg inline-flex flex-col 2xl:w-[45vh] min-w-[45vh] min-h-[40vh]'>
+    <div className={`p-4 rounded-lg inline-flex flex-col 2xl:w-[45vh] min-w-[45vh] min-h-[40vh] ${theme === ThemeEnum.dark ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
       <div className='flex items-center justify-center mb-2'>
         <p className='font-poppins text-red-700 text-base'>{navbarLabel.peopleyoumayknow[lang]}</p>
       </div>
@@ -94,7 +98,7 @@ const AddFriend: React.FC<RightSideBarProps> = ({ setTestId }) => {
                     key={media.id}
                     src={media.path}
                     alt={Default}
-                    className='w-12 h-12 rounded-full object-cover'
+                    className={`w-12 h-12 rounded-full object-cover `}
                   />
                 ))
               ) : (

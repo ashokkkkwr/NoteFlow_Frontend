@@ -394,7 +394,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   //   // console.log(notes)
   //   // const ids=notes.map((note)=>(
   //   //   note.id
-  //   // ))
+  //   //6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666 ))
   //   fetchUserLike()
   // },[])
   return (
