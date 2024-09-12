@@ -22,6 +22,18 @@ interface Friends {
   };
 }
 
+interface User {
+  id: string
+  createdAt: any
+  details: {
+    first_name: string
+    last_name: string
+    profileImage: Media[]
+    phone_number: string
+  }
+  email: string
+}
+
 interface Media {
   id: string;
   path: string;
@@ -30,7 +42,7 @@ interface Media {
 export default function FriendRequests() {
   const socket = useSocket();
   const [request, setRequest] = useState<Friends[]>([]);
-  const [viewRequest,setViewRequest] =useState<Friends[]>([]);
+  const [viewRequest,setViewRequest] =useState<User[]>([]);
 
   const { isRightSidebarOpen } = useRightSidebar();
   const { isSidebarOpen } = useSidebar();
@@ -89,9 +101,12 @@ export default function FriendRequests() {
 
   return (
     <div className={`bg-white rounded-lg ${isRightSidebarOpen ? 'hidden' : 'block'} ${isSidebarOpen ? 'hidden' : 'block'} 2xl:block 2xl:w-[116vh] 2xl:ml-1 2xl:h-[848px] 2xl:mt-2`}>
+      <div className='text-center mt-10 font-poppins text-red-700 text-lg font-bold'>Available Requests:</div>
+
       <div className={`flex flex-wrap gap-x-12 ml-12 2xl:ml-20 `}>
+
         {request.length === 0 ? (
-          <div className="flex items-center justify-center w-full h-full mt-96">
+          <div className="flex  justify-center w-full h-full mt-40">
             <p className="text-center font-poppins text-gray-500 text-xl">No friend requests available</p>
           </div>
         ) : (
@@ -128,6 +143,70 @@ export default function FriendRequests() {
                   onClick={() => rejectRequest(friends.id)}
                   className="bg-red-500 text-white mt-4 w-[100px] h-10 border-2 border-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
                 >
+                  <p className="p-0 m-0 text-sm">Cancel</p>
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div className='text-center mt-20 font-poppins text-red-700 text-lg font-bold mb-10'>Request Pending
+      </div>
+
+
+      <div className={`flex flex-wrap gap-x-12 ml-12 2xl:ml-20 `}>
+        {viewRequest.length === 0 ? (
+          <div className="flex items-center justify-center w-full h-full mt-96">
+            <p className="text-center font-poppins text-gray-500 text-xl">No friend requests sent</p>
+          </div>
+        ) : (
+          viewRequest.map((friends) => (
+            <div key={friends.id} className="bg-gray-200 p-20 mt-2 2xl:p-7 rounded-2xl">
+              <div className="flex-shrink-0">
+                {friends.details.profileImage.map((media) => (
+                  <img
+                    key={media.id}
+                    src={`${media.path}`}
+                    alt={`Profile ${media.id}`}
+                    className="w-56 h-52 object-cover rounded-md"
+                  />
+                ))}
+              </div>
+              <div className="flex flex-col items-center mt-4">
+                <p className="text-xl font-semibold">{friends.details.first_name}</p>
+                <p className="text-xl">{friends.details.last_name}</p>
+              </div>
+              <div className="flex justify-between">
+                {/* <button
+                  onClick={() => {
+                    if (friends.receiver_id) {
+                      acceptRequest(friends.id, friends.sender_id);
+                    } else {
+                      console.error('Receiver or receiver ID is undefined');
+                    }
+                  }}
+                  className="mt-4 w-[100px] h-10 border-2 border-red-500 text-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-500 hover:text-white transition-colors duration-300"
+                >
+                  <p className="p-0 m-0 text-sm">Accept</p>
+                </button> */}
+                <button
+                  onClick={() => rejectRequest(friends.id)}
+                  className="bg-red-500 text-white mt-4 w-[100px] h-10 border-2 border-red-500 py-2 px-4 rounded-md text-lg hover:bg-red-900 hover:text-white transition-colors duration-300"
+                >
                   <p className="p-0 m-0 text-sm">Reject</p>
                 </button>
               </div>
@@ -135,6 +214,8 @@ export default function FriendRequests() {
           ))
         )}
       </div>
+
+
     </div>
   );
 }
