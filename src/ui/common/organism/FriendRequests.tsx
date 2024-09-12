@@ -30,6 +30,7 @@ interface Media {
 export default function FriendRequests() {
   const socket = useSocket();
   const [request, setRequest] = useState<Friends[]>([]);
+  const [viewRequest,setViewRequest] =useState<Friends[]>([]);
 
   const { isRightSidebarOpen } = useRightSidebar();
   const { isSidebarOpen } = useSidebar();
@@ -67,8 +68,23 @@ export default function FriendRequests() {
     }
   };
 
+  const viewRequests = async () => {
+    try {
+      const response = await axiosInstance.get('/friend/friends/requests')
+      console.log(response.data.data, 'requests')
+      console.log("🚀 ~ viewRequests ~ response.data.data:", response.data.data)
+
+      setViewRequest(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   useEffect(() => {
     friendRequest();
+    viewRequests()
+
   }, []);
 
   return (
