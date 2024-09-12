@@ -8,6 +8,7 @@ import { RiNotificationFill } from 'react-icons/ri'
 import { BiSolidMessage } from 'react-icons/bi'
 import Logo from './Logo'
 import useLang from '@hooks/useLang'
+import useTheme from '@hooks/useTheme'
 import { navbarLabel } from '@data/localization/common/landingPage/navbar'
 
 interface User {
@@ -48,6 +49,7 @@ interface Props {
 export default function Nav({ testId, senderDetails, notiService }: Props) {
   const socket = useSocket()
   const { lang } = useLang();
+  const {theme} = useTheme();
 
   const [user, setUser] = useState<User | null>(null)
   const [noti, setNoti] = useState<Noti[]>([])
@@ -126,7 +128,7 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
     <div className='flex justify-start items-start'>
       <Logo />
     </div>
-    <div className='bg-white flex justify-between items-center p-2'>
+    <div className=' flex justify-between items-center p-2'>
       <div className='flex '>
         <Link to='/auth/user/message'>
           <div className='p-3 bg-gray-100 border rounded-full hover:bg-gray-200 hover:border-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105 hover:text-red-500'>
