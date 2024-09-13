@@ -15,7 +15,8 @@ import { BiRepost, BiSolidLike } from 'react-icons/bi'
 import { FiShare2 } from 'react-icons/fi'
 import { IoHeartSharp } from 'react-icons/io5'
 import { GiLoveMystery } from 'react-icons/gi'
-
+import useTheme from '@hooks/useTheme'
+import { ThemeEnum } from '@type/global.types'
 export interface Comment {
   id: string
   comment: string
@@ -107,7 +108,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
   const commentsPerPage = 1
   const repliesPerPage = 1
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
-
+  const {theme}=useTheme()
   const handleShowMoreComments = (noteId: string) => {
     setVisibleCommentsCount((prev) => ({
       ...prev,
@@ -407,7 +408,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
-          <div key={note.id} className='mb-2  w-auto border bg-white shadow-xl rounded-lg p-5 '>
+          <div key={note.id} className={`mb-2  w-auto border bg-white shadow-xl rounded-lg p-5 ${theme === ThemeEnum.dark&& 'bg-gray-800'}`}>
             {openFormId === note.id && (
               <div className='flex justify-end mr-10 mt-5'>
                 <button onClick={() => toggleForm(note.id)} className='text-red-500 hover:text-red-700'>
@@ -471,13 +472,13 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                       ))}
                     </div>
                     <div className='flex  ml-3 mt-3'>
-                      <p className='mr-1'>{note.user.details.first_name}</p>
-                      <p>{note.user.details.last_name}</p>
+                      <p className={`mr-1 ${theme === ThemeEnum.dark&& 'text-white'}`}>{note.user.details.first_name}</p>
+                      <p className={`${theme === ThemeEnum.dark&& 'text-white'}`}>{note.user.details.last_name}</p>
                     </div>
                   </div>
 
                   <div>
-                    <p className='mr-20 text-sm text-gray-400'>{getTimeDifference(note.createdAt)}</p>
+                    <p className={`mr-20 text-sm text-gray-400 ${theme === ThemeEnum.dark&& 'text-white'}`}>{getTimeDifference(note.createdAt)}</p>
                   </div>
 
                   <div className='relative'>
