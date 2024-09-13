@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axiosInstance from 'services/instance'
 import Default from '../../../assets/default.png'
-
+import { ThemeEnum } from '@type/global.types'
+import useTheme from '@hooks/useTheme'
 interface User {
   id: string
   createdAt: any
@@ -22,6 +23,8 @@ interface Media {
 
 export default function ViewFriend() {
   const [users, setUsers] = useState<User[]>([])
+  const {theme}=useTheme()
+
 
   const viewUsers = async () => {
     try {
@@ -41,7 +44,7 @@ export default function ViewFriend() {
   return (
     <div className='mt-5 min-h-[390px]'>
       {users.length === 0 ? (
-        <p className='font-poppins text-black'>Add a friend to list them.</p>
+        <p className={`font-poppins text-black  ${theme === ThemeEnum.dark&& 'text-white'}`}>Add a friend to list them.</p>
       ) : (
         users.slice(0, 4).map((friends) => (
           <div key={friends.id} className='ml border-b border-gray-200 pb-3 mt-5'>
@@ -60,8 +63,8 @@ export default function ViewFriend() {
               <div className=''>
                 <div className='flex mt-1 ml-2'>
                   <Link to={`/auth/user/${friends.id}`} className='flex'>
-                    <p className='mr-1 text-lg'>{friends.details.first_name}</p>
-                    <p className='text-lg'>{friends.details.last_name}</p>
+                    <p className={`mr-1 text-lg ${theme === ThemeEnum.dark&& 'text-white'}`}>{friends.details.first_name}</p>
+                    <p className={`text-lg ${theme === ThemeEnum.dark&& 'text-white'}`}>{friends.details.last_name}</p>
                   </Link>
                 </div>
                 <div className='ml-2'>
