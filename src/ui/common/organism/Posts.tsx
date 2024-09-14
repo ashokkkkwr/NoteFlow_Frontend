@@ -408,7 +408,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
-          <div key={note.id} className={`mb-2  w-auto border bg-white shadow-xl rounded-lg p-5 ${theme === ThemeEnum.dark&& 'bg-gray-800'}`}>
+          <div key={note.id} className={`mb-2  w-auto border  shadow-xl rounded-lg p-5 ${theme === ThemeEnum.dark? 'bg-gray-800':'bg-white'}`}>
             {openFormId === note.id && (
               <div className='flex justify-end mr-10 mt-5'>
                 <button onClick={() => toggleForm(note.id)} className='text-red-500 hover:text-red-700'>
@@ -483,18 +483,18 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
                   <div className='relative'>
                     <div className='flex items-end mr-5 ' onClick={() => toggleDropdown(note.id)}>
-                      {loggedInUserId === note.user.id && <BsThreeDotsVertical className='text-xl' />}
+                      {loggedInUserId === note.user.id && <BsThreeDotsVertical className={`text-xl ${theme === ThemeEnum.dark&& 'text-white'}`} />}
                       {openDropdownId === note.id && (
                         <div
                           ref={dropdownRef}
-                          className='absolute right-0 top-10 mt-2 w-48 bg-white rounded-md shadow-2xl z-50'
+                          className={`absolute right-0 top-10 mt-2 w-48 bg-white rounded-md shadow-2xl z-50 ${theme === ThemeEnum.dark&& 'bg-gray-900'}`}
                         >
                           <ul>
-                            <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => toggleForm(note.id)}>
+                            <li className={`p-2 hover:bg-gray-200 cursor-pointer ${theme === ThemeEnum.dark&& 'text-white'}`}  onClick={() => toggleForm(note.id)}>
                               Edit
                             </li>
                             {/* <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => handleDelete(note.id)}> */}
-                            <li className='p-2 hover:bg-gray-200 cursor-pointer' onClick={() => toggleDelete(note.id)}>
+                            <li className={`p-2 hover:bg-gray-200 cursor-pointer ${theme === ThemeEnum.dark&& 'text-white'}`} onClick={() => toggleDelete(note.id)}>
                               Delete
                             </li>
                           </ul>
@@ -505,8 +505,8 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                 </div>
 
                 <div className='mb-4 '>
-                  <h3 className='text-lg font-semibold mt-10'>{note.title}</h3>
-                  <p>{note.content}</p>
+                  <h3 className={`text-lg font-semibold mt-10 ${theme === ThemeEnum.dark&& 'text-white'}`}>{note.title}</h3>
+                  <p className={`${theme === ThemeEnum.dark&& 'text-white'}`}>{note.content}</p>
                 </div>
                 <div className='flex justify-center items-center'>
                   {note.noteMedia.map((media) => (
@@ -526,7 +526,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     <p className='text-sm'>{note.likes.length}</p>
                   </div>
                   <div>
-                    <p className='text-sm'>150 comments</p>
+                    <p className={`text-sm ${theme === ThemeEnum.dark&& 'text-white'}`}>150 comments</p>
                   </div>
                 </div>
                 {/**
@@ -552,9 +552,9 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                           Like
                         </p>
                       ) : (
-                        <p className='flex text-base font-myriad font-semibold'>
+                        <p className={`flex text-base font-myriad font-semibold ${theme === ThemeEnum.dark&& 'text-white'}`}>
                           {' '}
-                          <GiLoveMystery className='text-2xl mr-2 ' />
+                          <GiLoveMystery className={`text-2xl mr-2 ${theme === ThemeEnum.dark&& 'text-white'}` }/>
                           Like
                         </p>
                       )}
@@ -568,8 +568,8 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                         </div>
                       ) : (
                         <div className='flex items-center cursor-pointer hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded'>
-                          <FaRegCommentDots className='text-xl mr-2' />
-                          <span className='text-base font-myriad font-semibold'>Comment</span>
+                          <FaRegCommentDots className={`text-xl mr-2 ${theme === ThemeEnum.dark&& 'text-white'}`} />
+                          <span className={`text-base font-myriad font-semibold ${theme === ThemeEnum.dark&& 'text-white'}`}>Comment</span>
                         </div>
                       )}
                     </button>
@@ -577,21 +577,21 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
 
                   <div>
                     <p className='flex items-center cursor-pointer hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded'>
-                      <BiRepost className='text-xl mr-2' />
-                      <span className='text-base font-myriad font-semibold'>Repost</span>
+                      <BiRepost className={`text-3xl mr-1 ${theme === ThemeEnum.dark&& 'text-white'}`} />
+                      <span className={`text-base font-myriad font-semibold ${theme === ThemeEnum.dark&& 'text-white'}`}>Repost</span>
                     </p>
                   </div>
 
                   <div>
                     <p className='flex items-center cursor-pointer hover:bg-red-500 hover:text-white transition-colors duration-300 ease-in-out p-2 rounded'>
-                      <FiShare2 className='text-xl mr-2' />
-                      <span className='text-base font-myriad font-semibold'>Share</span>
+                      <FiShare2 className={`text-xl mr-2 ${theme === ThemeEnum.dark&& 'text-white'}`} />
+                      <span className={`text-base font-myriad font-semibold ${theme === ThemeEnum.dark&& 'text-white'}`}>Share</span>
                     </p>
                   </div>
                 </div>
 
                 {selectedPostId === note.id && (
-                  <div className='p-5 bg-gray-100 rounded-xl w-[85vh] ml-[10vh]'>
+                  <div className={`p-5 rounded-xl w-[85vh] ml-[10vh] ${theme === ThemeEnum.dark? 'bg-gray-900':'bg-gray-100'}`}>
                     <button onClick={() => toggleCommentFormVisibility(note.id)}>
                       {/* {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'} */}
                     </button>
@@ -615,6 +615,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     <div>
                       {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
                         <CommentComponent
+                        theme={theme}
                           key={comment.id}
                           noteId={note.id}
                           comment={comment}

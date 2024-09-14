@@ -14,7 +14,7 @@ export default function NavBar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className={`flex flex-col items- justify- py-7 px-2 bg-white rounded-lg  ${theme === ThemeEnum.dark&& 'bg-gray-800'}`}>
+    <div className={`flex flex-col items- justify- py-7 px-2  rounded-lg  ${theme === ThemeEnum.dark? 'bg-gray-800':'bg-white'}`}>
       <p className="font-poppins text-red-700 text-base mb-7 ml-4">{navbarLabel.browseThrough[lang]}
       </p>
       

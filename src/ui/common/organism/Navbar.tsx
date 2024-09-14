@@ -18,7 +18,7 @@ const Navbar: React.FC<Props> = ({ testId, senderDetails, notiService }) => {
   const {theme } = useTheme()
 
   return (
-<div className={`flex bg-white p-4 ml-[1px] justify-between  border rounded-lg shadow-md ${theme===ThemeEnum.dark&&'bg-gray-800'}`}>
+<div className={`flex  p-4 ml-[1px] justify-between  border rounded-lg shadow-md ${theme===ThemeEnum.dark?'bg-gray-800':'bg-white'}`}>
 <button onClick={toggleSidebar} className="block 2xl:hidden">
         {isSidebarOpen ? <FiX className='text-3xl text-red-500' /> : <BsArrowLeftCircleFill  className='text-3xl text-black'/>} 
       </button>

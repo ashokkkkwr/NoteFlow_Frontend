@@ -4,9 +4,12 @@ import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
 import { IoClose } from 'react-icons/io5'
 import { BsFillSendFill } from 'react-icons/bs'
+import { ThemeEnum } from '@type/global.types'
 
 const CommentComponent: React.FC<{
+  
   noteId: string
+  theme:string
   comment: Comment
   handleReplySubmit: (e: React.FormEvent<HTMLFormElement>, noteId: string, commentId: string) => void
   handleReplyChange: (noteId: string, commentId: string, value: string) => void
@@ -18,6 +21,7 @@ const CommentComponent: React.FC<{
   visibleRepliesCount: Record<string, number>
   repliesPerPage: number
 }> = ({
+  theme,
   noteId,
   comment,
   handleReplySubmit,
@@ -45,17 +49,17 @@ const CommentComponent: React.FC<{
               className='w-8 h-8 rounded-full object-cover'
             />
           ))}
-          <p className='font-poppins font-bold ml-2 mt-1'>{comment?.user?.details.first_name}</p>
+          <p className={`font-poppins font-bold ml-2 mt-1 ${theme === ThemeEnum.dark? 'text-white':'text-black' } `}>{comment?.user?.details.first_name}</p>
         </div>
         <div className=' w-96 overflow-hidden'>
-          <p className='ml- break-words whitespace-normal'>{comment.comment}</p>
+          <p className={`ml- break-words whitespace-normal ${theme === ThemeEnum.dark? 'text-white':'text-black' }`}>{comment.comment}</p>
         </div>
       </div>
       <button
         onClick={() => toggleReplyFormVisibility(noteId, comment.id)}
         className='flex items-center justify-center px-2 py- border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 hover:border-gray-400 transition duration-200'
       >
-        <p className='flex items-center text-gray-700 font-medium'>
+        <p className={`flex items-center font-medium ${theme === ThemeEnum.dark? 'text-white':'text-gray-700' }`}>
           {visibleReplyForm[noteId] === comment.id ? <IoClose className='text-lg' /> : 'Reply'}
         </p>
       </button>
@@ -80,6 +84,7 @@ const CommentComponent: React.FC<{
 
       {comment.replies.slice(0, visibleCount).map((reply) => (
         <CommentComponent
+          theme={theme}
           key={reply.id}
           noteId={noteId}
           comment={reply}
