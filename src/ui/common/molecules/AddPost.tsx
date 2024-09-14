@@ -82,7 +82,7 @@ const AddPost: React.FC<AddPostProps> = ({ onPostAdded }) => {
 
   return (
     <>
-      <div className={`mr-2 bg-white px-6 py-4 rounded-lg inline-flex flex-col min-w-max w-[492px] 2xl:w-[45vh] items-center justify-center shadow-md ${theme===ThemeEnum.dark&&'bg-gray-800'}`}>
+      <div className={`mr-2  px-6 py-4 rounded-lg inline-flex flex-col min-w-max w-[492px] 2xl:w-[45vh] items-center justify-center shadow-md ${theme===ThemeEnum.dark?'bg-gray-800':'bg-white'}`}>
         <div className='flex items-center justify-center mb-5'>
           <p className='font-poppins text-red-700 text-lg font-bold mb-4'>      {navbarLabel.whatOnYourMind[lang]}  </p>
         </div>

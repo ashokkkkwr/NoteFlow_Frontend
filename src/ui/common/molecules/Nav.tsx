@@ -9,6 +9,7 @@ import { BiSolidMessage } from 'react-icons/bi'
 import Logo from './Logo'
 import useLang from '@hooks/useLang'
 import useTheme from '@hooks/useTheme'
+import { ThemeEnum } from '@type/global.types'
 import { navbarLabel } from '@data/localization/common/landingPage/navbar'
 
 interface User {
@@ -225,10 +226,10 @@ export default function Nav({ testId, senderDetails, notiService }: Props) {
             )}
             <div className='ml-2 mt-2'>
               <div key={user.id}>
-                <p>{user.details.first_name}</p>
+                <p className={ `${theme==ThemeEnum.dark?'text-white':'text-black'}`}>{user.details.first_name}</p>
               </div>
             </div>
-            <FaChevronDown className='ml-2' />
+            <FaChevronDown className={`ml-2  text-lg mt-2 ${theme==ThemeEnum.dark?'text-white':'text-black'}`} />
           </div>
         ) : (
           <Link to='/auth/user/login'>

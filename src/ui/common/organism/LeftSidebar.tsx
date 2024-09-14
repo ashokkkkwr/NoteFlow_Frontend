@@ -22,7 +22,7 @@ export default function LeftSidebar() {
         </button>
         <NavBar />
       </div>
-      <div className={`mt-[10px] ml-2 w-[500px] h-[447px] bg-white p-4 rounded-lg shadow-lg sticky top-[51vh] 2xl:w-[35vh] 2xl:h-auto ${theme === ThemeEnum.dark&& 'bg-gray-800'}`}>
+      <div className={`mt-[10px] ml-2 w-[500px] h-[447px]  p-4 rounded-lg shadow-lg sticky top-[51vh] 2xl:w-[35vh] 2xl:h-auto ${theme === ThemeEnum.dark? 'bg-gray-800':'bg-white'}`}>
         <NavBarDown />
       </div>
       </div>

@@ -35,8 +35,6 @@ export default function ViewFriend() {
       console.log(error)
     }
   }
-  
-
   useEffect(() => {
     viewUsers()
   }, [])

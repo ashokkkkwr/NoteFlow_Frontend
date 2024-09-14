@@ -408,7 +408,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
       {error && <p>{error}</p>}
       <ul>
         {notes.map((note) => (
-          <div key={note.id} className={`mb-2  w-auto border bg-white shadow-xl rounded-lg p-5 ${theme === ThemeEnum.dark&& 'bg-gray-800'}`}>
+          <div key={note.id} className={`mb-2  w-auto border  shadow-xl rounded-lg p-5 ${theme === ThemeEnum.dark? 'bg-gray-800':'bg-white'}`}>
             {openFormId === note.id && (
               <div className='flex justify-end mr-10 mt-5'>
                 <button onClick={() => toggleForm(note.id)} className='text-red-500 hover:text-red-700'>
@@ -591,7 +591,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                 </div>
 
                 {selectedPostId === note.id && (
-                  <div className='p-5 bg-gray-100 rounded-xl w-[85vh] ml-[10vh]'>
+                  <div className={`p-5 rounded-xl w-[85vh] ml-[10vh] ${theme === ThemeEnum.dark? 'bg-gray-900':'bg-gray-100'}`}>
                     <button onClick={() => toggleCommentFormVisibility(note.id)}>
                       {/* {visibleCommentForm === note.id ? 'Cancel' : 'Add a comment'} */}
                     </button>
@@ -615,6 +615,7 @@ const Posts: React.FC<PostsProps> = ({ refreshPosts }) => {
                     <div>
                       {comments[note.id]?.slice(0, visibleCommentsCount[note.id] || commentsPerPage).map((comment) => (
                         <CommentComponent
+                        theme={theme}
                           key={comment.id}
                           noteId={note.id}
                           comment={comment}
