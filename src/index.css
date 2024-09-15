@@ -10,7 +10,12 @@
 @layer base {
   body {
     @apply font-sans;
-    background-color: #d1d5db; /* Equivalent to Tailwind's bg-gray-300 */
+    background-color: #d1d5db; /* Default light theme (Tailwind bg-gray-300) */
+  }
+
+  /* Dark theme background */
+  .dark body {
+    background-color: #111827; /* Tailwind's bg-gray-900 for dark theme */
   }
 }
 
@@ -41,7 +46,7 @@
     @apply text-inherit;
   }
 }
-*{
+
+* {
   scroll-behavior: smooth;
 }
-
