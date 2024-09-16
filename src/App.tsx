@@ -165,7 +165,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const { contextCurrentUser, setContextCurrentUser } = useContext(userContext); // Move useContext inside the component
   const userActive = async () => {
     try {
       socket.emit('active')
