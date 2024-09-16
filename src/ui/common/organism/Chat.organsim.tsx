@@ -280,16 +280,15 @@ export default function ChatOrganism() {
       <button className='absolute top-8 left-4 md:hidden z-30' onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
         {isSidebarOpen ? (
           <IoMdClose className='text-3xl text-red-500 mt-3' />
-        ) : (
+        ):(
           <IoMdMenu className='text-3xl text-red-500' />
         )}
       </button>
-
       <div
         className={`absolute inset-0 md:w-[45vh] bg-gray-100 border-r border-gray-300 p-5 overflow-y-auto transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0 z-20' : '-translate-x-full'
         }`}
-      >
+              >
         <h2 className='text-2xl font-bold mt-6 ml-16'>
           <Logo />
         </h2>

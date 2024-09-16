@@ -73,7 +73,6 @@ const Signup: React.FC = () => {
     data.append('phone_number', formData.phoneNumber)
     data.append('role', formData.role)
     data.append('type', 'PROFILE')
-
     if (formData.files) {
       for (let i = 0; i < formData.files.length; i++) {
         data.append('files', formData.files[i])
@@ -93,7 +92,6 @@ const Signup: React.FC = () => {
       }
     }
   }
-
   return (
     <div className='flex bg-purple-300'>
       <div>
