@@ -67,7 +67,6 @@ export default function ChatOrganism() {
   const emojiPickerRef = useRef<HTMLDivElement>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false) // New state for sidebar visibility
   const [unreadCounts, setUnreadCounts] = useState<{ [Key: string]: number }>({})
-
   // const [isAutoCorrectOn, setIsAutoCorrectOn] = useState(true)
   const { isAutoCorrectOn } = useAutoCorrect()
 
@@ -114,7 +113,6 @@ export default function ChatOrganism() {
     settingCurrentUser()
     viewUser()
   }, [])
-
   useEffect(() => {
     if (socket) {
       socket.on('message', (chat: Chat) => {
@@ -193,7 +191,6 @@ export default function ChatOrganism() {
       console.log(error)
     }
   }
-
   const fetchUnreadCounts = async (id: string) => {
     try {
       const response = await axiosInstance.get(`/chat/counts/${id}`)
