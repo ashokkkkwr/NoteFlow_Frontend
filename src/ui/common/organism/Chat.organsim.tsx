@@ -364,7 +364,8 @@ export default function ChatOrganism() {
           ))}
         </div>
       </div>
-      {/* Right Section: Messages */}
+
+   
       <div className='flex-1 bg-white p-4 flex flex-col'>
         <div className='flex-1 overflow-y-auto'>
           {selectedUser ? (
