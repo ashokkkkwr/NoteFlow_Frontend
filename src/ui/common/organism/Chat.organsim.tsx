@@ -228,6 +228,7 @@ export default function ChatOrganism() {
   }, [message, receiverId, socket])
 
   const handleUserClick = async (user: User, userId: string) => {
+    console.log("use clicked")
     try {
       if (socket) {
         if (receiverId) {
